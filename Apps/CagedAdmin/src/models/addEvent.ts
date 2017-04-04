@@ -1,4 +1,4 @@
-// Model class for creating new musician.
+// Model class for creating new event.
 export class AddEventModel  {
 
     public name: string;
