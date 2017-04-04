@@ -18,8 +18,10 @@ export class FunctionsConfigModel {
     public deleteEventUrl: string = 'https://n3cgvvoxd4.execute-api.us-east-1.amazonaws.com/dev/events';
 
     // Musicians
-    public addMusicianUrl: string = 'https://di78q88alh.execute-api.us-east-1.amazonaws.com/dev/musicians';
+    public createMusicianUrl: string = 'https://di78q88alh.execute-api.us-east-1.amazonaws.com/dev/musicians';
 
     public updateMusicianUrl: string = 'https://di78q88alh.execute-api.us-east-1.amazonaws.com/dev/musicians';
+
+    public deleteMusicianUrl: string = 'https://di78q88alh.execute-api.us-east-1.amazonaws.com/dev/musicians';
 
 }

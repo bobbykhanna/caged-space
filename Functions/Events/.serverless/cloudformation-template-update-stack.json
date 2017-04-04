@@ -5,10 +5,10 @@
     "ServerlessDeploymentBucket": {
       "Type": "AWS::S3::Bucket"
     },
-    "CreateEventLogGroup": {
+    "AddEventLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/events-dev-createEvent"
+        "LogGroupName": "/aws/lambda/events-dev-addEvent"
       }
     },
     "UpdateEventLogGroup": {
@@ -88,7 +88,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "CreateEventLogGroup",
+                          "AddEventLogGroup",
                           "Arn"
                         ]
                       },
@@ -135,17 +135,17 @@
         ]
       }
     },
-    "CreateEventLambdaFunction": {
+    "AddEventLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1487883097949-2017-02-23T20:51:37.949Z/events.zip"
+          "S3Key": "serverless/events/dev/1491344775228-2017-04-04T22:26:15.228Z/events.zip"
         },
-        "FunctionName": "events-dev-createEvent",
-        "Handler": "handler.createEvent",
+        "FunctionName": "events-dev-addEvent",
+        "Handler": "handler.addEvent",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -161,14 +161,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "CreateEventLambdaVersionWKezkkVHz53Qcome6rke3S04Wm9ioGi3JpWnvDGS3U": {
+    "AddEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "CreateEventLambdaFunction"
+          "Ref": "AddEventLambdaFunction"
         },
-        "CodeSha256": "WKezkkVHz53Qcome6rke3S04Wm9io/Gi3JpWnvDGS3U="
+        "CodeSha256": "DiSrPQ5k+4KnIZGXr05LOb7VHXjhZ+HzHCPPvwgdHVI="
       }
     },
     "UpdateEventLambdaFunction": {
@@ -178,7 +178,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1487883097949-2017-02-23T20:51:37.949Z/events.zip"
+          "S3Key": "serverless/events/dev/1491344775228-2017-04-04T22:26:15.228Z/events.zip"
         },
         "FunctionName": "events-dev-updateEvent",
         "Handler": "handler.updateEvent",
@@ -197,14 +197,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateEventLambdaVersionWKezkkVHz53Qcome6rke3S04Wm9ioGi3JpWnvDGS3U": {
+    "UpdateEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateEventLambdaFunction"
         },
-        "CodeSha256": "WKezkkVHz53Qcome6rke3S04Wm9io/Gi3JpWnvDGS3U="
+        "CodeSha256": "DiSrPQ5k+4KnIZGXr05LOb7VHXjhZ+HzHCPPvwgdHVI="
       }
     },
     "DeleteEventLambdaFunction": {
@@ -214,7 +214,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1487883097949-2017-02-23T20:51:37.949Z/events.zip"
+          "S3Key": "serverless/events/dev/1491344775228-2017-04-04T22:26:15.228Z/events.zip"
         },
         "FunctionName": "events-dev-deleteEvent",
         "Handler": "handler.deleteEvent",
@@ -233,14 +233,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteEventLambdaVersionWKezkkVHz53Qcome6rke3S04Wm9ioGi3JpWnvDGS3U": {
+    "DeleteEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteEventLambdaFunction"
         },
-        "CodeSha256": "WKezkkVHz53Qcome6rke3S04Wm9io/Gi3JpWnvDGS3U="
+        "CodeSha256": "DiSrPQ5k+4KnIZGXr05LOb7VHXjhZ+HzHCPPvwgdHVI="
       }
     },
     "ApiGatewayRestApi": {
@@ -305,7 +305,7 @@
               "ResponseParameters": {
                 "method.response.header.Access-Control-Allow-Origin": "'*'",
                 "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,PUT,POST'",
                 "method.response.header.Access-Control-Allow-Credentials": "'false'"
               },
               "ResponseTemplates": {
@@ -351,7 +351,7 @@
               "ResponseParameters": {
                 "method.response.header.Access-Control-Allow-Origin": "'*'",
                 "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,PUT'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE'",
                 "method.response.header.Access-Control-Allow-Credentials": "'false'"
               },
               "ResponseTemplates": {
@@ -394,7 +394,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "CreateEventLambdaFunction",
+                    "AddEventLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -406,15 +406,13 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayMethodEventsIdVarPut": {
+    "ApiGatewayMethodEventsPut": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "PUT",
-        "RequestParameters": {
-          "method.request.path.id": true
-        },
+        "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceEventsIdVar"
+          "Ref": "ApiGatewayResourceEvents"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -422,7 +420,7 @@
         "AuthorizationType": "NONE",
         "Integration": {
           "IntegrationHttpMethod": "POST",
-          "Type": "AWS",
+          "Type": "AWS_PROXY",
           "Uri": {
             "Fn::Join": [
               "",
@@ -441,152 +439,9 @@
                 "/invocations"
               ]
             ]
-          },
-          "PassthroughBehavior": "NEVER",
-          "RequestTemplates": {
-            "application/json": "\n    #set( $body = $input.json(\"$\") )\n\n    \n  #define( $loop )\n    {\n    #foreach($key in $map.keySet())\n        #set( $k = $util.escapeJavaScript($key) )\n        #set( $v = $util.escapeJavaScript($map.get($key)).replaceAll(\"\\\\'\", \"'\") )\n        \"$k\":\n          \"$v\"\n          #if( $foreach.hasNext ) , #end\n    #end\n    }\n  #end\n\n  {\n    \"body\": $body,\n    \"method\": \"$context.httpMethod\",\n    \"principalId\": \"$context.authorizer.principalId\",\n    \"stage\": \"$context.stage\",\n\n    \"cognitoPoolClaims\" : {\n       \n       \"sub\": \"$context.authorizer.claims.sub\"\n    },\n\n    #set( $map = $input.params().header )\n    \"headers\": $loop,\n\n    #set( $map = $input.params().querystring )\n    \"query\": $loop,\n\n    #set( $map = $input.params().path )\n    \"path\": $loop,\n\n    #set( $map = $context.identity )\n    \"identity\": $loop,\n\n    #set( $map = $stageVariables )\n    \"stageVariables\": $loop\n  }\n\n  ",
-            "application/x-www-form-urlencoded": "\n    #define( $body )\n      {\n      #foreach( $token in $input.path('$').split('&') )\n        #set( $keyVal = $token.split('=') )\n        #set( $keyValSize = $keyVal.size() )\n        #if( $keyValSize >= 1 )\n          #set( $key = $util.escapeJavaScript($util.urlDecode($keyVal[0])) )\n          #if( $keyValSize >= 2 )\n            #set($val = $util.escapeJavaScript($util.urlDecode($keyVal[1])).replaceAll(\"\\\\'\",\"'\"))\n          #else\n            #set( $val = '' )\n          #end\n          \"$key\": \"$val\"#if($foreach.hasNext),#end\n        #end\n      #end\n      }\n    #end\n\n    \n  #define( $loop )\n    {\n    #foreach($key in $map.keySet())\n        #set( $k = $util.escapeJavaScript($key) )\n        #set( $v = $util.escapeJavaScript($map.get($key)).replaceAll(\"\\\\'\", \"'\") )\n        \"$k\":\n          \"$v\"\n          #if( $foreach.hasNext ) , #end\n    #end\n    }\n  #end\n\n  {\n    \"body\": $body,\n    \"method\": \"$context.httpMethod\",\n    \"principalId\": \"$context.authorizer.principalId\",\n    \"stage\": \"$context.stage\",\n\n    \"cognitoPoolClaims\" : {\n       \n       \"sub\": \"$context.authorizer.claims.sub\"\n    },\n\n    #set( $map = $input.params().header )\n    \"headers\": $loop,\n\n    #set( $map = $input.params().querystring )\n    \"query\": $loop,\n\n    #set( $map = $input.params().path )\n    \"path\": $loop,\n\n    #set( $map = $context.identity )\n    \"identity\": $loop,\n\n    #set( $map = $stageVariables )\n    \"stageVariables\": $loop\n  }\n\n  "
-          },
-          "IntegrationResponses": [
-            {
-              "StatusCode": 200,
-              "SelectionPattern": "",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 400,
-              "SelectionPattern": "[\\s\\S]*\\[400\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 401,
-              "SelectionPattern": "[\\s\\S]*\\[401\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 403,
-              "SelectionPattern": "[\\s\\S]*\\[403\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 404,
-              "SelectionPattern": "[\\s\\S]*\\[404\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 422,
-              "SelectionPattern": "[\\s\\S]*\\[422\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 500,
-              "SelectionPattern": "[\\s\\S]*(Process\\s?exited\\s?before\\s?completing\\s?request|\\[500\\])[\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 502,
-              "SelectionPattern": "[\\s\\S]*\\[502\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 504,
-              "SelectionPattern": "[\\s\\S]*\\[504\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            }
-          ]
-        },
-        "MethodResponses": [
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 200
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 400
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 401
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 403
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 404
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 422
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 500
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 502
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 504
           }
-        ]
+        },
+        "MethodResponses": []
       }
     },
     "ApiGatewayMethodEventsIdVarDelete": {
@@ -772,7 +627,7 @@
         ]
       }
     },
-    "ApiGatewayDeployment1487883097967": {
+    "ApiGatewayDeployment1491344775254": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -782,16 +637,16 @@
       },
       "DependsOn": [
         "ApiGatewayMethodEventsPost",
-        "ApiGatewayMethodEventsIdVarPut",
+        "ApiGatewayMethodEventsPut",
         "ApiGatewayMethodEventsIdVarDelete"
       ]
     },
-    "CreateEventLambdaPermissionApiGateway": {
+    "AddEventLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "CreateEventLambdaFunction",
+            "AddEventLambdaFunction",
             "Arn"
           ]
         },
@@ -892,22 +747,22 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
-    "CreateEventLambdaFunctionQualifiedArn": {
+    "AddEventLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateEventLambdaVersionWKezkkVHz53Qcome6rke3S04Wm9ioGi3JpWnvDGS3U"
+        "Ref": "AddEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI"
       }
     },
     "UpdateEventLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateEventLambdaVersionWKezkkVHz53Qcome6rke3S04Wm9ioGi3JpWnvDGS3U"
+        "Ref": "UpdateEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI"
       }
     },
     "DeleteEventLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteEventLambdaVersionWKezkkVHz53Qcome6rke3S04Wm9ioGi3JpWnvDGS3U"
+        "Ref": "DeleteEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI"
       }
     },
     "ServiceEndpoint": {

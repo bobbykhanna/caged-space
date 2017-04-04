@@ -2,24 +2,24 @@
 
 var firebase = require("firebase");
 
-module.exports.addBeacon = (event, context, callback) => {
+module.exports.addStream = (event, context, callback) => {
 
   context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
   // Initialize Firebase
   initializeFirebase();
 
-  let newKey = firebase.database().ref('beacon').push().key;
+  let newKey = firebase.database().ref('streams').push().key;
+
+  let stream = JSON.parse(event.body);
+  stream.id = newKey;
 
   var updates = {};
-  updates['/beacon/' + newKey] = JSON.parse(event.body);
+  updates['/streams/' + newKey] = stream;
 
   firebase.database().ref().update(updates).then(function () {
 
-    firebase.database().ref('beacon/' + newKey).once('value').then(function (snapshot) {
-
-      let beacon = snapshot.val();
-      beacon.id = newKey;
+    firebase.database().ref('streams/' + newKey).once('value').then(function (snapshot) {
 
       const response = {
         statusCode: 200,
@@ -28,8 +28,8 @@ module.exports.addBeacon = (event, context, callback) => {
           "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
         },
         body: JSON.stringify({
-          message: 'Beacon Created',
-          data: beacon
+          message: 'Stream Created',
+          data: snapshot.val()
         })
       };
 
@@ -41,7 +41,7 @@ module.exports.addBeacon = (event, context, callback) => {
 
 };
 
-module.exports.updateBeacon = (event, context, callback) => {
+module.exports.updateStream = (event, context, callback) => {
 
   context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
@@ -51,14 +51,11 @@ module.exports.updateBeacon = (event, context, callback) => {
   let key = JSON.parse(event.body).id;
 
   var updates = {};
-  updates['/beacon/' + key] = JSON.parse(event.body);
+  updates['/streams/' + key] = JSON.parse(event.body);
 
   firebase.database().ref().update(updates).then(function () {
 
-    firebase.database().ref('beacon/' + key).once('value').then(function (snapshot) {
-
-      let beacon = snapshot.val();
-      beacon.id = key;
+    firebase.database().ref('streams/' + key).once('value').then(function (snapshot) {
 
       const response = {
         statusCode: 200,
@@ -67,8 +64,8 @@ module.exports.updateBeacon = (event, context, callback) => {
           "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
         },
         body: JSON.stringify({
-          message: 'Beacon Updated',
-          data: Beacon
+          message: 'Stream Updated',
+          data: snapshot.val()
         })
       };
 
@@ -79,6 +76,35 @@ module.exports.updateBeacon = (event, context, callback) => {
   });
 
 };
+
+
+module.exports.deleteStream = (event, context, callback) => {
+
+context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+
+  // Initialize Firebase
+  initializeFirebase();
+
+  let key = JSON.parse(event.body).id;
+  
+  firebase.database().ref('streams/' + key).remove();  //<---- Firebase Delete Query
+
+  const response = {
+    statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+      "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+    },
+    body: JSON.stringify({
+      message: 'Stream Deleted',
+      data: event.body
+    }),
+  };
+
+  callback(null, response);
+
+};
+
 
 let initializeFirebase = function () {
 

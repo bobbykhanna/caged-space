@@ -1,42 +1,93 @@
 'use strict';
 
-module.exports.createEvent = (event, context, callback) => {
+var firebase = require("firebase");
 
-  const response = {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-      "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
-    },
-    body: JSON.stringify({
-      message: 'Event Created',
-      data: event.body
-    }),
-  };
+module.exports.addEvent = (event, context, callback) => {
 
-  callback(null, response);
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+
+  // Initialize Firebase
+  initializeFirebase();
+
+  let newKey = firebase.database().ref('events').push().key;
+
+  let myEvent = JSON.parse(event.body);
+  myEvent.id = newKey;
+
+  var updates = {};
+  updates['/events/' + newKey] = myEvent;
+
+  firebase.database().ref().update(updates).then(function () {
+
+    firebase.database().ref('events/' + newKey).once('value').then(function (snapshot) {
+
+      const response = {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+          "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+        },
+        body: JSON.stringify({
+          message: 'Event Created',
+          data: snapshot.val()
+        })
+      };
+
+      callback(null, response);
+
+    });
+
+  });
 
 };
 
 module.exports.updateEvent = (event, context, callback) => {
 
-  const response = {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-      "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
-    },
-    body: JSON.stringify({
-      message: 'Event Updated',
-      data: event.body
-    }),
-  };
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
-  callback(null, response);
+  // Initialize Firebase
+  initializeFirebase();
+
+  let key = JSON.parse(event.body).id;
+
+  var updates = {};
+  updates['/events/' + key] = JSON.parse(event.body);
+
+  firebase.database().ref().update(updates).then(function () {
+
+    firebase.database().ref('events/' + key).once('value').then(function (snapshot) {
+
+      const response = {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+          "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+        },
+        body: JSON.stringify({
+          message: 'Event Updated',
+          data: snapshot.val()
+        })
+      };
+
+      callback(null, response);
+
+    });
+
+  });
 
 };
 
+
 module.exports.deleteEvent = (event, context, callback) => {
+
+context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+
+  // Initialize Firebase
+  initializeFirebase();
+
+  let key = JSON.parse(event.body).id;
+  
+  firebase.database().ref('events/' + key).remove();  //<---- Firebase Delete Query
 
   const response = {
     statusCode: 200,
@@ -53,3 +104,22 @@ module.exports.deleteEvent = (event, context, callback) => {
   callback(null, response);
 
 };
+
+
+let initializeFirebase = function () {
+
+  let firebaseConfig = {
+    apiKey: "AIzaSyAgvU-ZNdAMYJaw_kTK-uyWMIGHwCZtmMM",
+    authDomain: "cagedspace-9d75f.firebaseapp.com",
+    databaseURL: "https://cagedspace-9d75f.firebaseio.com",
+    storageBucket: "cagedspace-9d75f.appspot.com",
+    messagingSenderId: "464147072174"
+  };
+
+  if (firebase.apps.length == 0) {   // <---Important!!! In lambda, it will cause double initialization.
+
+    firebase.initializeApp(firebaseConfig);
+
+  }
+
+} 

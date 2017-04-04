@@ -1,5 +1,5 @@
 
-service: musicians 
+service: beacons 
 
 provider:
   name: aws
@@ -12,20 +12,26 @@ functions:
     handler: handler.addBeacon
     events:
       - http:
-          path: beacon
+          path: beacons
           method: post
           cors: true
   updateBeacon:
     handler: handler.updateBeacon
     events:
       - http:
-          path: beacon
+          path: beacons
           method: put
           cors: true
   deleteBeacon:
     handler: handler.deleteBeacon
     events:
       - http:
-          path: beacon
-          meathod: post
+          path: beacons/{id}
+          method: delete
+          integration: lambda
+          request:
+            parameters:
+              paths:
+                id: true
           cors: true
+

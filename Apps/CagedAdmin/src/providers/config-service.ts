@@ -46,11 +46,30 @@ export class ConfigService {
   }
 
   get addMusicianUrl(): string {
-    return this._functionsConfig.addMusicianUrl;
+    return this._functionsConfig.createMusicianUrl;
   }
 
   get updateMusicianUrl(): string {
     return this._functionsConfig.updateMusicianUrl;
   }
+
+  get deleteMusicianUrl(): string {
+    return this._functionsConfig.deleteMusicianUrl;
+  }
+
+  // Events
+  get deleteEventUrl(): string {
+    return this._functionsConfig.deleteEventUrl;
+  }
+
+  get addEventUrl(): string {
+    return this._functionsConfig.createEventUrl;
+  }
+
+  get updateEventUrl(): string {
+    return this._functionsConfig.updateEventUrl;
+  }
+
+
 
 }

@@ -2,24 +2,24 @@
 
 var firebase = require("firebase");
 
-module.exports.addMusician = (event, context, callback) => {
+module.exports.addBeacon = (event, context, callback) => {
 
   context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
   // Initialize Firebase
   initializeFirebase();
 
-  let newKey = firebase.database().ref('musicians').push().key;
+  let newKey = firebase.database().ref('beacons').push().key;
 
-  let musician = JSON.parse(event.body);
-  musician.id = newKey;
+  let beacon = JSON.parse(event.body);
+  beacon.id = newKey;
 
   var updates = {};
-  updates['/musicians/' + newKey] = musician;
+  updates['/beacons/' + newKey] = beacon;
 
   firebase.database().ref().update(updates).then(function () {
 
-    firebase.database().ref('musicians/' + newKey).once('value').then(function (snapshot) {
+    firebase.database().ref('beacons/' + newKey).once('value').then(function (snapshot) {
 
       const response = {
         statusCode: 200,
@@ -28,7 +28,7 @@ module.exports.addMusician = (event, context, callback) => {
           "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
         },
         body: JSON.stringify({
-          message: 'Musician Created',
+          message: 'Beacon Created',
           data: snapshot.val()
         })
       };
@@ -41,7 +41,7 @@ module.exports.addMusician = (event, context, callback) => {
 
 };
 
-module.exports.updateMusician = (event, context, callback) => {
+module.exports.updateBeacon = (event, context, callback) => {
 
   context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
@@ -51,11 +51,11 @@ module.exports.updateMusician = (event, context, callback) => {
   let key = JSON.parse(event.body).id;
 
   var updates = {};
-  updates['/musicians/' + key] = JSON.parse(event.body);
+  updates['/beacons/' + key] = JSON.parse(event.body);
 
   firebase.database().ref().update(updates).then(function () {
 
-    firebase.database().ref('musicians/' + key).once('value').then(function (snapshot) {
+    firebase.database().ref('beacons/' + key).once('value').then(function (snapshot) {
 
       const response = {
         statusCode: 200,
@@ -64,7 +64,7 @@ module.exports.updateMusician = (event, context, callback) => {
           "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
         },
         body: JSON.stringify({
-          message: 'Musician Updated',
+          message: 'Beacon Updated',
           data: snapshot.val()
         })
       };
@@ -78,7 +78,7 @@ module.exports.updateMusician = (event, context, callback) => {
 };
 
 
-module.exports.deleteMusician = (event, context, callback) => {
+module.exports.deleteBeacon = (event, context, callback) => {
 
 context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
@@ -87,7 +87,7 @@ context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
   let key = JSON.parse(event.body).id;
   
-  firebase.database().ref('musicians/' + key).remove();  //<---- Firebase Delete Query
+  firebase.database().ref('beacons/' + key).remove();  //<---- Firebase Delete Query
 
   const response = {
     statusCode: 200,
@@ -96,7 +96,7 @@ context.callbackWaitsForEmptyEventLoop = false;  //<---Important
       "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
     },
     body: JSON.stringify({
-      message: 'Musician Deleted',
+      message: 'Beacon Deleted',
       data: event.body
     }),
   };
