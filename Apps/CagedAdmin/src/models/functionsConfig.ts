@@ -38,5 +38,4 @@ export class FunctionsConfigModel {
 
     public deleteBeaconUrl: string = 'https://yllfwozr2i.execute-api.us-east-1.amazonaws.com/dev/beacons';
 
-
 }
