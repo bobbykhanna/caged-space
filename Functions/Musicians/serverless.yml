@@ -8,13 +8,6 @@ provider:
   region: us-east-1
 
 functions:
-  loginMusician:
-    handler: handler.login
-    events:
-      - http:
-          path: musician/login
-          method: post
-          cors: true
   addMusician:
     handler: handler.addMusician
     events:

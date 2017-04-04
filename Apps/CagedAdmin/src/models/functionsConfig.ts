@@ -24,4 +24,19 @@ export class FunctionsConfigModel {
 
     public deleteMusicianUrl: string = 'https://di78q88alh.execute-api.us-east-1.amazonaws.com/dev/musicians';
 
+    // Streams
+    public createStreamUrl: string = 'https://84jjtsp6cd.execute-api.us-east-1.amazonaws.com/dev/streams';
+
+    public updateStreamUrl: string = 'https://84jjtsp6cd.execute-api.us-east-1.amazonaws.com/dev/streams';
+
+    public deleteStreamUrl: string = 'https://84jjtsp6cd.execute-api.us-east-1.amazonaws.com/dev/streams';
+
+    // Beacons
+    public createBeaconUrl: string = 'https://yllfwozr2i.execute-api.us-east-1.amazonaws.com/dev/beacons';
+
+    public updateBeaconUrl: string = 'https://yllfwozr2i.execute-api.us-east-1.amazonaws.com/dev/beacons';
+
+    public deleteBeaconUrl: string = 'https://yllfwozr2i.execute-api.us-east-1.amazonaws.com/dev/beacons';
+
+
 }

@@ -41,10 +41,24 @@ export class ConfigService {
   }
 
   // Lambda Functions URLs
+  // Users
   get userLoginUrl(): string {
     return this._functionsConfig.userLoginUrl;
   }
 
+  get addUserUrl(): string {
+    return this._functionsConfig.createUserUrl;
+  }
+
+  get updateUserUrl(): string {
+    return this._functionsConfig.updateUserUrl;
+  }
+
+  get deleteUserUrl(): string {
+    return this._functionsConfig.deleteUserUrl;
+  }
+
+  // Musicans
   get addMusicianUrl(): string {
     return this._functionsConfig.createMusicianUrl;
   }
@@ -70,6 +84,30 @@ export class ConfigService {
     return this._functionsConfig.updateEventUrl;
   }
 
+  // Beacons
+  get deleteBeaconUrl(): string {
+    return this._functionsConfig.deleteBeaconUrl;
+  }
 
+  get addBeaconUrl(): string {
+    return this._functionsConfig.createBeaconUrl;
+  }
+
+  get updateBeaconUrl(): string {
+    return this._functionsConfig.updateBeaconUrl;
+  }
+
+  // Streams
+  get deleteStreamUrl(): string {
+    return this._functionsConfig.deleteStreamUrl;
+  }
+
+  get addStreamUrl(): string {
+    return this._functionsConfig.createStreamUrl;
+  }
+
+  get updateStreamUrl(): string {
+    return this._functionsConfig.updateStreamUrl;
+  }
 
 }

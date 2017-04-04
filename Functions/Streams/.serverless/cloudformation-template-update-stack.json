@@ -5,22 +5,22 @@
     "ServerlessDeploymentBucket": {
       "Type": "AWS::S3::Bucket"
     },
-    "AddMusicianLogGroup": {
+    "AddStreamLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/musicians-dev-addMusician"
+        "LogGroupName": "/aws/lambda/streams-dev-addStream"
       }
     },
-    "UpdateMusicianLogGroup": {
+    "UpdateStreamLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/musicians-dev-updateMusician"
+        "LogGroupName": "/aws/lambda/streams-dev-updateStream"
       }
     },
-    "DeleteMusicianLogGroup": {
+    "DeleteStreamLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/musicians-dev-deleteMusician"
+        "LogGroupName": "/aws/lambda/streams-dev-deleteStream"
       }
     },
     "IamRoleLambdaExecution": {
@@ -47,7 +47,7 @@
           "Fn::Join": [
             "-",
             [
-              "musicians",
+              "streams",
               "dev",
               "us-east-1",
               "lambdaRole"
@@ -67,7 +67,7 @@
             "-",
             [
               "dev",
-              "musicians",
+              "streams",
               "lambda"
             ]
           ]
@@ -88,7 +88,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "AddMusicianLogGroup",
+                          "AddStreamLogGroup",
                           "Arn"
                         ]
                       },
@@ -102,7 +102,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "UpdateMusicianLogGroup",
+                          "UpdateStreamLogGroup",
                           "Arn"
                         ]
                       },
@@ -116,7 +116,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "DeleteMusicianLogGroup",
+                          "DeleteStreamLogGroup",
                           "Arn"
                         ]
                       },
@@ -135,17 +135,17 @@
         ]
       }
     },
-    "AddMusicianLambdaFunction": {
+    "AddStreamLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491345380941-2017-04-04T22:36:20.941Z/musicians.zip"
+          "S3Key": "serverless/streams/dev/1491345662932-2017-04-04T22:41:02.932Z/streams.zip"
         },
-        "FunctionName": "musicians-dev-addMusician",
-        "Handler": "handler.addMusician",
+        "FunctionName": "streams-dev-addStream",
+        "Handler": "handler.addStream",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -161,27 +161,27 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AddMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0": {
+    "AddStreamLambdaVersionfpqqZEDnz347t3rj3FrkUFVqSTHh9u9U7vWcgaA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "AddMusicianLambdaFunction"
+          "Ref": "AddStreamLambdaFunction"
         },
-        "CodeSha256": "9axXzAq4zx28LDSWIsPg8psn+eiTYyJjY/nxysWQhT0="
+        "CodeSha256": "fpq+qZED+nz347t3rj+3Fr/kUFVqSTHh9u9U7vWcgaA="
       }
     },
-    "UpdateMusicianLambdaFunction": {
+    "UpdateStreamLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491345380941-2017-04-04T22:36:20.941Z/musicians.zip"
+          "S3Key": "serverless/streams/dev/1491345662932-2017-04-04T22:41:02.932Z/streams.zip"
         },
-        "FunctionName": "musicians-dev-updateMusician",
-        "Handler": "handler.updateMusician",
+        "FunctionName": "streams-dev-updateStream",
+        "Handler": "handler.updateStream",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -197,27 +197,27 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0": {
+    "UpdateStreamLambdaVersionfpqqZEDnz347t3rj3FrkUFVqSTHh9u9U7vWcgaA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "UpdateMusicianLambdaFunction"
+          "Ref": "UpdateStreamLambdaFunction"
         },
-        "CodeSha256": "9axXzAq4zx28LDSWIsPg8psn+eiTYyJjY/nxysWQhT0="
+        "CodeSha256": "fpq+qZED+nz347t3rj+3Fr/kUFVqSTHh9u9U7vWcgaA="
       }
     },
-    "DeleteMusicianLambdaFunction": {
+    "DeleteStreamLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491345380941-2017-04-04T22:36:20.941Z/musicians.zip"
+          "S3Key": "serverless/streams/dev/1491345662932-2017-04-04T22:41:02.932Z/streams.zip"
         },
-        "FunctionName": "musicians-dev-deleteMusician",
-        "Handler": "handler.deleteMusician",
+        "FunctionName": "streams-dev-deleteStream",
+        "Handler": "handler.deleteStream",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -233,23 +233,23 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0": {
+    "DeleteStreamLambdaVersionfpqqZEDnz347t3rj3FrkUFVqSTHh9u9U7vWcgaA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "DeleteMusicianLambdaFunction"
+          "Ref": "DeleteStreamLambdaFunction"
         },
-        "CodeSha256": "9axXzAq4zx28LDSWIsPg8psn+eiTYyJjY/nxysWQhT0="
+        "CodeSha256": "fpq+qZED+nz347t3rj+3Fr/kUFVqSTHh9u9U7vWcgaA="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "dev-musicians"
+        "Name": "dev-streams"
       }
     },
-    "ApiGatewayResourceMusicians": {
+    "ApiGatewayResourceStreams": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
@@ -258,32 +258,17 @@
             "RootResourceId"
           ]
         },
-        "PathPart": "musicians",
+        "PathPart": "streams",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayResourceMusician": {
+    "ApiGatewayResourceStreamsIdVar": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
-          "Fn::GetAtt": [
-            "ApiGatewayRestApi",
-            "RootResourceId"
-          ]
-        },
-        "PathPart": "musician",
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        }
-      }
-    },
-    "ApiGatewayResourceMusicianIdVar": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Ref": "ApiGatewayResourceMusician"
+          "Ref": "ApiGatewayResourceStreams"
         },
         "PathPart": "{id}",
         "RestApiId": {
@@ -291,7 +276,7 @@
         }
       }
     },
-    "ApiGatewayMethodMusiciansOptions": {
+    "ApiGatewayMethodStreamsOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -330,14 +315,14 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceMusicians"
+          "Ref": "ApiGatewayResourceStreams"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodMusicianIdVarOptions": {
+    "ApiGatewayMethodStreamsIdVarOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -376,20 +361,20 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceMusicianIdVar"
+          "Ref": "ApiGatewayResourceStreamsIdVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodMusiciansPost": {
+    "ApiGatewayMethodStreamsPost": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "POST",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceMusicians"
+          "Ref": "ApiGatewayResourceStreams"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -409,7 +394,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "AddMusicianLambdaFunction",
+                    "AddStreamLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -421,13 +406,13 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayMethodMusiciansPut": {
+    "ApiGatewayMethodStreamsPut": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "PUT",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceMusicians"
+          "Ref": "ApiGatewayResourceStreams"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -447,7 +432,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "UpdateMusicianLambdaFunction",
+                    "UpdateStreamLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -459,7 +444,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayMethodMusicianIdVarDelete": {
+    "ApiGatewayMethodStreamsIdVarDelete": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "DELETE",
@@ -467,7 +452,7 @@
           "method.request.path.id": true
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceMusicianIdVar"
+          "Ref": "ApiGatewayResourceStreamsIdVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -487,7 +472,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "DeleteMusicianLambdaFunction",
+                    "DeleteStreamLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -642,7 +627,7 @@
         ]
       }
     },
-    "ApiGatewayDeployment1491345380971": {
+    "ApiGatewayDeployment1491345662960": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -651,17 +636,17 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodMusiciansPost",
-        "ApiGatewayMethodMusiciansPut",
-        "ApiGatewayMethodMusicianIdVarDelete"
+        "ApiGatewayMethodStreamsPost",
+        "ApiGatewayMethodStreamsPut",
+        "ApiGatewayMethodStreamsIdVarDelete"
       ]
     },
-    "AddMusicianLambdaPermissionApiGateway": {
+    "AddStreamLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "AddMusicianLambdaFunction",
+            "AddStreamLambdaFunction",
             "Arn"
           ]
         },
@@ -689,12 +674,12 @@
         }
       }
     },
-    "UpdateMusicianLambdaPermissionApiGateway": {
+    "UpdateStreamLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "UpdateMusicianLambdaFunction",
+            "UpdateStreamLambdaFunction",
             "Arn"
           ]
         },
@@ -722,12 +707,12 @@
         }
       }
     },
-    "DeleteMusicianLambdaPermissionApiGateway": {
+    "DeleteStreamLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "DeleteMusicianLambdaFunction",
+            "DeleteStreamLambdaFunction",
             "Arn"
           ]
         },
@@ -762,22 +747,22 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
-    "AddMusicianLambdaFunctionQualifiedArn": {
+    "AddStreamLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0"
+        "Ref": "AddStreamLambdaVersionfpqqZEDnz347t3rj3FrkUFVqSTHh9u9U7vWcgaA"
       }
     },
-    "UpdateMusicianLambdaFunctionQualifiedArn": {
+    "UpdateStreamLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0"
+        "Ref": "UpdateStreamLambdaVersionfpqqZEDnz347t3rj3FrkUFVqSTHh9u9U7vWcgaA"
       }
     },
-    "DeleteMusicianLambdaFunctionQualifiedArn": {
+    "DeleteStreamLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0"
+        "Ref": "DeleteStreamLambdaVersionfpqqZEDnz347t3rj3FrkUFVqSTHh9u9U7vWcgaA"
       }
     },
     "ServiceEndpoint": {

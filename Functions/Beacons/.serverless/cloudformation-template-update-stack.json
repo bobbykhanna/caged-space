@@ -5,22 +5,22 @@
     "ServerlessDeploymentBucket": {
       "Type": "AWS::S3::Bucket"
     },
-    "AddMusicianLogGroup": {
+    "AddBeaconLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/musicians-dev-addMusician"
+        "LogGroupName": "/aws/lambda/beacons-dev-addBeacon"
       }
     },
-    "UpdateMusicianLogGroup": {
+    "UpdateBeaconLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/musicians-dev-updateMusician"
+        "LogGroupName": "/aws/lambda/beacons-dev-updateBeacon"
       }
     },
-    "DeleteMusicianLogGroup": {
+    "DeleteBeaconLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/musicians-dev-deleteMusician"
+        "LogGroupName": "/aws/lambda/beacons-dev-deleteBeacon"
       }
     },
     "IamRoleLambdaExecution": {
@@ -47,7 +47,7 @@
           "Fn::Join": [
             "-",
             [
-              "musicians",
+              "beacons",
               "dev",
               "us-east-1",
               "lambdaRole"
@@ -67,7 +67,7 @@
             "-",
             [
               "dev",
-              "musicians",
+              "beacons",
               "lambda"
             ]
           ]
@@ -88,7 +88,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "AddMusicianLogGroup",
+                          "AddBeaconLogGroup",
                           "Arn"
                         ]
                       },
@@ -102,7 +102,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "UpdateMusicianLogGroup",
+                          "UpdateBeaconLogGroup",
                           "Arn"
                         ]
                       },
@@ -116,7 +116,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "DeleteMusicianLogGroup",
+                          "DeleteBeaconLogGroup",
                           "Arn"
                         ]
                       },
@@ -135,17 +135,17 @@
         ]
       }
     },
-    "AddMusicianLambdaFunction": {
+    "AddBeaconLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491345380941-2017-04-04T22:36:20.941Z/musicians.zip"
+          "S3Key": "serverless/beacons/dev/1491345792690-2017-04-04T22:43:12.690Z/beacons.zip"
         },
-        "FunctionName": "musicians-dev-addMusician",
-        "Handler": "handler.addMusician",
+        "FunctionName": "beacons-dev-addBeacon",
+        "Handler": "handler.addBeacon",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -161,27 +161,27 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AddMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0": {
+    "AddBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "AddMusicianLambdaFunction"
+          "Ref": "AddBeaconLambdaFunction"
         },
-        "CodeSha256": "9axXzAq4zx28LDSWIsPg8psn+eiTYyJjY/nxysWQhT0="
+        "CodeSha256": "mQYLNG+wZfL+KSq23xOyyzp5+AgbyITJA1Fr/BdVN3Q="
       }
     },
-    "UpdateMusicianLambdaFunction": {
+    "UpdateBeaconLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491345380941-2017-04-04T22:36:20.941Z/musicians.zip"
+          "S3Key": "serverless/beacons/dev/1491345792690-2017-04-04T22:43:12.690Z/beacons.zip"
         },
-        "FunctionName": "musicians-dev-updateMusician",
-        "Handler": "handler.updateMusician",
+        "FunctionName": "beacons-dev-updateBeacon",
+        "Handler": "handler.updateBeacon",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -197,27 +197,27 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0": {
+    "UpdateBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "UpdateMusicianLambdaFunction"
+          "Ref": "UpdateBeaconLambdaFunction"
         },
-        "CodeSha256": "9axXzAq4zx28LDSWIsPg8psn+eiTYyJjY/nxysWQhT0="
+        "CodeSha256": "mQYLNG+wZfL+KSq23xOyyzp5+AgbyITJA1Fr/BdVN3Q="
       }
     },
-    "DeleteMusicianLambdaFunction": {
+    "DeleteBeaconLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491345380941-2017-04-04T22:36:20.941Z/musicians.zip"
+          "S3Key": "serverless/beacons/dev/1491345792690-2017-04-04T22:43:12.690Z/beacons.zip"
         },
-        "FunctionName": "musicians-dev-deleteMusician",
-        "Handler": "handler.deleteMusician",
+        "FunctionName": "beacons-dev-deleteBeacon",
+        "Handler": "handler.deleteBeacon",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -233,23 +233,23 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0": {
+    "DeleteBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "DeleteMusicianLambdaFunction"
+          "Ref": "DeleteBeaconLambdaFunction"
         },
-        "CodeSha256": "9axXzAq4zx28LDSWIsPg8psn+eiTYyJjY/nxysWQhT0="
+        "CodeSha256": "mQYLNG+wZfL+KSq23xOyyzp5+AgbyITJA1Fr/BdVN3Q="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "dev-musicians"
+        "Name": "dev-beacons"
       }
     },
-    "ApiGatewayResourceMusicians": {
+    "ApiGatewayResourceBeacons": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
@@ -258,32 +258,17 @@
             "RootResourceId"
           ]
         },
-        "PathPart": "musicians",
+        "PathPart": "beacons",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayResourceMusician": {
+    "ApiGatewayResourceBeaconsIdVar": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
-          "Fn::GetAtt": [
-            "ApiGatewayRestApi",
-            "RootResourceId"
-          ]
-        },
-        "PathPart": "musician",
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        }
-      }
-    },
-    "ApiGatewayResourceMusicianIdVar": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Ref": "ApiGatewayResourceMusician"
+          "Ref": "ApiGatewayResourceBeacons"
         },
         "PathPart": "{id}",
         "RestApiId": {
@@ -291,7 +276,7 @@
         }
       }
     },
-    "ApiGatewayMethodMusiciansOptions": {
+    "ApiGatewayMethodBeaconsOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -330,14 +315,14 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceMusicians"
+          "Ref": "ApiGatewayResourceBeacons"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodMusicianIdVarOptions": {
+    "ApiGatewayMethodBeaconsIdVarOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -376,20 +361,20 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceMusicianIdVar"
+          "Ref": "ApiGatewayResourceBeaconsIdVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodMusiciansPost": {
+    "ApiGatewayMethodBeaconsPost": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "POST",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceMusicians"
+          "Ref": "ApiGatewayResourceBeacons"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -409,7 +394,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "AddMusicianLambdaFunction",
+                    "AddBeaconLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -421,13 +406,13 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayMethodMusiciansPut": {
+    "ApiGatewayMethodBeaconsPut": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "PUT",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceMusicians"
+          "Ref": "ApiGatewayResourceBeacons"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -447,7 +432,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "UpdateMusicianLambdaFunction",
+                    "UpdateBeaconLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -459,7 +444,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayMethodMusicianIdVarDelete": {
+    "ApiGatewayMethodBeaconsIdVarDelete": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "DELETE",
@@ -467,7 +452,7 @@
           "method.request.path.id": true
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceMusicianIdVar"
+          "Ref": "ApiGatewayResourceBeaconsIdVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -487,7 +472,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "DeleteMusicianLambdaFunction",
+                    "DeleteBeaconLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -642,7 +627,7 @@
         ]
       }
     },
-    "ApiGatewayDeployment1491345380971": {
+    "ApiGatewayDeployment1491345792717": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -651,17 +636,17 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodMusiciansPost",
-        "ApiGatewayMethodMusiciansPut",
-        "ApiGatewayMethodMusicianIdVarDelete"
+        "ApiGatewayMethodBeaconsPost",
+        "ApiGatewayMethodBeaconsPut",
+        "ApiGatewayMethodBeaconsIdVarDelete"
       ]
     },
-    "AddMusicianLambdaPermissionApiGateway": {
+    "AddBeaconLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "AddMusicianLambdaFunction",
+            "AddBeaconLambdaFunction",
             "Arn"
           ]
         },
@@ -689,12 +674,12 @@
         }
       }
     },
-    "UpdateMusicianLambdaPermissionApiGateway": {
+    "UpdateBeaconLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "UpdateMusicianLambdaFunction",
+            "UpdateBeaconLambdaFunction",
             "Arn"
           ]
         },
@@ -722,12 +707,12 @@
         }
       }
     },
-    "DeleteMusicianLambdaPermissionApiGateway": {
+    "DeleteBeaconLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "DeleteMusicianLambdaFunction",
+            "DeleteBeaconLambdaFunction",
             "Arn"
           ]
         },
@@ -762,22 +747,22 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
-    "AddMusicianLambdaFunctionQualifiedArn": {
+    "AddBeaconLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0"
+        "Ref": "AddBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q"
       }
     },
-    "UpdateMusicianLambdaFunctionQualifiedArn": {
+    "UpdateBeaconLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0"
+        "Ref": "UpdateBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q"
       }
     },
-    "DeleteMusicianLambdaFunctionQualifiedArn": {
+    "DeleteBeaconLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0"
+        "Ref": "DeleteBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q"
       }
     },
     "ServiceEndpoint": {
