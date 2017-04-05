@@ -22,4 +22,16 @@ functions:
           path: musicians
           method: put
           cors: true
+  deleteMusician:
+    handler: handler.deleteMusician
+    events:
+      - http:
+          path: musician/{id}
+          method: delete
+          integration: lambda
+          request:
+            parameters:
+              paths:
+                id: true
+          cors: true
 

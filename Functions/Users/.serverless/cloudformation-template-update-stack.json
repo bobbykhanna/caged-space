@@ -5,22 +5,28 @@
     "ServerlessDeploymentBucket": {
       "Type": "AWS::S3::Bucket"
     },
-    "AddEventLogGroup": {
+    "LoginLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/events-dev-addEvent"
+        "LogGroupName": "/aws/lambda/users-dev-login"
       }
     },
-    "UpdateEventLogGroup": {
+    "AddUserLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/events-dev-updateEvent"
+        "LogGroupName": "/aws/lambda/users-dev-addUser"
       }
     },
-    "DeleteEventLogGroup": {
+    "UpdateUserLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/events-dev-deleteEvent"
+        "LogGroupName": "/aws/lambda/users-dev-updateUser"
+      }
+    },
+    "DeleteUserLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/users-dev-deleteUser"
       }
     },
     "IamRoleLambdaExecution": {
@@ -47,7 +53,7 @@
           "Fn::Join": [
             "-",
             [
-              "events",
+              "users",
               "dev",
               "us-east-1",
               "lambdaRole"
@@ -67,7 +73,7 @@
             "-",
             [
               "dev",
-              "events",
+              "users",
               "lambda"
             ]
           ]
@@ -88,7 +94,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "AddEventLogGroup",
+                          "LoginLogGroup",
                           "Arn"
                         ]
                       },
@@ -102,7 +108,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "UpdateEventLogGroup",
+                          "AddUserLogGroup",
                           "Arn"
                         ]
                       },
@@ -116,7 +122,21 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "DeleteEventLogGroup",
+                          "UpdateUserLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "DeleteUserLogGroup",
                           "Arn"
                         ]
                       },
@@ -135,17 +155,17 @@
         ]
       }
     },
-    "AddEventLambdaFunction": {
+    "LoginLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1491344775228-2017-04-04T22:26:15.228Z/events.zip"
+          "S3Key": "serverless/users/dev/1491345491033-2017-04-04T22:38:11.033Z/users.zip"
         },
-        "FunctionName": "events-dev-addEvent",
-        "Handler": "handler.addEvent",
+        "FunctionName": "users-dev-login",
+        "Handler": "handler.login",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -161,27 +181,27 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AddEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI": {
+    "LoginLambdaVersion7Lt6cOxzsZRqMQq1opsIJ0gyg4yihHS82MnCYExHA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "AddEventLambdaFunction"
+          "Ref": "LoginLambdaFunction"
         },
-        "CodeSha256": "DiSrPQ5k+4KnIZGXr05LOb7VHXjhZ+HzHCPPvwgdHVI="
+        "CodeSha256": "7Lt6cOxzsZRqMQq1opsIJ0+gyg4yihHS82MnCYExH+A="
       }
     },
-    "UpdateEventLambdaFunction": {
+    "AddUserLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1491344775228-2017-04-04T22:26:15.228Z/events.zip"
+          "S3Key": "serverless/users/dev/1491345491033-2017-04-04T22:38:11.033Z/users.zip"
         },
-        "FunctionName": "events-dev-updateEvent",
-        "Handler": "handler.updateEvent",
+        "FunctionName": "users-dev-addUser",
+        "Handler": "handler.addUser",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -197,27 +217,27 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI": {
+    "AddUserLambdaVersion7Lt6cOxzsZRqMQq1opsIJ0gyg4yihHS82MnCYExHA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "UpdateEventLambdaFunction"
+          "Ref": "AddUserLambdaFunction"
         },
-        "CodeSha256": "DiSrPQ5k+4KnIZGXr05LOb7VHXjhZ+HzHCPPvwgdHVI="
+        "CodeSha256": "7Lt6cOxzsZRqMQq1opsIJ0+gyg4yihHS82MnCYExH+A="
       }
     },
-    "DeleteEventLambdaFunction": {
+    "UpdateUserLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1491344775228-2017-04-04T22:26:15.228Z/events.zip"
+          "S3Key": "serverless/users/dev/1491345491033-2017-04-04T22:38:11.033Z/users.zip"
         },
-        "FunctionName": "events-dev-deleteEvent",
-        "Handler": "handler.deleteEvent",
+        "FunctionName": "users-dev-updateUser",
+        "Handler": "handler.updateUser",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -233,23 +253,59 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI": {
+    "UpdateUserLambdaVersion7Lt6cOxzsZRqMQq1opsIJ0gyg4yihHS82MnCYExHA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "DeleteEventLambdaFunction"
+          "Ref": "UpdateUserLambdaFunction"
         },
-        "CodeSha256": "DiSrPQ5k+4KnIZGXr05LOb7VHXjhZ+HzHCPPvwgdHVI="
+        "CodeSha256": "7Lt6cOxzsZRqMQq1opsIJ0+gyg4yihHS82MnCYExH+A="
+      }
+    },
+    "DeleteUserLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/users/dev/1491345491033-2017-04-04T22:38:11.033Z/users.zip"
+        },
+        "FunctionName": "users-dev-deleteUser",
+        "Handler": "handler.deleteUser",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs4.3",
+        "Timeout": 6
+      },
+      "DependsOn": [
+        "IamPolicyLambdaExecution",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "DeleteUserLambdaVersion7Lt6cOxzsZRqMQq1opsIJ0gyg4yihHS82MnCYExHA": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "DeleteUserLambdaFunction"
+        },
+        "CodeSha256": "7Lt6cOxzsZRqMQq1opsIJ0+gyg4yihHS82MnCYExH+A="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "dev-events"
+        "Name": "dev-users"
       }
     },
-    "ApiGatewayResourceEvents": {
+    "ApiGatewayResourceUsers": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
@@ -258,17 +314,29 @@
             "RootResourceId"
           ]
         },
-        "PathPart": "events",
+        "PathPart": "users",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayResourceEventsIdVar": {
+    "ApiGatewayResourceUsersLogin": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
-          "Ref": "ApiGatewayResourceEvents"
+          "Ref": "ApiGatewayResourceUsers"
+        },
+        "PathPart": "login",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceUsersIdVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceUsers"
         },
         "PathPart": "{id}",
         "RestApiId": {
@@ -276,7 +344,53 @@
         }
       }
     },
-    "ApiGatewayMethodEventsOptions": {
+    "ApiGatewayMethodUsersLoginOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsersLogin"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodUsersOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -315,14 +429,14 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceEvents"
+          "Ref": "ApiGatewayResourceUsers"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodEventsIdVarOptions": {
+    "ApiGatewayMethodUsersIdVarOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -361,20 +475,20 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceEventsIdVar"
+          "Ref": "ApiGatewayResourceUsersIdVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodEventsPost": {
+    "ApiGatewayMethodUsersLoginPost": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "POST",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceEvents"
+          "Ref": "ApiGatewayResourceUsersLogin"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -394,7 +508,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "AddEventLambdaFunction",
+                    "LoginLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -406,13 +520,51 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayMethodEventsPut": {
+    "ApiGatewayMethodUsersPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceUsers"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AddUserLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodUsersPut": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "PUT",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceEvents"
+          "Ref": "ApiGatewayResourceUsers"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -432,7 +584,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "UpdateEventLambdaFunction",
+                    "UpdateUserLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -444,7 +596,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayMethodEventsIdVarDelete": {
+    "ApiGatewayMethodUsersIdVarDelete": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "DELETE",
@@ -452,7 +604,7 @@
           "method.request.path.id": true
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceEventsIdVar"
+          "Ref": "ApiGatewayResourceUsersIdVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -472,7 +624,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "DeleteEventLambdaFunction",
+                    "DeleteUserLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -627,7 +779,7 @@
         ]
       }
     },
-    "ApiGatewayDeployment1491344775254": {
+    "ApiGatewayDeployment1491345491071": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -636,17 +788,18 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodEventsPost",
-        "ApiGatewayMethodEventsPut",
-        "ApiGatewayMethodEventsIdVarDelete"
+        "ApiGatewayMethodUsersLoginPost",
+        "ApiGatewayMethodUsersPost",
+        "ApiGatewayMethodUsersPut",
+        "ApiGatewayMethodUsersIdVarDelete"
       ]
     },
-    "AddEventLambdaPermissionApiGateway": {
+    "LoginLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "AddEventLambdaFunction",
+            "LoginLambdaFunction",
             "Arn"
           ]
         },
@@ -674,12 +827,12 @@
         }
       }
     },
-    "UpdateEventLambdaPermissionApiGateway": {
+    "AddUserLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "UpdateEventLambdaFunction",
+            "AddUserLambdaFunction",
             "Arn"
           ]
         },
@@ -707,12 +860,45 @@
         }
       }
     },
-    "DeleteEventLambdaPermissionApiGateway": {
+    "UpdateUserLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "DeleteEventLambdaFunction",
+            "UpdateUserLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DeleteUserLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DeleteUserLambdaFunction",
             "Arn"
           ]
         },
@@ -747,22 +933,28 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
-    "AddEventLambdaFunctionQualifiedArn": {
+    "LoginLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI"
+        "Ref": "LoginLambdaVersion7Lt6cOxzsZRqMQq1opsIJ0gyg4yihHS82MnCYExHA"
       }
     },
-    "UpdateEventLambdaFunctionQualifiedArn": {
+    "AddUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI"
+        "Ref": "AddUserLambdaVersion7Lt6cOxzsZRqMQq1opsIJ0gyg4yihHS82MnCYExHA"
       }
     },
-    "DeleteEventLambdaFunctionQualifiedArn": {
+    "UpdateUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI"
+        "Ref": "UpdateUserLambdaVersion7Lt6cOxzsZRqMQq1opsIJ0gyg4yihHS82MnCYExHA"
+      }
+    },
+    "DeleteUserLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "DeleteUserLambdaVersion7Lt6cOxzsZRqMQq1opsIJ0gyg4yihHS82MnCYExHA"
       }
     },
     "ServiceEndpoint": {
