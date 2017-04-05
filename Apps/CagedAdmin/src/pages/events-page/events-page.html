@@ -1,14 +1,72 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
+
+    <ion-navbar>
+        <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>EventsPage</ion-title>
-  </ion-navbar>
+        <ion-title>Events</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
+<ion-fab bottom right *ngIf="_isMobileDevice">
+    <button ion-fab color="secondary" (click)="addNewEvent()"><ion-icon name="add"></ion-icon></button>
+</ion-fab>
 
 <ion-content padding>
+
+    <ion-list *ngIf="_isMobileDevice">
+
+        <ion-item *ngFor="let event of events" no-lines (click)="openDetails(event)">
+
+            <ion-thumbnail item-left>
+                <img src="../../assets/thumbnail-totoro.png">
+            </ion-thumbnail>
+
+            <h2>{{event.name}}</h2>
+            <p>Description: {{event.description}}</p>
+
+        </ion-item>
+
+    </ion-list>
+
+    <ion-grid *ngIf="!_isMobileDevice">
+        <ion-row>
+
+            <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 (click)="addNewEvent()">
+
+                <ion-card>
+
+                    <img src="../../assets/new_event.png" />
+
+
+                    <ion-card-content>
+
+                        <ion-card-title>
+                            Add New Event
+                        </ion-card-title>
+
+                    </ion-card-content>
+
+                </ion-card>
+
+            </ion-col>
+
+            <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 *ngFor="let event of events" (click)="openDetails(event)">
+
+                <ion-card>
+                    <img src="../../assets/thumbnail-totoro.png" />
+                    <ion-card-content>
+
+                        <ion-card-title>
+                            {{event.name}}
+                        </ion-card-title>
+
+                    </ion-card-content>
+                </ion-card>
+
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 
 </ion-content>
