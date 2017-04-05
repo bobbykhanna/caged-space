@@ -27,10 +27,16 @@
 
             <div *ngIf="!isEditing">
               <p>
+                <strong>Name: </strong>{{beacon.name}}
+              </p>
+              <p>
                 <strong>Description: </strong>{{beacon.description}}
               </p>
               <p>
                 <strong>location: </strong>{{beacon.location}}
+              </p>
+              <p>
+                <strong>globalid: </strong>{{beacon.globalid}}
               </p>
             </div>
 
