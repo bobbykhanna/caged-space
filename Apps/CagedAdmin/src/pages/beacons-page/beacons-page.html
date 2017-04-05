@@ -1,18 +1,71 @@
-<!--
-  Generated template for the BeaconsPage page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>BeaconsPage</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Beacons</ion-title>
   </ion-navbar>
 
 </ion-header>
 
+<ion-fab bottom right *ngIf="_isMobileDevice">
+  <button ion-fab color="secondary" (click)="addNewBeacon()"><ion-icon name="add"></ion-icon></button>
+</ion-fab>
 
 <ion-content padding>
+
+  <ion-list *ngIf="_isMobileDevice">
+
+    <ion-item *ngFor="let beacon of beacons" no-lines (click)="openDetails(beacon)">
+
+      <ion-thumbnail item-left>
+        <img src="../../assets/thumbnail-totoro.png">
+      </ion-thumbnail>
+
+      <h2>{{beacon.name}}</h2>
+      <p>Description: {{beacon.description}}</p>
+      
+    </ion-item>
+
+  </ion-list>
+
+  <ion-grid *ngIf="!_isMobileDevice">
+    <ion-row>
+
+      <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 (click)="addNewBeacon()">
+
+        <ion-card>
+
+          <img src="../../assets/new_user.png" />
+
+          <ion-card-content>
+
+            <ion-card-title>
+              Add Beacon
+            </ion-card-title>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </ion-col>
+
+      <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 *ngFor="let beacon of beacons" (click)="openDetails(beacon)">
+
+        <ion-card>
+          <img src="../../assets/thumbnail-totoro.png" />
+          <ion-card-content>
+
+            <ion-card-title>
+              {{beacon.name}}
+            </ion-card-title>
+
+          </ion-card-content>
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
