@@ -1,5 +1,5 @@
 
-service: users 
+service: beacons 
 
 provider:
   name: aws
@@ -8,32 +8,25 @@ provider:
   region: us-east-1
 
 functions:
-  login:
-    handler: handler.login
+  addBeacon:
+    handler: handler.addBeacon
     events:
       - http:
-          path: users/login
+          path: beacons
           method: post
           cors: true
-  addUser:
-    handler: handler.addUser
+  updateBeacon:
+    handler: handler.updateBeacon
     events:
       - http:
-          path: users
-          method: post
-          cors: true
-  updateUser:
-    handler: handler.updateUser
-    events:
-      - http:
-          path: users
+          path: beacons
           method: put
           cors: true
-  deleteUser:
-    handler: handler.deleteUser
+  deleteBeacon:
+    handler: handler.deleteBeacon
     events:
       - http:
-          path: users/{id}
+          path: beacons/{id}
           method: delete
           integration: lambda
           request:

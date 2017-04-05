@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Http, Response } from '@angular/http';
 import { ConfigService } from '../providers/config-service';
 import 'rxjs/add/operator/map';
 import { EventModel } from '../models/event';
+import { AddEventModel } from '../models/addEvent';
+import { AngularFire } from 'angularfire2';
 
 @Injectable()
 export class EventService {
@@ -15,13 +17,13 @@ export class EventService {
   public events$: Observable<Array<EventModel>>;
 
   // Local events cache.
-  public _eventStore: {
+  private _eventsStore: {
     events: Array<EventModel>
   };
 
-  constructor(private _http: Http, private _config: ConfigService) {
+  constructor(private _http: Http, private _config: ConfigService, private _af: AngularFire) {
 
-    this._eventStore = { events: new Array<EventModel>() };
+    this._eventsStore = { events: new Array<EventModel>() };
 
     this._events$ = new BehaviorSubject(new Array<EventModel>());
 
@@ -32,17 +34,20 @@ export class EventService {
   }
 
   // Initiates retrieval of CagedSpace events.
-  private _getEvents() {
+  private _getEvents(): void {
 
-    let response: any; // get this from an API call
+    this._af.database.list('events').subscribe(newEvents => {
 
-    // this._eventStore.events = this._MapEvents(response);
-    // this._events$.next(this._eventStore.events);
+      this._eventsStore = { events: newEvents };
+
+      this._events$.next(this._eventsStore.events);
+
+    });
 
   }
 
-  // Maps raw JSON data to an array of EventModels.
-  private _MapEvents(response: any) {
+  // Maps raw JSON data to EventModels.
+  private _MapEvent(response: any) {
 
     let newEvent: EventModel = response.json().data;
 
@@ -50,11 +55,20 @@ export class EventService {
 
   }
 
-   public editEvent(model: EventModel): Observable<EventModel> {
+  public addEvent(model: AddEventModel): Observable<EventModel> {
+
+    return this._http.post(this._config.addEventUrl, model)
+      .map(res => {
+        return this._MapEvent(res);
+      });
+
+  }
+
+  public editEvent(model: EventModel): Observable<EventModel> {
 
     return this._http.put(this._config.updateEventUrl, model)
       .map(res => {
-        return this._MapEvents(res);
+        return this._MapEvent(res);
       });
-   }
+  }
 }

@@ -1,5 +1,5 @@
 
-service: users 
+service: streams 
 
 provider:
   name: aws
@@ -8,32 +8,25 @@ provider:
   region: us-east-1
 
 functions:
-  login:
-    handler: handler.login
+  addStream:
+    handler: handler.addStream
     events:
       - http:
-          path: users/login
+          path: streams
           method: post
           cors: true
-  addUser:
-    handler: handler.addUser
+  updateStream:
+    handler: handler.updateStream
     events:
       - http:
-          path: users
-          method: post
-          cors: true
-  updateUser:
-    handler: handler.updateUser
-    events:
-      - http:
-          path: users
+          path: streams
           method: put
           cors: true
-  deleteUser:
-    handler: handler.deleteUser
+  deleteStream:
+    handler: handler.deleteStream
     events:
       - http:
-          path: users/{id}
+          path: streams/{id}
           method: delete
           integration: lambda
           request:

@@ -5,22 +5,22 @@
     "ServerlessDeploymentBucket": {
       "Type": "AWS::S3::Bucket"
     },
-    "AddEventLogGroup": {
+    "AddBeaconLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/events-dev-addEvent"
+        "LogGroupName": "/aws/lambda/beacons-dev-addBeacon"
       }
     },
-    "UpdateEventLogGroup": {
+    "UpdateBeaconLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/events-dev-updateEvent"
+        "LogGroupName": "/aws/lambda/beacons-dev-updateBeacon"
       }
     },
-    "DeleteEventLogGroup": {
+    "DeleteBeaconLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/events-dev-deleteEvent"
+        "LogGroupName": "/aws/lambda/beacons-dev-deleteBeacon"
       }
     },
     "IamRoleLambdaExecution": {
@@ -47,7 +47,7 @@
           "Fn::Join": [
             "-",
             [
-              "events",
+              "beacons",
               "dev",
               "us-east-1",
               "lambdaRole"
@@ -67,7 +67,7 @@
             "-",
             [
               "dev",
-              "events",
+              "beacons",
               "lambda"
             ]
           ]
@@ -88,7 +88,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "AddEventLogGroup",
+                          "AddBeaconLogGroup",
                           "Arn"
                         ]
                       },
@@ -102,7 +102,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "UpdateEventLogGroup",
+                          "UpdateBeaconLogGroup",
                           "Arn"
                         ]
                       },
@@ -116,7 +116,7 @@
                     [
                       {
                         "Fn::GetAtt": [
-                          "DeleteEventLogGroup",
+                          "DeleteBeaconLogGroup",
                           "Arn"
                         ]
                       },
@@ -135,17 +135,17 @@
         ]
       }
     },
-    "AddEventLambdaFunction": {
+    "AddBeaconLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1491344775228-2017-04-04T22:26:15.228Z/events.zip"
+          "S3Key": "serverless/beacons/dev/1491345792690-2017-04-04T22:43:12.690Z/beacons.zip"
         },
-        "FunctionName": "events-dev-addEvent",
-        "Handler": "handler.addEvent",
+        "FunctionName": "beacons-dev-addBeacon",
+        "Handler": "handler.addBeacon",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -161,27 +161,27 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AddEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI": {
+    "AddBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "AddEventLambdaFunction"
+          "Ref": "AddBeaconLambdaFunction"
         },
-        "CodeSha256": "DiSrPQ5k+4KnIZGXr05LOb7VHXjhZ+HzHCPPvwgdHVI="
+        "CodeSha256": "mQYLNG+wZfL+KSq23xOyyzp5+AgbyITJA1Fr/BdVN3Q="
       }
     },
-    "UpdateEventLambdaFunction": {
+    "UpdateBeaconLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1491344775228-2017-04-04T22:26:15.228Z/events.zip"
+          "S3Key": "serverless/beacons/dev/1491345792690-2017-04-04T22:43:12.690Z/beacons.zip"
         },
-        "FunctionName": "events-dev-updateEvent",
-        "Handler": "handler.updateEvent",
+        "FunctionName": "beacons-dev-updateBeacon",
+        "Handler": "handler.updateBeacon",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -197,27 +197,27 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI": {
+    "UpdateBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "UpdateEventLambdaFunction"
+          "Ref": "UpdateBeaconLambdaFunction"
         },
-        "CodeSha256": "DiSrPQ5k+4KnIZGXr05LOb7VHXjhZ+HzHCPPvwgdHVI="
+        "CodeSha256": "mQYLNG+wZfL+KSq23xOyyzp5+AgbyITJA1Fr/BdVN3Q="
       }
     },
-    "DeleteEventLambdaFunction": {
+    "DeleteBeaconLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1491344775228-2017-04-04T22:26:15.228Z/events.zip"
+          "S3Key": "serverless/beacons/dev/1491345792690-2017-04-04T22:43:12.690Z/beacons.zip"
         },
-        "FunctionName": "events-dev-deleteEvent",
-        "Handler": "handler.deleteEvent",
+        "FunctionName": "beacons-dev-deleteBeacon",
+        "Handler": "handler.deleteBeacon",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -233,23 +233,23 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI": {
+    "DeleteBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "DeleteEventLambdaFunction"
+          "Ref": "DeleteBeaconLambdaFunction"
         },
-        "CodeSha256": "DiSrPQ5k+4KnIZGXr05LOb7VHXjhZ+HzHCPPvwgdHVI="
+        "CodeSha256": "mQYLNG+wZfL+KSq23xOyyzp5+AgbyITJA1Fr/BdVN3Q="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "dev-events"
+        "Name": "dev-beacons"
       }
     },
-    "ApiGatewayResourceEvents": {
+    "ApiGatewayResourceBeacons": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
@@ -258,17 +258,17 @@
             "RootResourceId"
           ]
         },
-        "PathPart": "events",
+        "PathPart": "beacons",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayResourceEventsIdVar": {
+    "ApiGatewayResourceBeaconsIdVar": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
-          "Ref": "ApiGatewayResourceEvents"
+          "Ref": "ApiGatewayResourceBeacons"
         },
         "PathPart": "{id}",
         "RestApiId": {
@@ -276,7 +276,7 @@
         }
       }
     },
-    "ApiGatewayMethodEventsOptions": {
+    "ApiGatewayMethodBeaconsOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -315,14 +315,14 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceEvents"
+          "Ref": "ApiGatewayResourceBeacons"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodEventsIdVarOptions": {
+    "ApiGatewayMethodBeaconsIdVarOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -361,20 +361,20 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceEventsIdVar"
+          "Ref": "ApiGatewayResourceBeaconsIdVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayMethodEventsPost": {
+    "ApiGatewayMethodBeaconsPost": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "POST",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceEvents"
+          "Ref": "ApiGatewayResourceBeacons"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -394,7 +394,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "AddEventLambdaFunction",
+                    "AddBeaconLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -406,13 +406,13 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayMethodEventsPut": {
+    "ApiGatewayMethodBeaconsPut": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "PUT",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceEvents"
+          "Ref": "ApiGatewayResourceBeacons"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -432,7 +432,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "UpdateEventLambdaFunction",
+                    "UpdateBeaconLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -444,7 +444,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayMethodEventsIdVarDelete": {
+    "ApiGatewayMethodBeaconsIdVarDelete": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "DELETE",
@@ -452,7 +452,7 @@
           "method.request.path.id": true
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceEventsIdVar"
+          "Ref": "ApiGatewayResourceBeaconsIdVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -472,7 +472,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "DeleteEventLambdaFunction",
+                    "DeleteBeaconLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -627,7 +627,7 @@
         ]
       }
     },
-    "ApiGatewayDeployment1491344775254": {
+    "ApiGatewayDeployment1491345792717": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -636,17 +636,17 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodEventsPost",
-        "ApiGatewayMethodEventsPut",
-        "ApiGatewayMethodEventsIdVarDelete"
+        "ApiGatewayMethodBeaconsPost",
+        "ApiGatewayMethodBeaconsPut",
+        "ApiGatewayMethodBeaconsIdVarDelete"
       ]
     },
-    "AddEventLambdaPermissionApiGateway": {
+    "AddBeaconLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "AddEventLambdaFunction",
+            "AddBeaconLambdaFunction",
             "Arn"
           ]
         },
@@ -674,12 +674,12 @@
         }
       }
     },
-    "UpdateEventLambdaPermissionApiGateway": {
+    "UpdateBeaconLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "UpdateEventLambdaFunction",
+            "UpdateBeaconLambdaFunction",
             "Arn"
           ]
         },
@@ -707,12 +707,12 @@
         }
       }
     },
-    "DeleteEventLambdaPermissionApiGateway": {
+    "DeleteBeaconLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "DeleteEventLambdaFunction",
+            "DeleteBeaconLambdaFunction",
             "Arn"
           ]
         },
@@ -747,22 +747,22 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
-    "AddEventLambdaFunctionQualifiedArn": {
+    "AddBeaconLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI"
+        "Ref": "AddBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q"
       }
     },
-    "UpdateEventLambdaFunctionQualifiedArn": {
+    "UpdateBeaconLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI"
+        "Ref": "UpdateBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q"
       }
     },
-    "DeleteEventLambdaFunctionQualifiedArn": {
+    "DeleteBeaconLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteEventLambdaVersionDiSrPQ5k4KnIZGXr05LOb7VHXjhZHzHCPPvwgdHVI"
+        "Ref": "DeleteBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q"
       }
     },
     "ServiceEndpoint": {

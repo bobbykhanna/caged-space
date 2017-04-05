@@ -2,24 +2,24 @@
 
 var firebase = require("firebase");
 
-module.exports.addMusician = (event, context, callback) => {
+module.exports.addStream = (event, context, callback) => {
 
   context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
   // Initialize Firebase
   initializeFirebase();
 
-  let newKey = firebase.database().ref('musicians').push().key;
+  let newKey = firebase.database().ref('streams').push().key;
 
-  let musician = JSON.parse(event.body);
-  musician.id = newKey;
+  let stream = JSON.parse(event.body);
+  stream.id = newKey;
 
   var updates = {};
-  updates['/musicians/' + newKey] = musician;
+  updates['/streams/' + newKey] = stream;
 
   firebase.database().ref().update(updates).then(function () {
 
-    firebase.database().ref('musicians/' + newKey).once('value').then(function (snapshot) {
+    firebase.database().ref('streams/' + newKey).once('value').then(function (snapshot) {
 
       const response = {
         statusCode: 200,
@@ -28,7 +28,7 @@ module.exports.addMusician = (event, context, callback) => {
           "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
         },
         body: JSON.stringify({
-          message: 'Musician Created',
+          message: 'Stream Created',
           data: snapshot.val()
         })
       };
@@ -41,7 +41,7 @@ module.exports.addMusician = (event, context, callback) => {
 
 };
 
-module.exports.updateMusician = (event, context, callback) => {
+module.exports.updateStream = (event, context, callback) => {
 
   context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
@@ -51,11 +51,11 @@ module.exports.updateMusician = (event, context, callback) => {
   let key = JSON.parse(event.body).id;
 
   var updates = {};
-  updates['/musicians/' + key] = JSON.parse(event.body);
+  updates['/streams/' + key] = JSON.parse(event.body);
 
   firebase.database().ref().update(updates).then(function () {
 
-    firebase.database().ref('musicians/' + key).once('value').then(function (snapshot) {
+    firebase.database().ref('streams/' + key).once('value').then(function (snapshot) {
 
       const response = {
         statusCode: 200,
@@ -64,7 +64,7 @@ module.exports.updateMusician = (event, context, callback) => {
           "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
         },
         body: JSON.stringify({
-          message: 'Musician Updated',
+          message: 'Stream Updated',
           data: snapshot.val()
         })
       };
@@ -78,7 +78,7 @@ module.exports.updateMusician = (event, context, callback) => {
 };
 
 
-module.exports.deleteMusician = (event, context, callback) => {
+module.exports.deleteStream = (event, context, callback) => {
 
 context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
@@ -87,7 +87,7 @@ context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
   let key = JSON.parse(event.body).id;
   
-  firebase.database().ref('musicians/' + key).remove();  //<---- Firebase Delete Query
+  firebase.database().ref('streams/' + key).remove();  //<---- Firebase Delete Query
 
   const response = {
     statusCode: 200,
@@ -96,7 +96,7 @@ context.callbackWaitsForEmptyEventLoop = false;  //<---Important
       "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
     },
     body: JSON.stringify({
-      message: 'Musician Deleted',
+      message: 'Stream Deleted',
       data: event.body
     }),
   };

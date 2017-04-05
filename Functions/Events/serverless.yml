@@ -8,8 +8,8 @@ provider:
   region: us-east-1
 
 functions:
-  createEvent:
-    handler: handler.createEvent
+  addEvent:
+    handler: handler.addEvent
     events:
       - http:
           path: events
@@ -19,13 +19,8 @@ functions:
     handler: handler.updateEvent
     events:
       - http:
-          path: events/{id}
+          path: events
           method: put
-          integration: lambda
-          request:
-            parameters:
-              paths:
-                id: true
           cors: true
   deleteEvent:
     handler: handler.deleteEvent
