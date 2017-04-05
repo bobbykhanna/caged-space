@@ -1,56 +1,22 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { FormBuilder, Validators } from '@angular/forms';
-import { BeaconService } from '../../providers/beacon-service';
-import { UtilityService } from '../../providers/utility-service';
 
+/*
+  Generated class for the AddBeaconPage page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+*/
 @Component({
   selector: 'page-add-beacon',
   templateUrl: 'add-beacon-page.html'
 })
 export class AddBeaconPage {
 
-  addBeaconForm: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
-  constructor(private _beaconService: BeaconService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
-
-    this.addBeaconForm = this._fb.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      location: ['', Validators.required],
-      globalid: ['', Validators.required]
-
-    });
-
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad AddBeaconPage');
   }
-
-  // Add New Beacon.
-  public addBeacon(isValid: boolean) {
-
-    if (isValid) {
-
-      // Instantiate spinner. 
-      this._util.StartSpinner('Adding New Beacon...');
-
-      this._beaconService.addBeacon(this.addBeaconForm.value)
-        .subscribe(beacon => {
-
-          this._util.StopSpinner();
-
-          // Navigate back to beacons list page.
-          this._nav.pop();
-
-        }, error => {
-
-          this._util.StopSpinner();
-
-          this._util.ShowAlert('Internal Error', 'Could not add new Beacon.');
-
-        });
-
-    }
-
-  }
-
 
 }
