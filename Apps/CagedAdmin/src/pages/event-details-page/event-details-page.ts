@@ -20,7 +20,9 @@ export class EventDetailsPage {
 
      this.event = new EventModel();
      this.editEventForm = this._fb.group({
-      id: ['', Validators.required],
+      beginDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      location: ['', Validators.required],
       name: ['', Validators.required],
       description: ['', Validators.required]
     });
@@ -29,15 +31,16 @@ export class EventDetailsPage {
   
   ionViewDidLoad() {
     console.log('ionViewDidLoad EventDetailsPage');
-    this.event = this._navParams.get('model');
-
-    this.editEventForm.value.id = this.event.id;
+    this.event = this._navParams.get('model');    
     this.editEventForm.value.name = this.event.name;
     this.editEventForm.value.description = this.event.description;
+    this.editEventForm.value.beginDate = this.event.beginDate;
+    this.editEventForm.value.endDate = this.event.endDate;
+    this.editEventForm.value.location = this.event.location;
   }
 
   // Display Edit Event Form.
-  public toggleEditMusician() {
+  public toggleEditEvent() {
 
     if (this.isEditing == true) {
 

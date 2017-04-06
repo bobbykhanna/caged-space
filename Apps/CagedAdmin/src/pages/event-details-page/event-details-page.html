@@ -36,18 +36,21 @@
                 <strong>Name: </strong>{{event.name}}
               </p>
               <p>
+                <strong>Location: </strong>{{event.location}}
+              </p>
+              <p>
+                <strong>StartDate: </strong>{{event.beginDate}}
+              </p>
+              <p>
+                <strong>EndDate: </strong>{{event.endDate}}
+              </p>
+              <p>
                 <strong>Description: </strong>{{event.description}}
               </p>
+              
             </div>
 
             <form *ngIf="isEditing" [formGroup]="editEventForm" (ngSubmit)="editEvent(editEventForm.valid)">
-
-              <div padding>
-                <ion-item secondary>
-                  <ion-label floating>Id:</ion-label>
-                  <ion-input type="text" formControlName="id"></ion-input>
-                </ion-item>
-              </div>
 
               <div padding>
                 <ion-item secondary>
@@ -58,11 +61,32 @@
 
               <div padding>
                 <ion-item secondary>
+                  <ion-label floating>Location:</ion-label>
+                  <ion-textarea type="text" formControlName="location"></ion-textarea>
+                </ion-item>
+              </div>
+
+              <div padding>
+                <ion-item secondary>
+                  <ion-label floating>StartDate:</ion-label>
+                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="beginDate"></ion-datetime>
+                </ion-item>
+              </div>
+
+              <div padding>
+                <ion-item secondary>
+                  <ion-label floating>EndDate:</ion-label>
+                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="endDate"></ion-datetime>
+                </ion-item>
+              </div>
+
+              <div padding>
+                <ion-item secondary>
                   <ion-label floating>Description:</ion-label>
                   <ion-textarea type="text" formControlName="description"></ion-textarea>
                 </ion-item>
               </div>
-
+              
               <div padding>
                 <button color="primary" ion-button block type="submit">Update Event's Info</button>
               </div>
