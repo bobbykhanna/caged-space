@@ -21,7 +21,7 @@
       <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
 
         <ion-card>
-          <img src="../../assets/thumbnail-totoro.png" />
+          <img [src]="musicianProfileImage" />
 
           <ion-card-content>
 
@@ -35,6 +35,10 @@
             </div>
 
             <form *ngIf="isEditing" [formGroup]="editMusicianForm" (ngSubmit)="editMusician(editMusicianForm.valid)">
+
+              <div padding *ngIf="isEditing">
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
 
               <div padding>
                 <ion-item secondary>
@@ -59,6 +63,10 @@
 
               <div padding>
                 <button color="primary" ion-button block type="submit">Update Musician's Info</button>
+              </div>
+
+              <div style="height:0px;overflow:hidden">
+                <input type="file" id="editMusicianImageUpload" name="editMusicianImageUpload" accept="image/*" />
               </div>
 
             </form>
