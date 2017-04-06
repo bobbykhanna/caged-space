@@ -66,7 +66,7 @@ export class StreamService {
 
   public editStream(model: StreamModel): Observable<StreamModel> {
 
-    return this._http.put(this._config.addStreamUrl, model)
+    return this._http.put(this._config.updateStreamUrl, model)
       .map(res => {
         return this._MapStream(res);
       });
