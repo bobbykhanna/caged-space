@@ -32,6 +32,7 @@ import { EmailService } from '../providers/email-service';
 import { UtilityService } from '../providers/utility-service';
 import { UserService } from '../providers/user-service';
 import { MusicianService } from '../providers/musician-service';
+import { StreamService } from '../providers/stream-service'
 import { EventService } from '../providers/event-service';
 
 // Firebase
@@ -95,7 +96,8 @@ export const firebaseConfig = {
     UtilityService,
     UserService,
     EventService,
-    MusicianService
+    MusicianService,
+    StreamService
   ]
 })
 export class AppModule { }
