@@ -34,6 +34,7 @@ import { UserService } from '../providers/user-service';
 import { MusicianService } from '../providers/musician-service';
 import { StreamService } from '../providers/stream-service'
 import { EventService } from '../providers/event-service';
+import { BeaconService } from '../providers/beacon-service'; 
 
 // Firebase
 export const firebaseConfig = {
@@ -97,7 +98,9 @@ export const firebaseConfig = {
     UserService,
     EventService,
     MusicianService,
-    StreamService
+    StreamService,
+    BeaconService
+
   ]
 })
 export class AppModule { }

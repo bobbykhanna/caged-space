@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
+import { Platform } from 'ionic-angular';
 import { NavController, NavParams } from 'ionic-angular';
-import { UtilityService } from '../../providers/utility-service';
-import { EventService } from '../../providers/event-service';
 import { EventModel } from '../../models/event';
+import { EventService } from '../../providers/event-service';
+import { EventDetailsPage } from '../../pages/event-details-page/event-details-page';
+import { AddEventPage } from '../../pages/add-event-page/add-event-page';
 
 @Component({
   selector: 'page-events',
@@ -10,20 +12,43 @@ import { EventModel } from '../../models/event';
 })
 export class EventsPage {
 
-  private _events: Array<EventModel>;
+  private events: Array<EventModel>
+  private _isMobileDevice: boolean;
 
-  constructor(private _util: UtilityService, private _eventsService: EventService) {}
+  constructor(private _eventService: EventService, private _nav: NavController, private _platform: Platform) {
 
-  ionViewDidLoad() {
+    this._platform.ready().then((readySource) => {
 
-    // Subscribe to events$ Observable.
-    this._eventsService.events$.subscribe(events => {
-
-      this._events = events;
-
-      this._util.StopSpinner();
+      this._isMobileDevice = (this._platform.width() <= 768);
 
     });
+
+    this._eventService.events$.subscribe(events => {
+
+      this.events = events;
+
+    });
+
+  }
+
+  openDetails(detailsModel: EventModel) {
+
+    this._nav.push(EventDetailsPage, {
+      model: detailsModel
+    });
+
+  }
+
+  addNewEvent() {
+
+    this._nav.push(AddEventPage);
+
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+
+    this._isMobileDevice = (event.target.innerWidth <= 768);
 
   }
 

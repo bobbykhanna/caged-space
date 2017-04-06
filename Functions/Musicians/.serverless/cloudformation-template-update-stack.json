@@ -142,7 +142,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491345380941-2017-04-04T22:36:20.941Z/musicians.zip"
+          "S3Key": "serverless/musicians/dev/1491516525150-2017-04-06T22:08:45.150Z/musicians.zip"
         },
         "FunctionName": "musicians-dev-addMusician",
         "Handler": "handler.addMusician",
@@ -161,14 +161,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AddMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0": {
+    "AddMusicianLambdaVersionqrtmEfpjlbDRJYRCTt02R654TPin42nt3AxQAFJik": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AddMusicianLambdaFunction"
         },
-        "CodeSha256": "9axXzAq4zx28LDSWIsPg8psn+eiTYyJjY/nxysWQhT0="
+        "CodeSha256": "qrtmEfpjlbDRJYRCTt02R654TPin42/nt3AxQAFJ/ik="
       }
     },
     "UpdateMusicianLambdaFunction": {
@@ -178,7 +178,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491345380941-2017-04-04T22:36:20.941Z/musicians.zip"
+          "S3Key": "serverless/musicians/dev/1491516525150-2017-04-06T22:08:45.150Z/musicians.zip"
         },
         "FunctionName": "musicians-dev-updateMusician",
         "Handler": "handler.updateMusician",
@@ -197,14 +197,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0": {
+    "UpdateMusicianLambdaVersionqrtmEfpjlbDRJYRCTt02R654TPin42nt3AxQAFJik": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateMusicianLambdaFunction"
         },
-        "CodeSha256": "9axXzAq4zx28LDSWIsPg8psn+eiTYyJjY/nxysWQhT0="
+        "CodeSha256": "qrtmEfpjlbDRJYRCTt02R654TPin42/nt3AxQAFJ/ik="
       }
     },
     "DeleteMusicianLambdaFunction": {
@@ -214,7 +214,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491345380941-2017-04-04T22:36:20.941Z/musicians.zip"
+          "S3Key": "serverless/musicians/dev/1491516525150-2017-04-06T22:08:45.150Z/musicians.zip"
         },
         "FunctionName": "musicians-dev-deleteMusician",
         "Handler": "handler.deleteMusician",
@@ -233,14 +233,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0": {
+    "DeleteMusicianLambdaVersionqrtmEfpjlbDRJYRCTt02R654TPin42nt3AxQAFJik": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteMusicianLambdaFunction"
         },
-        "CodeSha256": "9axXzAq4zx28LDSWIsPg8psn+eiTYyJjY/nxysWQhT0="
+        "CodeSha256": "qrtmEfpjlbDRJYRCTt02R654TPin42/nt3AxQAFJ/ik="
       }
     },
     "ApiGatewayRestApi": {
@@ -642,7 +642,7 @@
         ]
       }
     },
-    "ApiGatewayDeployment1491345380971": {
+    "ApiGatewayDeployment1491516525201": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -765,19 +765,19 @@
     "AddMusicianLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0"
+        "Ref": "AddMusicianLambdaVersionqrtmEfpjlbDRJYRCTt02R654TPin42nt3AxQAFJik"
       }
     },
     "UpdateMusicianLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0"
+        "Ref": "UpdateMusicianLambdaVersionqrtmEfpjlbDRJYRCTt02R654TPin42nt3AxQAFJik"
       }
     },
     "DeleteMusicianLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteMusicianLambdaVersion9axXzAq4zx28LDSWIsPg8psneiTYyJjYnxysWQhT0"
+        "Ref": "DeleteMusicianLambdaVersionqrtmEfpjlbDRJYRCTt02R654TPin42nt3AxQAFJik"
       }
     },
     "ServiceEndpoint": {
