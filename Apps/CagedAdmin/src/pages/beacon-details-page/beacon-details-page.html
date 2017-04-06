@@ -26,20 +26,14 @@
           <ion-card-content>
 
             <div *ngIf="!isEditing">
-              <p>
-                <strong>Name-: </strong>{{beacon.name}}
-              </p>
+           
               <p>
                 <strong>Description: </strong>{{beacon.description}}
-              </p>
+              </p>              
               <p>
-                <strong>location: </strong>{{beacon.location}}
-              </p>
-              <p>
-                <strong>globalid: </strong>{{beacon.globalid}}
+                <strong>guid: </strong>{{beacon.guid}}
               </p>
             </div>
-
             <form *ngIf="isEditing" [formGroup]="editBeaconForm" (ngSubmit)="editBeacon(editBeaconForm.valid)">
 
               <div padding>
@@ -58,17 +52,12 @@
                 </ion-item>
               </div>
 
-               <div padding>
-                <ion-item secondary>
-                  <ion-label floating>Location:</ion-label>
-                  <ion-input type="text" formControlName="location"></ion-input>
-                </ion-item>
-              </div>
+               
 
               <div padding>
                 <ion-item secondary>
-                  <ion-label floating>Global ID:</ion-label>
-                  <ion-input type="text" formControlName="globalid"></ion-input>
+                  <ion-label floating>GUID:</ion-label>
+                  <ion-input type="text" formControlName="guid"></ion-input>
                 </ion-item>
               </div>
 
