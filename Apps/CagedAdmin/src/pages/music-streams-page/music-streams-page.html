@@ -16,16 +16,25 @@
 <ion-content padding>
 
   <ion-list *ngIf="_isMobileDevice">
+    <ion-item-sliding *ngFor="let stream of streams" no-lines>
+      <ion-item (click)="openDetails(stream)">
 
-    <ion-item *ngFor="let stream of streams" no-lines (click)="openDetails(stream)">
+        <ion-thumbnail item-left>
+          <img src="http://lorempixel.com/200/200/technics">
+        </ion-thumbnail>
 
-      <ion-thumbnail item-left>
-        <img src="../../assets/thumbnail-totoro.png">
-      </ion-thumbnail>
-
-      <h2>{{stream.name}}</h2>
-      
-    </ion-item>
+        <h2>{{stream.name}}</h2>
+        <p>Desc: {{stream.description}}</p>
+        
+      </ion-item>
+    
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="deleteStream(stream)">
+          <ion-icon name="trash"></ion-icon>
+          Delete
+        </button>
+      </ion-item-options>
+  </ion-item-sliding>
 
   </ion-list>
 
@@ -53,7 +62,7 @@
       <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 *ngFor="let stream of streams" (click)="openDetails(stream)">
 
         <ion-card>
-          <img src="../../assets/thumbnail-totoro.png" />
+          <img src="http://lorempixel.com/200/200/technics" />
           <ion-card-content>
 
             <ion-card-title>

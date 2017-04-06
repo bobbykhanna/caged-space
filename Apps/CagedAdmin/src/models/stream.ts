@@ -4,6 +4,7 @@ export class StreamModel  {
     public id: number;
     public name: string;
     public description: string;
+    public streamUrl: string;
     public streamImageUrl: string;
     public streamImageThumbnailUrl: string;
 }

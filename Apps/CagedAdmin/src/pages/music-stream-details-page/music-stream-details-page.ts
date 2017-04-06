@@ -21,7 +21,8 @@ export class MusicStreamDetailsPage {
 
     this.editStreamForm = this._fb.group({
       name: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      streamUrl: ['', Validators.required]
     });
 
   }
@@ -32,6 +33,7 @@ export class MusicStreamDetailsPage {
 
     this.editStreamForm.value.name = this.stream.name;
     this.editStreamForm.value.description = this.stream.description;
+    this.editStreamForm.value.streamUrl = this.stream.streamUrl;
 
   }
 
