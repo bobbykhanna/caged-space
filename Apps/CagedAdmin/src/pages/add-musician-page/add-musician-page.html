@@ -14,6 +14,9 @@
       <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
 
         <ion-card>
+
+          <img [src]="musicianProfileImage" />
+
           <ion-card-content>
 
             <form [formGroup]="addMusicianForm" (ngSubmit)="addMusician(addMusicianForm.valid)">
@@ -41,6 +44,14 @@
 
               <div padding>
                 <button color="secondary" ion-button block type="submit">Add Musician</button>
+              </div>
+
+              <div padding>
+                <button color="secondary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
+
+              <div style="height:0px;overflow:hidden">
+                <input type="file" id="musicianImageUpload" name="musicianImageUpload" accept="image/*"/>
               </div>
 
             </form>
