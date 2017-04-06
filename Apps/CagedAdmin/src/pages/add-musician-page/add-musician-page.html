@@ -22,6 +22,10 @@
             <form [formGroup]="addMusicianForm" (ngSubmit)="addMusician(addMusicianForm.valid)">
 
               <div padding>
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
+
+              <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
                   <ion-input type="text" formControlName="name"></ion-input>
@@ -46,12 +50,8 @@
                 <button color="secondary" ion-button block type="submit">Add Musician</button>
               </div>
 
-              <div padding>
-                <button color="secondary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
-              </div>
-
               <div style="height:0px;overflow:hidden">
-                <input type="file" id="musicianImageUpload" name="musicianImageUpload" accept="image/*"/>
+                <input type="file" id="musicianImageUpload" name="musicianImageUpload" accept="image/*" />
               </div>
 
             </form>
