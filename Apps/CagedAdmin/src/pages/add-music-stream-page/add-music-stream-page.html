@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>AddMusicStreamPage</ion-title>
+    <ion-title>Add Stream</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -27,20 +27,20 @@
 
               <div padding>
                 <ion-item secondary>
+                  <ion-label floating>Stream IP:</ion-label>
+                  <ion-textarea type="text" formControlName="ip"></ion-textarea>
+                </ion-item>
+              </div>
+
+              <div padding>
+                <ion-item secondary>
                   <ion-label floating>Description:</ion-label>
                   <ion-textarea type="text" formControlName="description"></ion-textarea>
                 </ion-item>
               </div>
 
               <div padding>
-                <ion-item secondary>
-                  <ion-label floating>Stream Url:</ion-label>
-                  <ion-textarea type="text" formControlName="streamUrl"></ion-textarea>
-                </ion-item>
-              </div>
-
-              <div padding>
-                <button color="secondary" ion-button block type="submit">Add Musician</button>
+                <button color="secondary" ion-button block type="submit">Add Stream</button>
               </div>
 
             </form>

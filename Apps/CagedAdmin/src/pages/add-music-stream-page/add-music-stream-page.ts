@@ -17,7 +17,7 @@ export class AddMusicStreamPage {
     this.addStreamForm = this._fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      streamUrl: ['', Validators.required]
+      ip: ['', Validators.required]
     });
 
   }
