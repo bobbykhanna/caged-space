@@ -8,6 +8,13 @@ provider:
   region: us-east-1
 
 functions:
+  getNewMusicianId:
+    handler: handler.getNewMusicianId
+    events:
+      - http:
+          path: musicians/getNewMusicianId
+          method: get
+          cors: true
   addMusician:
     handler: handler.addMusician
     events:

@@ -24,6 +24,8 @@ export class FunctionsConfigModel {
 
     public deleteMusicianUrl: string = 'https://di78q88alh.execute-api.us-east-1.amazonaws.com/dev/musicians';
 
+    public getNewMusicianIdUrl: string = 'https://di78q88alh.execute-api.us-east-1.amazonaws.com/dev/musicians/getNewMusicianId';
+
     // Streams
     public createStreamUrl: string = 'https://84jjtsp6cd.execute-api.us-east-1.amazonaws.com/dev/streams';
 

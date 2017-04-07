@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MusicianService } from '../../providers/musician-service';
 import { UtilityService } from '../../providers/utility-service';
-import { AddMusicianModel } from '../../models/addMusician';
+import { MusicianModel } from '../../models/musician';
 
 @Component({
   selector: 'page-add-musician',
@@ -42,26 +42,59 @@ export class AddMusicianPage {
       // Instantiate spinner. 
       this._util.StartSpinner('Adding New Musician...');
 
-      let model = new AddMusicianModel();
+      this._musicianService.getNewMusicianId()
+        .subscribe(musicianId => {
 
-      model.name = this.addMusicianForm.value.name;
-      model.instrument = this.addMusicianForm.value.instrument;
-      model.description = this.addMusicianForm.value.description;
+          let model = new MusicianModel();
 
-      if (this.hasUploadedNewImage) {
+          model.id = musicianId;
+          model.name = this.addMusicianForm.value.name;
+          model.instrument = this.addMusicianForm.value.instrument;
+          model.description = this.addMusicianForm.value.description;
 
-        model.hasUploadedNewImage = true;
-        model.profileImage = this.musicianProfileImage;
+          if (this.hasUploadedNewImage) {
 
-      }
+            this._musicianService.uploadMusicianProfileImage(musicianId, this.musicianProfileImage).then(imageUrl => {
 
-      this._musicianService.addMusician(model)
-        .subscribe(musician => {
+              model.profileImageUrl = imageUrl;
 
-          this._util.StopSpinner();
+              this._musicianService.addMusician(model)
+                .subscribe(musician => {
 
-          // Navigate back to musicians list page.
-          this._nav.pop();
+                  this._util.StopSpinner();
+
+                  // Navigate back to musicians list page.
+                  this._nav.pop();
+
+                }, error => {
+
+                  this._util.StopSpinner();
+
+                  this._util.ShowAlert('Internal Error', 'Could not add new Musician.');
+
+                });
+
+            });
+
+          } else {
+
+            this._musicianService.addMusician(model)
+              .subscribe(musician => {
+
+                this._util.StopSpinner();
+
+                // Navigate back to musicians list page.
+                this._nav.pop();
+
+              }, error => {
+
+                this._util.StopSpinner();
+
+                this._util.ShowAlert('Internal Error', 'Could not add new Musician.');
+
+              });
+
+          }
 
         }, error => {
 
@@ -103,6 +136,5 @@ export class AddMusicianPage {
     document.getElementById('musicianImageUpload').click();
 
   }
-
 
 }

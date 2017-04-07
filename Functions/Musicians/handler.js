@@ -1,8 +1,9 @@
+
 'use strict';
 
 var firebase = require("firebase");
 
-module.exports.addMusician = (event, context, callback) => {
+module.exports.getNewMusicianId = (event, context, callback) => {
 
   context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
@@ -11,79 +12,55 @@ module.exports.addMusician = (event, context, callback) => {
 
   let newKey = firebase.database().ref('musicians').push().key;
 
-  let requestModel = JSON.parse(event.body);
-  let musician = {};
+  const response = {
+    statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+      "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+    },
+    body: JSON.stringify({
+      message: 'New Id Created',
+      data: newKey
+    })
+  };
+  
+  callback(null, response);
 
-  musician.id = newKey;
-  musician.name = requestModel.name;
-  musician.description = requestModel.description;
-  musician.instrument = requestModel.instrument;
+};
+
+module.exports.addMusician = (event, context, callback) => {
+
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+
+  // Initialize Firebase
+  initializeFirebase();
+
+  let musician = JSON.parse(event.body);
 
   var updates = {};
+  updates['/musicians/' + musician.id] = musician;
 
-  if (requestModel.hasUploadedNewImage) {
+  firebase.database().ref().update(updates).then(function () {
 
-    let fileName = 'resource_image.png';
+    firebase.database().ref('musicians/' + musician.id).once('value').then(function (snapshot) {
 
-    let imageReference = firebase.storage().ref(`/musicians/${newKey}/${fileName}`);
+      const response = {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+          "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+        },
+        body: JSON.stringify({
+          message: 'Musician Created',
+          data: snapshot.val()
+        })
+      };
 
-    imageReference.putString(requestModel.profileImage, 'data_url').then(function (snapshot) {
-
-      musician.profileImageUrl = snapshot.downloadURL;
-
-      updates['/musicians/' + newKey] = musician;
-
-      firebase.database().ref().update(updates).then(function () {
-
-        firebase.database().ref('musicians/' + newKey).once('value').then(function (snapshot) {
-
-          const response = {
-            statusCode: 200,
-            headers: {
-              "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-              "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
-            },
-            body: JSON.stringify({
-              message: 'Musician Created',
-              data: snapshot.val()
-            })
-          };
-
-          callback(null, response);
-
-        });
-
-      });
+      callback(null, response);
 
     });
 
-  } else {
-
-    updates['/musicians/' + newKey] = musician;
-
-    firebase.database().ref().update(updates).then(function () {
-
-      firebase.database().ref('musicians/' + newKey).once('value').then(function (snapshot) {
-
-        const response = {
-          statusCode: 200,
-          headers: {
-            "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-            "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
-          },
-          body: JSON.stringify({
-            message: 'Musician Created',
-            data: snapshot.val()
-          })
-        };
-
-        callback(null, response);
-
-      });
-
-    });
-
-  }
+  });
 
 };
 
@@ -122,7 +99,6 @@ module.exports.updateMusician = (event, context, callback) => {
   });
 
 };
-
 
 module.exports.deleteMusician = (event, context, callback) => {
 
@@ -169,4 +145,3 @@ let initializeFirebase = function () {
   }
 
 }
-
