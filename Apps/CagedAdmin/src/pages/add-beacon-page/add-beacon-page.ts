@@ -17,8 +17,8 @@ export class AddBeaconPage {
     this.addBeaconForm = this._fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      location: ['', Validators.required],
-      globalid: ['', Validators.required]
+      
+      guid: ['', Validators.required]
 
     });
 
