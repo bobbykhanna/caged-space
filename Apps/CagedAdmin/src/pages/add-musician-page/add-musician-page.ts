@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MusicianService } from '../../providers/musician-service';
 import { UtilityService } from '../../providers/utility-service';
+import { AddMusicianModel } from '../../models/addMusician';
 
 @Component({
   selector: 'page-add-musician',
@@ -11,6 +12,8 @@ import { UtilityService } from '../../providers/utility-service';
 export class AddMusicianPage {
 
   addMusicianForm: any;
+  hasUploadedNewImage: boolean;
+  musicianProfileImage: string = '../../assets/thumbnail-totoro.png';
 
   constructor(private _musicianService: MusicianService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
 
@@ -22,6 +25,15 @@ export class AddMusicianPage {
 
   }
 
+  ionViewDidLoad() {
+
+    // Create an event listener when musician's image is uploaded. 
+    document.getElementById('musicianImageUpload').addEventListener('change', event => {
+      this.readSingleFile(event);
+    }, false);
+
+  }
+
   // Add New Musician.
   public addMusician(isValid: boolean) {
 
@@ -30,7 +42,20 @@ export class AddMusicianPage {
       // Instantiate spinner. 
       this._util.StartSpinner('Adding New Musician...');
 
-      this._musicianService.addMusician(this.addMusicianForm.value)
+      let model = new AddMusicianModel();
+
+      model.name = this.addMusicianForm.value.name;
+      model.instrument = this.addMusicianForm.value.instrument;
+      model.description = this.addMusicianForm.value.description;
+
+      if (this.hasUploadedNewImage) {
+
+        model.hasUploadedNewImage = true;
+        model.profileImage = this.musicianProfileImage;
+
+      }
+
+      this._musicianService.addMusician(model)
         .subscribe(musician => {
 
           this._util.StopSpinner();
@@ -47,6 +72,35 @@ export class AddMusicianPage {
         });
 
     }
+
+  }
+
+  // Enables uploaded image preview.
+  public readSingleFile(event: any) {
+
+    let fileName = event.target.files[0];
+
+    if (!fileName) {
+      return;
+    }
+
+    let reader = new FileReader();
+
+    reader.onload = file => {
+
+      let contents: any = file.target;
+      this.musicianProfileImage = contents.result;
+      this.hasUploadedNewImage = true;
+
+    };
+
+    reader.readAsDataURL(fileName);
+
+  }
+
+  public toggleImageUpload() {
+
+    document.getElementById('musicianImageUpload').click();
 
   }
 

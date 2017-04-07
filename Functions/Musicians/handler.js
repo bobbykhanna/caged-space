@@ -11,33 +11,79 @@ module.exports.addMusician = (event, context, callback) => {
 
   let newKey = firebase.database().ref('musicians').push().key;
 
-  let musician = JSON.parse(event.body);
+  let requestModel = JSON.parse(event.body);
+  let musician = {};
+
   musician.id = newKey;
+  musician.name = requestModel.name;
+  musician.description = requestModel.description;
+  musician.instrument = requestModel.instrument;
 
   var updates = {};
-  updates['/musicians/' + newKey] = musician;
 
-  firebase.database().ref().update(updates).then(function () {
+  if (requestModel.hasUploadedNewImage) {
 
-    firebase.database().ref('musicians/' + newKey).once('value').then(function (snapshot) {
+    let fileName = 'resource_image.png';
 
-      const response = {
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-          "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
-        },
-        body: JSON.stringify({
-          message: 'Musician Created',
-          data: snapshot.val()
-        })
-      };
+    let imageReference = firebase.storage().ref(`/musicians/${newKey}/${fileName}`);
 
-      callback(null, response);
+    imageReference.putString(requestModel.profileImage, 'data_url').then(function (snapshot) {
+
+      musician.profileImageUrl = snapshot.downloadURL;
+
+      updates['/musicians/' + newKey] = musician;
+
+      firebase.database().ref().update(updates).then(function () {
+
+        firebase.database().ref('musicians/' + newKey).once('value').then(function (snapshot) {
+
+          const response = {
+            statusCode: 200,
+            headers: {
+              "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+              "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+            },
+            body: JSON.stringify({
+              message: 'Musician Created',
+              data: snapshot.val()
+            })
+          };
+
+          callback(null, response);
+
+        });
+
+      });
 
     });
 
-  });
+  } else {
+
+    updates['/musicians/' + newKey] = musician;
+
+    firebase.database().ref().update(updates).then(function () {
+
+      firebase.database().ref('musicians/' + newKey).once('value').then(function (snapshot) {
+
+        const response = {
+          statusCode: 200,
+          headers: {
+            "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+            "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+          },
+          body: JSON.stringify({
+            message: 'Musician Created',
+            data: snapshot.val()
+          })
+        };
+
+        callback(null, response);
+
+      });
+
+    });
+
+  }
 
 };
 
@@ -80,13 +126,13 @@ module.exports.updateMusician = (event, context, callback) => {
 
 module.exports.deleteMusician = (event, context, callback) => {
 
-context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
   // Initialize Firebase
   initializeFirebase();
 
   let key = JSON.parse(event.body).id;
-  
+
   firebase.database().ref('musicians/' + key).remove();  //<---- Firebase Delete Query
 
   const response = {
@@ -122,4 +168,5 @@ let initializeFirebase = function () {
 
   }
 
-} 
+}
+
