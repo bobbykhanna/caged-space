@@ -14,9 +14,16 @@
       <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
 
         <ion-card>
+
+          <img [src]="streamProfileImage" />
+
           <ion-card-content>
 
             <form [formGroup]="addStreamForm" (ngSubmit)="addStream(addStreamForm.valid)">
+
+              <div padding>
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
 
               <div padding>
                 <ion-item secondary>
@@ -41,6 +48,10 @@
 
               <div padding>
                 <button color="secondary" ion-button block type="submit">Add Stream</button>
+              </div>
+
+              <div style="height:0px;overflow:hidden">
+                <input type="file" id="streamImageUpload" name="streamImageUpload" accept="image/*" />
               </div>
 
             </form>

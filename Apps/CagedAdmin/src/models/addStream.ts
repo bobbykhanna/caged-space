@@ -5,5 +5,6 @@ export class AddStreamModel  {
     public description: string;
     public ip: string;
     public streamImage: any;
+    public hasUploadedNewImage: boolean
 
 }
