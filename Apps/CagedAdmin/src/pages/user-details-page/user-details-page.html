@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{user.details}}</ion-title>
+    <ion-title>{{user.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -21,26 +21,25 @@
       <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
 
         <ion-card>
-          <img src="../../assets/thumbnail-totoro.png" />
+             <img [src]="userProfileImage" />
 
           <ion-card-content>
 
             <div *ngIf="!isEditing">
-               <p>
-                <strong>Name: </strong>{{user.name}}
-              </p>
-              <p>
-                <strong>Id: </strong>{{user.id}}
-              </p>
+               
+            
               <p>
                 <strong>Email: </strong>{{user.email}}
               </p>
-              <p>
-                <strong>isLoggedIn: </strong>{{user.isLoggedIn}}
-              </p>
+             
             </div>
 
             <form *ngIf="isEditing" [formGroup]="editUserForm" (ngSubmit)="editUser(editUserForm.valid)">
+                    <div padding *ngIf="isEditing">
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
+
+
 
               <div padding>
                 <ion-item secondary>
@@ -48,30 +47,24 @@
                   <ion-input type="text" formControlName="name"></ion-input>
                 </ion-item>
               </div>
-              <div padding>
-                <ion-item secondary>
-                  <ion-label floating>Id:</ion-label>
-                  <ion-input type="text" formControlName="id"></ion-input>
-                </ion-item>
-              </div>
+             
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Email:</ion-label>
-                  <ion-input type="text" formControlName="email"></ion-input>
+                  <ion-input type="email" formControlName="email"></ion-input>
                 </ion-item>
               </div>
-               <div padding>
-                <ion-item secondary>
-                  <ion-label floating>isLoggedIn</ion-label>
-                  <ion-input type="text" formControlName="isLoggedIn"></ion-input>
-                </ion-item>
-              </div>
+             
 
 
               
 
               <div padding>
                 <button color="primary" ion-button block type="submit">Update User's' Info</button>
+              </div>
+
+                <div style="height:0px;overflow:hidden">
+                <input type="file" id="editUserImageUpload" name="editUserImageUpload" accept="image/*" />
               </div>
 
             </form>
