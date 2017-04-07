@@ -14,6 +14,8 @@ export class MusicianDetailsPage {
 
   public isEditing: boolean = false;
   public musician: MusicianModel;
+  hasUploadedNewImage: boolean;
+  musicianProfileImage: string = '../../assets/thumbnail-totoro.png';
   editMusicianForm: any;
 
   constructor(private _musicianService: MusicianService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
@@ -35,6 +37,15 @@ export class MusicianDetailsPage {
     this.editMusicianForm.value.name = this.musician.name;
     this.editMusicianForm.value.instrument = this.musician.instrument;
     this.editMusicianForm.value.description = this.musician.description;
+
+  }
+
+  ionViewDidLoad() {
+
+    // Create an event listener when musician's image is uploaded. 
+    document.getElementById('editMusicianImageUpload').addEventListener('change', event => {
+      this.readSingleFile(event);
+    }, false);
 
   }
 
@@ -64,6 +75,13 @@ export class MusicianDetailsPage {
       let updatedMusician = this.editMusicianForm.value;
       updatedMusician.id = this.musician.id;
 
+      if (this.hasUploadedNewImage) {
+
+        updatedMusician.hasUploadedNewImage = true;
+        updatedMusician.profileImage = this.musicianProfileImage;
+
+      }
+
       this._musicianService.editMusician(updatedMusician)
         .subscribe(musician => {
 
@@ -82,6 +100,35 @@ export class MusicianDetailsPage {
         });
 
     }
+
+  }
+
+  // Enables uploaded image preview.
+  public readSingleFile(event: any) {
+
+    let fileName = event.target.files[0];
+
+    if (!fileName) {
+      return;
+    }
+
+    let reader = new FileReader();
+
+    reader.onload = file => {
+
+      let contents: any = file.target;
+      this.musicianProfileImage = contents.result;
+      this.hasUploadedNewImage = true;
+
+    };
+
+    reader.readAsDataURL(fileName);
+
+  }
+
+  public toggleImageUpload() {
+
+    document.getElementById('editMusicianImageUpload').click();
 
   }
 

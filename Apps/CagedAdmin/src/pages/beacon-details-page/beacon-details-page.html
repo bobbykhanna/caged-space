@@ -1,18 +1,90 @@
-<!--
-  Generated template for the BeaconDetailsPage page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>BeaconDetailsPage</ion-title>
+    <ion-title>{{beacon.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
+
+  <ion-fab bottom right *ngIf="!isEditing">
+    <button ion-fab (click)="toggleEditBeacon()"><ion-icon name="create"></ion-icon></button>
+  </ion-fab>
+
+  <ion-fab bottom right *ngIf="isEditing">
+    <button color="danger" ion-fab (click)="toggleEditBeacon()"><ion-icon name="close"></ion-icon></button>
+  </ion-fab>
+
+  <ion-grid>
+    <ion-row justify-content-center>
+      <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
+
+        <ion-card>
+          <img src="../../assets/thumbnail-totoro.png" />
+
+          <ion-card-content>
+
+            <div *ngIf="!isEditing">
+              <p>
+                <strong>Name: </strong>{{beacon.name}}
+              </p>
+              <p>
+                <strong>Description: </strong>{{beacon.description}}
+              </p>
+              <p>
+                <strong>location: </strong>{{beacon.location}}
+              </p>
+              <p>
+                <strong>globalid: </strong>{{beacon.globalid}}
+              </p>
+            </div>
+
+            <form *ngIf="isEditing" [formGroup]="editBeaconForm" (ngSubmit)="editBeacon(editBeaconForm.valid)">
+
+              <div padding>
+                <ion-item secondary>
+                  <ion-label floating>Name:</ion-label>
+                  <ion-input type="text" formControlName="name"></ion-input>
+                </ion-item>
+              </div>
+
+             
+
+              <div padding>
+                <ion-item secondary>
+                  <ion-label floating>Description:</ion-label>
+                  <ion-textarea type="text" formControlName="description"></ion-textarea>
+                </ion-item>
+              </div>
+
+               <div padding>
+                <ion-item secondary>
+                  <ion-label floating>Location:</ion-label>
+                  <ion-input type="text" formControlName="location"></ion-input>
+                </ion-item>
+              </div>
+
+              <div padding>
+                <ion-item secondary>
+                  <ion-label floating>Global ID:</ion-label>
+                  <ion-input type="text" formControlName="globalid"></ion-input>
+                </ion-item>
+              </div>
+
+
+              <div padding>
+                <button color="primary" ion-button block type="submit">Update Beacon's Info</button>
+              </div>
+
+            </form>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
