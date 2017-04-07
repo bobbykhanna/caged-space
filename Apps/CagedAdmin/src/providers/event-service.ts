@@ -66,11 +66,9 @@ export class EventService {
 
   public editEvent(model: EventModel): Observable<EventModel> {
 
-    return this._http.put(this._config.addEventUrl, model)
+    return this._http.put(this._config.updateEventUrl, model)
       .map(res => {
         return this._MapEvent(res);
       });
-
   }
-
 }

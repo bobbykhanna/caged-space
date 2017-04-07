@@ -142,7 +142,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/beacons/dev/1491345792690-2017-04-04T22:43:12.690Z/beacons.zip"
+          "S3Key": "serverless/beacons/dev/1491407594788-2017-04-05T15:53:14.788Z/beacons.zip"
         },
         "FunctionName": "beacons-dev-addBeacon",
         "Handler": "handler.addBeacon",
@@ -161,14 +161,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AddBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q": {
+    "AddBeaconLambdaVersionV8X2opPTm5EYXCyN8dbjdsBbBrvnB2ok9riPd8y708": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AddBeaconLambdaFunction"
         },
-        "CodeSha256": "mQYLNG+wZfL+KSq23xOyyzp5+AgbyITJA1Fr/BdVN3Q="
+        "CodeSha256": "V8X2opPTm5EYXCyN8dbj/dsBbBrvnB2ok9riPd8y708="
       }
     },
     "UpdateBeaconLambdaFunction": {
@@ -178,7 +178,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/beacons/dev/1491345792690-2017-04-04T22:43:12.690Z/beacons.zip"
+          "S3Key": "serverless/beacons/dev/1491407594788-2017-04-05T15:53:14.788Z/beacons.zip"
         },
         "FunctionName": "beacons-dev-updateBeacon",
         "Handler": "handler.updateBeacon",
@@ -197,14 +197,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q": {
+    "UpdateBeaconLambdaVersionV8X2opPTm5EYXCyN8dbjdsBbBrvnB2ok9riPd8y708": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateBeaconLambdaFunction"
         },
-        "CodeSha256": "mQYLNG+wZfL+KSq23xOyyzp5+AgbyITJA1Fr/BdVN3Q="
+        "CodeSha256": "V8X2opPTm5EYXCyN8dbj/dsBbBrvnB2ok9riPd8y708="
       }
     },
     "DeleteBeaconLambdaFunction": {
@@ -214,7 +214,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/beacons/dev/1491345792690-2017-04-04T22:43:12.690Z/beacons.zip"
+          "S3Key": "serverless/beacons/dev/1491407594788-2017-04-05T15:53:14.788Z/beacons.zip"
         },
         "FunctionName": "beacons-dev-deleteBeacon",
         "Handler": "handler.deleteBeacon",
@@ -233,14 +233,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q": {
+    "DeleteBeaconLambdaVersionV8X2opPTm5EYXCyN8dbjdsBbBrvnB2ok9riPd8y708": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteBeaconLambdaFunction"
         },
-        "CodeSha256": "mQYLNG+wZfL+KSq23xOyyzp5+AgbyITJA1Fr/BdVN3Q="
+        "CodeSha256": "V8X2opPTm5EYXCyN8dbj/dsBbBrvnB2ok9riPd8y708="
       }
     },
     "ApiGatewayRestApi": {
@@ -627,7 +627,7 @@
         ]
       }
     },
-    "ApiGatewayDeployment1491345792717": {
+    "ApiGatewayDeployment1491407594815": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -750,19 +750,19 @@
     "AddBeaconLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q"
+        "Ref": "AddBeaconLambdaVersionV8X2opPTm5EYXCyN8dbjdsBbBrvnB2ok9riPd8y708"
       }
     },
     "UpdateBeaconLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q"
+        "Ref": "UpdateBeaconLambdaVersionV8X2opPTm5EYXCyN8dbjdsBbBrvnB2ok9riPd8y708"
       }
     },
     "DeleteBeaconLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteBeaconLambdaVersionmQYLNGwZfLKSq23xOyyzp5AgbyITJA1FrBdVN3Q"
+        "Ref": "DeleteBeaconLambdaVersionV8X2opPTm5EYXCyN8dbjdsBbBrvnB2ok9riPd8y708"
       }
     },
     "ServiceEndpoint": {

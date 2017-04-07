@@ -1,18 +1,80 @@
-<!--
-  Generated template for the UserDetailsPage page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>UserDetailsPage</ion-title>
+    <ion-title>{{user.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
+
+  <ion-fab bottom right *ngIf="!isEditing">
+    <button ion-fab (click)="toggleEditUser()"><ion-icon name="create"></ion-icon></button>
+  </ion-fab>
+
+  <ion-fab bottom right *ngIf="isEditing">
+    <button color="danger" ion-fab (click)="toggleEditUser()"><ion-icon name="close"></ion-icon></button>
+  </ion-fab>
+
+  <ion-grid>
+    <ion-row justify-content-center>
+      <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
+
+        <ion-card>
+             <img [src]="userProfileImage" />
+
+          <ion-card-content>
+
+            <div *ngIf="!isEditing">
+               
+            
+              <p>
+                <strong>Email: </strong>{{user.email}}
+              </p>
+             
+            </div>
+
+            <form *ngIf="isEditing" [formGroup]="editUserForm" (ngSubmit)="editUser(editUserForm.valid)">
+                    <div padding *ngIf="isEditing">
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
+
+
+
+              <div padding>
+                <ion-item secondary>
+                  <ion-label floating>Name:</ion-label>
+                  <ion-input type="text" formControlName="name"></ion-input>
+                </ion-item>
+              </div>
+             
+              <div padding>
+                <ion-item secondary>
+                  <ion-label floating>Email:</ion-label>
+                  <ion-input type="email" formControlName="email"></ion-input>
+                </ion-item>
+              </div>
+             
+
+
+              
+
+              <div padding>
+                <button color="primary" ion-button block type="submit">Update User's' Info</button>
+              </div>
+
+                <div style="height:0px;overflow:hidden">
+                <input type="file" id="editUserImageUpload" name="editUserImageUpload" accept="image/*" />
+              </div>
+
+            </form>
+
+          </ion-card-content>
+
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

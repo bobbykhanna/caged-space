@@ -1,4 +1,4 @@
-<ion-split-pane>
+<ion-split-pane *ngIf="!_isMobileDevice">
 
   <ion-menu [content]="content">
     <ion-header>
@@ -9,7 +9,7 @@
 
     <ion-content>
       <ion-list>
-        <ion-item no-lines *ngFor="let page of menuPages" (click)="openPage(page)">
+        <ion-item no-lines *ngFor="let page of menuPages" (click)="openPage(page)" menuToggle>
           <ion-icon name="{{page.icon}}" item-left></ion-icon>
           {{page.title}}
         </ion-item>
