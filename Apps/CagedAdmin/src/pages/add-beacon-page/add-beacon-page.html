@@ -17,6 +17,10 @@
           <ion-card-content>
 
             <form [formGroup]="addBeaconForm" (ngSubmit)="addBeacon(addBeaconForm.valid)">
+              <div padding>
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
+
 
               <div padding>
                 <ion-item secondary>
