@@ -6,5 +6,4 @@ export class AddMusicianModel  {
     public description: string;
 	public hasUploadedNewImage: boolean;
     public profileImage: string;
-
 }

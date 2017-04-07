@@ -6,6 +6,7 @@ export class AddEventModel  {
     public location: string;
     public beginDate: Date;
     public endDate: Date;
-    public eventImage: any;
+    public eventImage: string;
+    public hasUploadedNewImage: boolean;
 
 }
