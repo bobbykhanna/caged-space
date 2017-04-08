@@ -27,22 +27,20 @@
       <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
 
         <ion-card>
-          <img src="../../assets/thumbnail-totoro.png" />
+
+          <img [src]="eventProfileImage" />
 
           <ion-card-content>
 
             <div *ngIf="!isEditing">
               <p>
-                <strong>Name: </strong>{{event.name}}
-              </p>
-              <p>
                 <strong>Location: </strong>{{event.location}}
               </p>
               <p>
-                <strong>StartDate: </strong>{{event.beginDate}}
+                <strong>Event Start Date: </strong>{{event.beginDate}}
               </p>
               <p>
-                <strong>EndDate: </strong>{{event.endDate}}
+                <strong>Event End Date: </strong>{{event.endDate}}
               </p>
               <p>
                 <strong>Description: </strong>{{event.description}}
@@ -51,6 +49,10 @@
             </div>
 
             <form *ngIf="isEditing" [formGroup]="editEventForm" (ngSubmit)="editEvent(editEventForm.valid)">
+
+              <div padding *ngIf="isEditing">
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
 
               <div padding>
                 <ion-item secondary>
@@ -62,20 +64,20 @@
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Location:</ion-label>
-                  <ion-textarea type="text" formControlName="location"></ion-textarea>
+                  <ion-input type="text" formControlName="location"></ion-input>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
-                  <ion-label floating>StartDate:</ion-label>
+                  <ion-label floating>Event Start Date:</ion-label>
                   <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="beginDate"></ion-datetime>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
-                  <ion-label floating>EndDate:</ion-label>
+                  <ion-label floating>Event End Date:</ion-label>
                   <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="endDate"></ion-datetime>
                 </ion-item>
               </div>
@@ -89,6 +91,10 @@
               
               <div padding>
                 <button color="primary" ion-button block type="submit">Update Event's Info</button>
+              </div>
+
+              <div style="height:0px;overflow:hidden">
+                <input type="file" id="editEventImageUpload" name="editEventImageUpload" accept="image/*" />
               </div>
 
             </form>

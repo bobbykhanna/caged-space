@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { EventService } from '../../providers/event-service';
 import { UtilityService } from '../../providers/utility-service';
+import { AddEventModel } from '../../models/addEvent';
 
 /*
   Generated class for the AddEventPage page.
@@ -17,6 +18,8 @@ import { UtilityService } from '../../providers/utility-service';
 export class AddEventPage {
 
   addEventForm: any;
+  hasUploadedNewImage: boolean;
+  eventProfileImage: string = '../../assets/thumbnail-totoro.png';
 // -------- Written by Saransh Bhardwaj on 2nd April 2017 ------------
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private _fb: FormBuilder, private _eventService: EventService,
@@ -27,9 +30,18 @@ export class AddEventPage {
       description: ['', Validators.required],
       beginDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      location: ['', Validators.required]
-
+      location: ['', Validators.required],
+     
     });
+  }
+
+ionViewDidLoad() {
+
+    // Create an event listener when musician's image is uploaded. 
+    document.getElementById('eventImageUpload').addEventListener('change', event => {
+      this.readSingleFile(event);
+    }, false);
+
   }
 
     // Add New Event.
@@ -41,6 +53,14 @@ export class AddEventPage {
       // Instantiate spinner. 
       this._util.StartSpinner('Adding New Event...');
 
+      let model = new AddEventModel();
+
+      if (this.hasUploadedNewImage) {
+
+        model.hasUploadedNewImage = true;
+        model.eventImage = this.eventProfileImage;
+
+      }
       this._eventService.addEvent(this.addEventForm.value) //Calling addEvent Service and Subscribing to it
         .subscribe(event => {
 
@@ -61,5 +81,32 @@ export class AddEventPage {
 
   }
   // -------- Written by Saransh Bhardwaj till here ------------
+// Enables uploaded image preview.
+  public readSingleFile(event: any) {
 
+    let fileName = event.target.files[0];
+
+    if (!fileName) {
+      return;
+    }
+
+    let reader = new FileReader();
+
+    reader.onload = file => {
+
+      let contents: any = file.target;
+      this.eventProfileImage = contents.result;
+      this.hasUploadedNewImage = true;
+
+    };
+
+    reader.readAsDataURL(fileName);
+
+  }
+
+  public toggleImageUpload() {
+
+    document.getElementById('eventImageUpload').click();
+
+  }s
 }
