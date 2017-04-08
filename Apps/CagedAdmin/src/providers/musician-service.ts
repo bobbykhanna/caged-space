@@ -3,9 +3,9 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ConfigService } from '../providers/config-service';
+import { FileService } from '../providers/file-service';
 import 'rxjs/add/operator/map';
 import { MusicianModel } from '../models/musician';
-import { AddMusicianModel } from '../models/addMusician';
 import { AngularFire } from 'angularfire2';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class MusicianService {
     musicians: Array<MusicianModel>
   };
 
-  constructor(private _http: Http, private _config: ConfigService, private _af: AngularFire) {
+  constructor(private _http: Http, private _config: ConfigService, private _af: AngularFire, private _fileService: FileService) {
 
     this._musiciansStore = { musicians: new Array<MusicianModel>() };
 
@@ -55,7 +55,7 @@ export class MusicianService {
 
   }
 
-  public addMusician(model: AddMusicianModel): Observable<MusicianModel> {
+  public addMusician(model: MusicianModel): Observable<MusicianModel> {
 
     return this._http.post(this._config.addMusicianUrl, model)
       .map(res => {
@@ -70,6 +70,37 @@ export class MusicianService {
       .map(res => {
         return this._MapMusician(res);
       });
+
+  }
+
+  public getNewMusicianId(): Observable<string> {
+
+    return this._http.get(this._config.getNewMusicianIdUrl)
+      .map(res => {
+        return res.json().data;
+      });
+
+  }
+
+  public uploadMusicianProfileImage(musicianId: string, file: string): Promise<any> {
+
+    let promise = new Promise<any>((res, rej) => {
+
+      let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(file);
+
+      this._fileService.uploadFile('musicians', musicianId, fileName, file).then(function (imageUrl) {
+
+        res(imageUrl);
+
+      }).catch(function (error) {
+
+        rej(error);
+
+      });
+
+    });
+
+    return promise;
 
   }
 

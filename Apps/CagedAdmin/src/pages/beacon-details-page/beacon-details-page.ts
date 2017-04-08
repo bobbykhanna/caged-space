@@ -24,7 +24,7 @@ export class BeaconDetailsPage {
       name: ['', Validators.required],
       description: ['', Validators.required],
       location: ['', Validators.required],
-      globalid: ['', Validators.required]
+      guid: ['', Validators.required]
     });
 
   }
@@ -34,9 +34,8 @@ export class BeaconDetailsPage {
     this.beacon = this._navParams.get('model');
 
     this.editBeaconForm.value.name = this.beacon.name;
-    this.editBeaconForm.value.instrument = this.beacon.description;
-    this.editBeaconForm.value.description = this.beacon.location;
-    this.editBeaconForm.value.globalid = this.beacon.globalid;
+    this.editBeaconForm.value.description = this.beacon.description;
+    this.editBeaconForm.value.guid = this.beacon.guid;
 
   }
 
@@ -61,7 +60,7 @@ export class BeaconDetailsPage {
     if (isValid) {
 
       // Instantiate spinner. 
-      this._util.StartSpinner('Updating Musician\'s Info...');
+      this._util.StartSpinner('Updating Beacon\'s Info...');
 
       let updatedBeacon = this.editBeaconForm.value;
       updatedBeacon.id = this.beacon.id;

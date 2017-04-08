@@ -71,6 +71,10 @@ export class ConfigService {
     return this._functionsConfig.deleteMusicianUrl;
   }
 
+  get getNewMusicianIdUrl(): string {
+    return this._functionsConfig.getNewMusicianIdUrl;
+  }
+
   // Events
   get deleteEventUrl(): string {
     return this._functionsConfig.deleteEventUrl;

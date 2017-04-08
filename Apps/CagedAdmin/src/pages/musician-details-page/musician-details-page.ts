@@ -34,6 +34,8 @@ export class MusicianDetailsPage {
 
     this.musician = this._navParams.get('model');
 
+    if (this.musician.profileImageUrl) { this.musicianProfileImage = this.musician.profileImageUrl; }
+
     this.editMusicianForm.value.name = this.musician.name;
     this.editMusicianForm.value.instrument = this.musician.instrument;
     this.editMusicianForm.value.description = this.musician.description;

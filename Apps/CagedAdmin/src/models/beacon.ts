@@ -4,8 +4,7 @@ export class BeaconModel {
     public id: number;
     public name: string;
     public description: string;
-    public location: string;
-    public globalid: number;
+    public guid: string;
     public beaconImageUrl: string;
     public beaconImageThumbnailUrl: string;
 

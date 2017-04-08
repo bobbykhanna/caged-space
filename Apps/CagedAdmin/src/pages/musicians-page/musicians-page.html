@@ -20,7 +20,7 @@
     <ion-item *ngFor="let musician of musicians" no-lines (click)="openDetails(musician)">
 
       <ion-thumbnail item-left>
-        <img src="../../assets/thumbnail-totoro.png">
+        <img [src]="musician.profileImageUrl">
       </ion-thumbnail>
 
       <h2>{{musician.name}}</h2>
@@ -54,7 +54,7 @@
       <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 *ngFor="let musician of musicians" (click)="openDetails(musician)">
 
         <ion-card>
-          <img src="../../assets/thumbnail-totoro.png" />
+          <img [src]="musician.profileImageUrl" />
           <ion-card-content>
 
             <ion-card-title>
