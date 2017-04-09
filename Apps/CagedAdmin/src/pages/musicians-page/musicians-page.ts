@@ -12,20 +12,22 @@ import { AddMusicianPage } from '../../pages/add-musician-page/add-musician-page
 })
 export class MusiciansPage {
 
-  private musicians: Array<MusicianModel>
-  private _isMobileDevice: boolean;
+  private unfilteredMusicians: Array<MusicianModel>;
+  private filteredMusicians: Array<MusicianModel>;
+  private isMobileDevice: boolean;
 
   constructor(private _musicianService: MusicianService, private _nav: NavController, private _platform: Platform) {
 
     this._platform.ready().then((readySource) => {
 
-      this._isMobileDevice = (this._platform.width() <= 768);
+      this.isMobileDevice = (this._platform.width() <= 768);
 
     });
 
     this._musicianService.musicians$.subscribe(musicians => {
 
-      this.musicians = musicians;
+      this.unfilteredMusicians = musicians;
+      this.filteredMusicians = musicians;
 
     });
 
@@ -48,7 +50,30 @@ export class MusiciansPage {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
 
-    this._isMobileDevice = (event.target.innerWidth <= 768);
+    this.isMobileDevice = (event.target.innerWidth <= 768);
+
+  }
+
+  // Search musicians by name.
+  filterMusicians(event: any) {
+
+    let allMusicians = this.unfilteredMusicians;
+
+    let searchText = event.target.value;
+
+    if (searchText && searchText.trim() != '') {
+
+      this.filteredMusicians = allMusicians.filter((item) => {
+
+        return (item.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
+
+      });
+
+    } else {
+
+      this.filteredMusicians = allMusicians;
+
+    }
 
   }
 
