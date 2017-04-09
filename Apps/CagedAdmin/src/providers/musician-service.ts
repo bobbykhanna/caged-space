@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ConfigService } from '../providers/config-service';
 import { FileService } from '../providers/file-service';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
 import { MusicianModel } from '../models/musician';
 import { AngularFire } from 'angularfire2';
 
@@ -55,25 +56,126 @@ export class MusicianService {
 
   }
 
-  public addMusician(model: MusicianModel): Observable<MusicianModel> {
+  // Add new Musician.
+  public addMusician(model: MusicianModel, hasUploadedNewImage: boolean, profileImage: string): Promise<MusicianModel> {
 
-    return this._http.post(this._config.addMusicianUrl, model)
+    let promise = new Promise<MusicianModel>((resolve, reject) => {
+
+      this.getNewMusicianId()
+        .subscribe(musicianId => {
+
+          let newMusician = model;
+          newMusician.id = musicianId;
+
+          if (hasUploadedNewImage) {
+
+            this.uploadMusicianProfileImage(musicianId, profileImage).then(imageUrl => {
+
+              newMusician.profileImageUrl = imageUrl;
+
+              this._http.post(this._config.addMusicianUrl, newMusician).subscribe(response => {
+
+                resolve(this._MapMusician(response));
+
+              }, error => {
+
+                reject(error);
+
+              });
+
+            }).catch(error => {
+
+              reject(error);
+
+            });
+
+          } else {
+
+            newMusician.profileImageUrl = '../../assets/thumbnail-totoro.png';
+
+            this._http.post(this._config.addMusicianUrl, newMusician).subscribe(response => {
+
+              resolve(this._MapMusician(response));
+
+            }, error => {
+
+              reject(error);
+
+            });
+
+          }
+
+        }, error => {
+
+          reject(error);
+
+        });
+
+    });
+
+    return promise;
+
+  }
+
+  // Modify existing musician.
+  public editMusician(model: MusicianModel, hasUploadedNewImage: boolean, profileImage: string): Promise<MusicianModel> {
+
+    let promise = new Promise<MusicianModel>((resolve, reject) => {
+
+      let updatedMusician = model;
+
+      if (hasUploadedNewImage) {
+
+        this.uploadMusicianProfileImage(updatedMusician.id, profileImage).then(imageUrl => {
+
+          updatedMusician.profileImageUrl = imageUrl;
+
+          this._http.put(this._config.updateMusicianUrl, updatedMusician).subscribe(response => {
+
+            resolve(this._MapMusician(response));
+
+          }, error => {
+
+            reject(error);
+
+          });
+
+        }).catch(error => {
+
+          reject(error);
+
+        });
+
+      } else {
+
+        this._http.put(this._config.updateMusicianUrl, updatedMusician).subscribe(response => {
+
+          resolve(this._MapMusician(response));
+
+        }, error => {
+
+          reject(error);
+
+        });
+
+      }
+
+    });
+
+    return promise;
+
+  }
+
+  public deleteMusician(musicianId: string): Observable<string> {
+
+    return this._http.delete(this._config.deleteMusicianUrl + '/' + musicianId)
       .map(res => {
-        return this._MapMusician(res);
+        return res.json().message;
       });
 
   }
 
-  public editMusician(model: MusicianModel): Observable<MusicianModel> {
-
-    return this._http.put(this._config.addMusicianUrl, model)
-      .map(res => {
-        return this._MapMusician(res);
-      });
-
-  }
-
-  public getNewMusicianId(): Observable<string> {
+  private getNewMusicianId(): Observable<string> {
 
     return this._http.get(this._config.getNewMusicianIdUrl)
       .map(res => {
@@ -82,7 +184,7 @@ export class MusicianService {
 
   }
 
-  public uploadMusicianProfileImage(musicianId: string, file: string): Promise<any> {
+  private uploadMusicianProfileImage(musicianId: string, file: string): Promise<any> {
 
     let promise = new Promise<any>((res, rej) => {
 

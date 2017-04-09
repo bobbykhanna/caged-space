@@ -42,61 +42,21 @@ export class AddMusicianPage {
       // Instantiate spinner. 
       this._util.StartSpinner('Adding New Musician...');
 
-      this._musicianService.getNewMusicianId()
-        .subscribe(musicianId => {
+      let model = new MusicianModel();
 
-          let model = new MusicianModel();
+      model.name = this.addMusicianForm.value.name;
+      model.instrument = this.addMusicianForm.value.instrument;
+      model.description = this.addMusicianForm.value.description;
 
-          model.id = musicianId;
-          model.name = this.addMusicianForm.value.name;
-          model.instrument = this.addMusicianForm.value.instrument;
-          model.description = this.addMusicianForm.value.description;
+      this._musicianService.addMusician(model, this.hasUploadedNewImage, this.musicianProfileImage)
+        .then(musician => {
 
-          if (this.hasUploadedNewImage) {
+          this._util.StopSpinner();
 
-            this._musicianService.uploadMusicianProfileImage(musicianId, this.musicianProfileImage).then(imageUrl => {
+          // Navigate back to musicians list page.
+          this._nav.pop();
 
-              model.profileImageUrl = imageUrl;
-
-              this._musicianService.addMusician(model)
-                .subscribe(musician => {
-
-                  this._util.StopSpinner();
-
-                  // Navigate back to musicians list page.
-                  this._nav.pop();
-
-                }, error => {
-
-                  this._util.StopSpinner();
-
-                  this._util.ShowAlert('Internal Error', 'Could not add new Musician.');
-
-                });
-
-            });
-
-          } else {
-
-            this._musicianService.addMusician(model)
-              .subscribe(musician => {
-
-                this._util.StopSpinner();
-
-                // Navigate back to musicians list page.
-                this._nav.pop();
-
-              }, error => {
-
-                this._util.StopSpinner();
-
-                this._util.ShowAlert('Internal Error', 'Could not add new Musician.');
-
-              });
-
-          }
-
-        }, error => {
+        }).catch(error => {
 
           this._util.StopSpinner();
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { MusicianModel } from '../../models/musician';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MusicianService } from '../../providers/musician-service';
@@ -15,10 +15,10 @@ export class MusicianDetailsPage {
   public isEditing: boolean = false;
   public musician: MusicianModel;
   hasUploadedNewImage: boolean;
-  musicianProfileImage: string = '../../assets/thumbnail-totoro.png';
+  musicianProfileImage: string;
   editMusicianForm: any;
 
-  constructor(private _musicianService: MusicianService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
+  constructor(private _musicianService: MusicianService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder, private _alertCtrl: AlertController) {
 
     this.musician = new MusicianModel();
 
@@ -28,17 +28,21 @@ export class MusicianDetailsPage {
       description: ['', Validators.required]
     });
 
+    this.musician = this._navParams.get('model');
+
+    if (this.musician.profileImageUrl) {
+
+      this.musicianProfileImage = this.musician.profileImageUrl;
+
+    } else {
+
+      this.musicianProfileImage = '../../assets/thumbnail-totoro.png';
+
+    }
+
   }
 
   ionViewDidEnter() {
-
-    this.musician = this._navParams.get('model');
-
-    if (this.musician.profileImageUrl) { this.musicianProfileImage = this.musician.profileImageUrl; }
-
-    this.editMusicianForm.value.name = this.musician.name;
-    this.editMusicianForm.value.instrument = this.musician.instrument;
-    this.editMusicianForm.value.description = this.musician.description;
 
     // Create an event listener when musician's image is uploaded. 
     document.getElementById('editMusicianImageUpload').addEventListener('change', event => {
@@ -70,30 +74,24 @@ export class MusicianDetailsPage {
       // Instantiate spinner. 
       this._util.StartSpinner('Updating Musician\'s Info...');
 
-      let updatedMusician = this.editMusicianForm.value;
-      updatedMusician.id = this.musician.id;
+      let updatedMusician = this.musician;
+      updatedMusician.name = this.editMusicianForm.value.instrument;
+      updatedMusician.instrument = this.editMusicianForm.value.instrument;
+      updatedMusician.description = this.editMusicianForm.value.description;
 
-      if (this.hasUploadedNewImage) {
-
-        updatedMusician.hasUploadedNewImage = true;
-        updatedMusician.profileImage = this.musicianProfileImage;
-
-      }
-
-      this._musicianService.editMusician(updatedMusician)
-        .subscribe(musician => {
+      this._musicianService.editMusician(updatedMusician, this.hasUploadedNewImage, this.musicianProfileImage)
+        .then(musician => {
 
           this._util.StopSpinner();
 
-          this.musician = musician;
+          // Navigate back to musicians list page.
+          this._nav.pop();
 
-          this.isEditing = false;
-
-        }, error => {
+        }).catch(error => {
 
           this._util.StopSpinner();
 
-          this._util.ShowAlert('Internal Error', 'Could not edit Musician.');
+          this._util.ShowAlert('Internal Error', 'Could not add new Musician.');
 
         });
 
@@ -127,6 +125,50 @@ export class MusicianDetailsPage {
   public toggleImageUpload() {
 
     document.getElementById('editMusicianImageUpload').click();
+
+  }
+
+  // Display Delete Musician Confirmation.
+  public toggleDeleteMusician() {
+
+    let confirm = this._alertCtrl.create({
+      title: 'Delete Musician',
+      message: 'Are you sure you want to delete this musician?',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            confirm.dismiss();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+
+            // Instantiate spinner. 
+            this._util.StartSpinner('Deleting Musician...');
+
+            this._musicianService.deleteMusician(this.musician.id)
+              .subscribe(message => {
+
+                this._util.StopSpinner();
+
+                this._nav.pop();
+
+              }, error => {
+
+                this._util.StopSpinner();
+
+                this._util.ShowAlert('Internal Error', 'Could not delete Musician.');
+
+              });
+
+          }
+        }
+      ]
+    });
+
+    confirm.present();
 
   }
 
