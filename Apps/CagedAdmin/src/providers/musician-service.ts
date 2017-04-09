@@ -34,34 +34,12 @@ export class MusicianService {
 
   }
 
-  // Initiates retrieval of CagedSpace musicians.
-  private _getMusicians(): void {
-
-    this._af.database.list('musicians').subscribe(newMusicians => {
-
-      this._musiciansStore = { musicians: newMusicians };
-
-      this._musicians$.next(this._musiciansStore.musicians);
-
-    });
-
-  }
-
-  // Maps raw JSON data to MusicianModels.
-  private _MapMusician(response: any) {
-
-    let newMusician: MusicianModel = response.json().data;
-
-    return newMusician;
-
-  }
-
   // Add new Musician.
   public addMusician(model: MusicianModel, hasUploadedNewImage: boolean, profileImage: string): Promise<MusicianModel> {
 
     let promise = new Promise<MusicianModel>((resolve, reject) => {
 
-      this.getNewMusicianId()
+      this._getNewMusicianId()
         .subscribe(musicianId => {
 
           let newMusician = model;
@@ -69,13 +47,13 @@ export class MusicianService {
 
           if (hasUploadedNewImage) {
 
-            this.uploadMusicianProfileImage(musicianId, profileImage).then(imageUrl => {
+            this._uploadMusicianProfileImage(musicianId, profileImage).then(imageUrl => {
 
               newMusician.profileImageUrl = imageUrl;
 
               this._http.post(this._config.addMusicianUrl, newMusician).subscribe(response => {
 
-                resolve(this._MapMusician(response));
+                resolve(this._mapMusician(response));
 
               }, error => {
 
@@ -95,7 +73,7 @@ export class MusicianService {
 
             this._http.post(this._config.addMusicianUrl, newMusician).subscribe(response => {
 
-              resolve(this._MapMusician(response));
+              resolve(this._mapMusician(response));
 
             }, error => {
 
@@ -126,13 +104,13 @@ export class MusicianService {
 
       if (hasUploadedNewImage) {
 
-        this.uploadMusicianProfileImage(updatedMusician.id, profileImage).then(imageUrl => {
+        this._uploadMusicianProfileImage(updatedMusician.id, profileImage).then(imageUrl => {
 
           updatedMusician.profileImageUrl = imageUrl;
 
           this._http.put(this._config.updateMusicianUrl, updatedMusician).subscribe(response => {
 
-            resolve(this._MapMusician(response));
+            resolve(this._mapMusician(response));
 
           }, error => {
 
@@ -150,7 +128,7 @@ export class MusicianService {
 
         this._http.put(this._config.updateMusicianUrl, updatedMusician).subscribe(response => {
 
-          resolve(this._MapMusician(response));
+          resolve(this._mapMusician(response));
 
         }, error => {
 
@@ -175,7 +153,7 @@ export class MusicianService {
 
   }
 
-  private getNewMusicianId(): Observable<string> {
+  private _getNewMusicianId(): Observable<string> {
 
     return this._http.get(this._config.getNewMusicianIdUrl)
       .map(res => {
@@ -184,7 +162,7 @@ export class MusicianService {
 
   }
 
-  private uploadMusicianProfileImage(musicianId: string, file: string): Promise<any> {
+  private _uploadMusicianProfileImage(musicianId: string, file: string): Promise<any> {
 
     let promise = new Promise<any>((res, rej) => {
 
@@ -203,6 +181,28 @@ export class MusicianService {
     });
 
     return promise;
+
+  }
+
+  // Initiates retrieval of CagedSpace musicians.
+  private _getMusicians(): void {
+
+    this._af.database.list('musicians').subscribe(newMusicians => {
+
+      this._musiciansStore = { musicians: newMusicians };
+
+      this._musicians$.next(this._musiciansStore.musicians);
+
+    });
+
+  }
+
+  // Maps raw JSON data to MusicianModels.
+  private _mapMusician(response: any) {
+
+    let newMusician: MusicianModel = response.json().data;
+
+    return newMusician;
 
   }
 
