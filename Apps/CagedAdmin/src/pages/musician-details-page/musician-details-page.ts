@@ -40,10 +40,6 @@ export class MusicianDetailsPage {
     this.editMusicianForm.value.instrument = this.musician.instrument;
     this.editMusicianForm.value.description = this.musician.description;
 
-  }
-
-  ionViewDidLoad() {
-
     // Create an event listener when musician's image is uploaded. 
     document.getElementById('editMusicianImageUpload').addEventListener('change', event => {
       this.readSingleFile(event);

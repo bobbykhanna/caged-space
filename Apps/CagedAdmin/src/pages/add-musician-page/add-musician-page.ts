@@ -25,7 +25,7 @@ export class AddMusicianPage {
 
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
 
     // Create an event listener when musician's image is uploaded. 
     document.getElementById('musicianImageUpload').addEventListener('change', event => {
