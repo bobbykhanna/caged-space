@@ -1,23 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../providers/user-service';
 import { UtilityService } from '../../providers/utility-service';
+import { UserModel } from '../../models/user';
+
 
 @Component({
   selector: 'page-add-user',
   templateUrl: 'add-user-page.html'
 })
 export class AddUserPage {
+  @ViewChild('imageInput') imageInput: ElementRef;
 
   addUserForm: any;
+  hasUploadedNewImage: boolean;
+  userProfileImage: string = '../../assets/thumbnail-totoro.png';
 
   constructor(private _userService: UserService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
 
     this.addUserForm = this._fb.group({
       name: ['', Validators.required],
+      id: ['', Validators.required],
       email: ['', Validators.required]
     });
+
+  }
+
+  ngAfterViewInit() {
+
+    // Create an event listener when user's image is uploaded. 
+    this.imageInput.nativeElement.addEventListener('change', event => {
+      this.readSingleFile(event);
+    }, false);
 
   }
 
@@ -29,15 +44,23 @@ export class AddUserPage {
       // Instantiate spinner. 
       this._util.StartSpinner('Adding New User...');
 
-      this._userService.addUser(this.addUserForm.value)
-        .subscribe(user => {
+      let model = new UserModel();
+
+      model.name = this.addUserForm.value.name;
+      model.id = this.addUserForm.value.id;
+      model.email = this.addUserForm.value.email;
+
+     
+
+      this._userService.addUser(model, this.hasUploadedNewImage, this.userProfileImage)
+        .then(user => {
 
           this._util.StopSpinner();
 
-          // Navigate back to users list page.
+          // Navigate back to user's list page.
           this._nav.pop();
 
-        }, error => {
+        }).catch(error => {
 
           this._util.StopSpinner();
 
@@ -49,5 +72,33 @@ export class AddUserPage {
 
   }
 
+  // Enables uploaded image preview.
+  public readSingleFile(event: any) {
+
+    let fileName = event.target.files[0];
+
+    if (!fileName) {
+      return;
+    }
+
+    let reader = new FileReader();
+
+    reader.onload = file => {
+
+      let contents: any = file.target;
+      this.userProfileImage = contents.result;
+      this.hasUploadedNewImage = true;
+
+    };
+
+    reader.readAsDataURL(fileName);
+
+  }
+
+  public toggleImageUpload() {
+
+    this.imageInput.nativeElement.click();
+
+  }
 
 }

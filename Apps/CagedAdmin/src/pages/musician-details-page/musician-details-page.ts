@@ -81,7 +81,7 @@ export class MusicianDetailsPage {
       this._util.StartSpinner('Updating Musician\'s Info...');
 
       let updatedMusician = this.musician;
-      updatedMusician.name = this.editMusicianForm.value.instrument;
+      updatedMusician.name = this.editMusicianForm.value.name;
       updatedMusician.instrument = this.editMusicianForm.value.instrument;
       updatedMusician.description = this.editMusicianForm.value.description;
 
