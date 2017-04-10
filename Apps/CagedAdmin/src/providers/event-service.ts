@@ -74,7 +74,7 @@ export class EventService {
 
               newEvent.eventImageUrl = imageUrl;
 
-              this._http.post(this._config.addMusicianUrl, newEvent).subscribe(response => {
+              this._http.post(this._config.addEventUrl, newEvent).subscribe(response => {
 
                 resolve(this._MapEvent(response));
 
@@ -128,7 +128,7 @@ export class EventService {
 
     private _getNewEventId(): Observable<string> {
 
-    return this._http.get(this._config.getNewMusicianIdUrl) //Need to change the url
+    return this._http.get(this._config.getNewEventIdUrl)
       .map(res => {
         return res.json().data;
       });

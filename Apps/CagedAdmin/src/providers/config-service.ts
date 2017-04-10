@@ -76,6 +76,11 @@ export class ConfigService {
   }
 
   // Events
+
+    get getNewEventIdUrl(): string {
+    return this._functionsConfig.getNewEventIdUrl;
+  }
+
   get deleteEventUrl(): string {
     return this._functionsConfig.deleteEventUrl;
   }
