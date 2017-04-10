@@ -47,7 +47,7 @@ export class StreamService {
 
           if (hasUploadedNewImage) {
 
-            this._uploadStreamProfileImage(streamId, profileImage).then(imageUrl => {
+            this._uploadStreamImage(streamId, profileImage).then(imageUrl => {
 
               newStream.streamImageUrl = imageUrl;
 
@@ -196,28 +196,6 @@ export class StreamService {
       .map(res => {
         return res.json().data;
       });
-
-  }
-
-  private _uploadStreamProfileImage(streamId: string, file: string): Promise<any> {
-
-    let promise = new Promise<any>((res, rej) => {
-
-      let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(file);
-
-      this._fileService.uploadFile('streams', streamId, fileName, file).then(function (imageUrl) {
-
-        res(imageUrl);
-
-      }).catch(function (error) {
-
-        rej(error);
-
-      });
-
-    });
-
-    return promise;
 
   }
 
