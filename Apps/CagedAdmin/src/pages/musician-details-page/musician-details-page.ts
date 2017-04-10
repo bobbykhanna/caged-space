@@ -109,8 +109,7 @@ export class MusicianDetailsPage {
   public readSingleFile(event: any) {
 
     let fileName = event.target.files[0];
-    console.log(event.target.files[0]);
-
+    
     if (!fileName) {
       return;
     }
