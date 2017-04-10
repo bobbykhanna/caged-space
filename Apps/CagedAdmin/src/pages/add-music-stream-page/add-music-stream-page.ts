@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { StreamService } from '../../providers/stream-service';
@@ -10,7 +10,7 @@ import { AddStreamModel } from '../../models/addStream';
   templateUrl: 'add-music-stream-page.html'
 })
 export class AddMusicStreamPage {
-
+  @ViewChild('imageInput') imageInput: ElementRef;
   addStreamForm: any;
   hasUploadedNewImage: boolean;
   streamProfileImage: string = '../../assets/new_stream.png';
@@ -24,6 +24,7 @@ export class AddMusicStreamPage {
     });
 
   }
+  
 
   // Add New Stream.
   public addStream(isValid: boolean) {
