@@ -9,18 +9,36 @@
 
 </ion-header>
 
-<ion-fab bottom right *ngIf="_isMobileDevice">
+<ion-fab bottom right *ngIf="isMobileDevice">
   <button ion-fab color="secondary" (click)="addNewStream()"><ion-icon name="add"></ion-icon></button>
 </ion-fab>
 
-<ion-content padding>
+<ion-content>
 
-  <ion-list *ngIf="_isMobileDevice">
+  <ion-searchbar padding *ngIf="isMobileDevice" (ionInput)="filterStreams($event)"></ion-searchbar>
+
+  <ion-list padding *ngIf="isMobileDevice">
+    
+    <ion-item *ngFor="let stream of filteredStreams" no-lines (click)="openDetails(stream)">
+
+      <ion-thumbnail item-left>
+          <img [src]="stream.streamImageUrl">
+      </ion-thumbnail>
+
+      <h2>{{stream.name}}</h2>
+      <p>Stream IP: {{stream.ip}}</p>
+      <p>Desc: {{stream.description}}</p>
+
+    </ion-item>
+
+  </ion-list>
+
+  <!--<ion-list *ngIf="isMobileDevice">
     <ion-item-sliding *ngFor="let stream of streams" no-lines>
       <ion-item (click)="openDetails(stream)">
 
         <ion-thumbnail item-left>
-          <img src="http://lorempixel.com/200/200/technics">
+          <img [src]="stream.streamImageUrl">
         </ion-thumbnail>
 
         <h2>{{stream.name}}</h2>
@@ -37,9 +55,9 @@
       </ion-item-options>
   </ion-item-sliding>
 
-  </ion-list>
+  </ion-list>-->
 
-  <ion-grid *ngIf="!_isMobileDevice">
+  <ion-grid *ngIf="!isMobileDevice">
     <ion-row>
 
       <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 (click)="addNewStream()">
@@ -60,10 +78,10 @@
 
       </ion-col>
 
-      <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 *ngFor="let stream of streams" (click)="openDetails(stream)">
+      <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 *ngFor="let stream of filteredStreams" (click)="openDetails(stream)">
 
         <ion-card>
-          <img src="http://lorempixel.com/200/200/technics" />
+          <img [src]="stream.streamImageUrl" />
           <ion-card-content>
 
             <ion-card-title>
@@ -78,3 +96,11 @@
   </ion-grid>
 
 </ion-content>
+
+<ion-footer>
+
+  <ion-toolbar>
+    <ion-searchbar end *ngIf="!isMobileDevice" (ionInput)="filterStreams($event)"></ion-searchbar>
+  </ion-toolbar>
+
+</ion-footer>
