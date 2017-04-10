@@ -3,7 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { StreamService } from '../../providers/stream-service';
 import { UtilityService } from '../../providers/utility-service';
-import { AddStreamModel } from '../../models/addStream';
+import { StreamModel } from '../../models/stream';
 
 @Component({
   selector: 'page-add-music-stream',
@@ -11,9 +11,10 @@ import { AddStreamModel } from '../../models/addStream';
 })
 export class AddMusicStreamPage {
   @ViewChild('imageInput') imageInput: ElementRef;
+
   addStreamForm: any;
   hasUploadedNewImage: boolean;
-  streamProfileImage: string = '../../assets/new_stream.png';
+  streamImage: string = '../../assets/new_stream.png';
 
   constructor(private _streamService: StreamService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
 
@@ -24,6 +25,15 @@ export class AddMusicStreamPage {
     });
 
   }
+
+  ngAfterViewInit() {
+
+    // Create an event listener when stream's image is uploaded. 
+    this.imageInput.nativeElement.addEventListener('change', event => {
+      this.readSingleFile(event);
+    }, false);
+
+  }
   
 
   // Add New Stream.
@@ -32,45 +42,32 @@ export class AddMusicStreamPage {
     if (isValid) {
 
       // Instantiate spinner. 
-      this._util.StartSpinner('Adding a New Stream...');
+      this._util.StartSpinner('Adding New Stream...');
 
-      let model = new AddStreamModel();
+      let model = new StreamModel();
 
       model.name = this.addStreamForm.value.name;
       model.ip = this.addStreamForm.value.ip;
       model.description = this.addStreamForm.value.description;
 
-      if (this.hasUploadedNewImage) {
-
-        model.hasUploadedNewImage = true;
-        model.streamImage = this.streamProfileImage;
-
-      }
-
-      this._streamService.addStream(this.addStreamForm.value)
-        .subscribe(stream => {
+      this._streamService.addStream(model, this.hasUploadedNewImage, this.streamImage)
+        .then(stream => {
 
           this._util.StopSpinner();
 
           // Navigate back to streams list page.
           this._nav.pop();
 
-        }, error => {
+        }).catch(error => {
 
           this._util.StopSpinner();
 
-          this._util.ShowAlert('Internal Error', 'Could not add New Stream.');
+          this._util.ShowAlert('Internal Error', 'Could not add new Stream.');
 
         });
 
     }
-  }
 
-  ionViewDidLoad() {
-    // Create an event listener when stream's image is uploaded. 
-    document.getElementById('streamImageUpload').addEventListener('change', event => {
-      this.readSingleFile(event);
-    }, false);
   }
 
   // Enables uploaded image preview.
@@ -87,7 +84,7 @@ export class AddMusicStreamPage {
     reader.onload = file => {
 
       let contents: any = file.target;
-      this.streamProfileImage = contents.result;
+      this.streamImage = contents.result;
       this.hasUploadedNewImage = true;
 
     };
@@ -98,7 +95,7 @@ export class AddMusicStreamPage {
 
   public toggleImageUpload() {
 
-    document.getElementById('streamImageUpload').click();
+    this.imageInput.nativeElement.click();
 
   }
 
