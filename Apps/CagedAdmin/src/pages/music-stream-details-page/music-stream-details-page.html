@@ -47,33 +47,33 @@
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
-                  <ion-input type="text" formControlName="name" value="{{stream.name}}"></ion-input>
+                  <ion-input type="text" formControlName="name" [ngModel]="stream.name"></ion-input>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Stream IP:</ion-label>
-                  <ion-textarea type="text" formControlName="ip" value="{{stream.ip}}"></ion-textarea>
+                  <ion-textarea type="text" formControlName="ip" [ngModel]="stream.ip"></ion-textarea>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Description:</ion-label>
-                  <ion-textarea type="text" formControlName="description" value="{{stream.description}}"></ion-textarea>
+                  <ion-textarea type="text" formControlName="description" [ngModel]="stream.description"></ion-textarea>
                 </ion-item>
               </div>
 
               <div padding>
                 <button color="primary" ion-button block type="submit">Update Stream's Info</button>
               </div>
-              
-              <div style="height:0px;overflow:hidden">
-                <input #imageInputEdit type="file" accept="image/*" />
-              </div>
 
             </form>
+
+            <div style="height:0px;overflow:hidden">
+              <input #imageInputEdit type="file" accept="image/*" />
+            </div>
 
           </ion-card-content>
 

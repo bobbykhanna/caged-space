@@ -46,7 +46,7 @@ export class MusicStreamDetailsPage {
   ngAfterViewInit() {
 
     // Create an event listener when stream's image is uploaded. 
-
+    console.log("in AfterView");
     if (this.imageInputEdit) {
 
       this.imageInputEdit.nativeElement.addEventListener('change', event => {
@@ -130,7 +130,7 @@ export class MusicStreamDetailsPage {
   public toggleImageUpload() {
 
     this.imageInputEdit.nativeElement.click();
-
+    
   }
 
   // Display Delete Stream Confirmation.
