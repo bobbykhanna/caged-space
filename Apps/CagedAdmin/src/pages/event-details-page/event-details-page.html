@@ -14,8 +14,12 @@
 
 <ion-content padding>
 
-  <ion-fab bottom right *ngIf="!isEditing">
-    <button ion-fab (click)="toggleEditEvent()"><ion-icon name="create"></ion-icon></button>
+  <ion-fab right bottom *ngIf="!isEditing">
+    <button ion-fab color="primary"><ion-icon name="build"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab color="danger" (click)="toggleDeleteEvent()"><ion-icon name="trash"></ion-icon></button>
+      <button ion-fab color="primary" (click)="toggleEditEvent()"><ion-icon name="create"></ion-icon></button>
+    </ion-fab-list>
   </ion-fab>
 
   <ion-fab bottom right *ngIf="isEditing">
@@ -57,35 +61,35 @@
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
-                  <ion-input type="text" formControlName="name"></ion-input>
+                  <ion-input type="text" formControlName="name"[ngModel]="event.name"></ion-input>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Location:</ion-label>
-                  <ion-input type="text" formControlName="location"></ion-input>
+                  <ion-input type="text" formControlName="location"[ngModel]="event.location"></ion-input>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Event Start Date:</ion-label>
-                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="beginDate"></ion-datetime>
+                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="beginDate"[ngModel]="event.beginDate"></ion-datetime>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Event End Date:</ion-label>
-                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="endDate"></ion-datetime>
+                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="endDate"[ngModel]="event.endDate"></ion-datetime>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Description:</ion-label>
-                  <ion-textarea type="text" formControlName="description"></ion-textarea>
+                  <ion-textarea type="text" formControlName="description"[ngModel]="event.description"></ion-textarea>
                 </ion-item>
               </div>
               
@@ -94,7 +98,7 @@
               </div>
 
               <div style="height:0px;overflow:hidden">
-                <input type="file" id="editEventImageUpload" name="editEventImageUpload" accept="image/*" />
+                <input #imageInputEdit type="file" accept="image/*" />
               </div>
 
             </form>
