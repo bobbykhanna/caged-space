@@ -9,7 +9,7 @@
 
 </ion-header>
 
-<ion-fab bottom right *ngIf="_isMobileDevice">
+<ion-fab bottom right *ngIf="isMobileDevice">
     <button ion-fab color="secondary" (click)="addNewEvent()"><ion-icon name="add"></ion-icon></button>
 </ion-fab>
 
@@ -17,7 +17,7 @@
 
     <ion-searchbar padding *ngIf="isMobileDevice" (ionInput)="filterEvents($event)"></ion-searchbar>
 
-    <ion-list padding *ngIf="_isMobileDevice">
+    <ion-list padding *ngIf="isMobileDevice">
 
         <ion-item *ngFor="let event of filteredEvents" no-lines (click)="openDetails(event)">
 
@@ -32,7 +32,7 @@
 
     </ion-list>
 
-    <ion-grid *ngIf="!_isMobileDevice">
+    <ion-grid *ngIf="!isMobileDevice">
         <ion-row>
 
             <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 (click)="addNewEvent()">
@@ -73,10 +73,10 @@
 
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="!isMobileDevice">
 
   <ion-toolbar>
-    <ion-searchbar end *ngIf="!isMobileDevice" (ionInput)="filterEvents($event)"></ion-searchbar>
+    <ion-searchbar (ionInput)="filterEvents($event)"></ion-searchbar>
   </ion-toolbar>
 
 </ion-footer>

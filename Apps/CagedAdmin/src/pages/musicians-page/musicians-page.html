@@ -74,10 +74,10 @@
 
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="!isMobileDevice">
 
   <ion-toolbar>
-    <ion-searchbar end *ngIf="!isMobileDevice" (ionInput)="filterMusicians($event)"></ion-searchbar>
+    <ion-searchbar (ionInput)="filterMusicians($event)"></ion-searchbar>
   </ion-toolbar>
 
 </ion-footer>

@@ -13,13 +13,13 @@ import { AddEventPage } from '../../pages/add-event-page/add-event-page';
 export class EventsPage {
   private unfilteredEvents: Array<EventModel>;
   private filteredEvents: Array<EventModel>
-  private _isMobileDevice: boolean;
+  private isMobileDevice: boolean;
 
   constructor(private _eventService: EventService, private _nav: NavController, private _platform: Platform) {
 
     this._platform.ready().then((readySource) => {
 
-      this._isMobileDevice = (this._platform.width() <= 768);
+      this.isMobileDevice = (this._platform.width() <= 768);
 
     });
 
@@ -49,7 +49,7 @@ export class EventsPage {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
 
-    this._isMobileDevice = (event.target.innerWidth <= 768);
+    this.isMobileDevice = (event.target.innerWidth <= 768);
 
   }
 
