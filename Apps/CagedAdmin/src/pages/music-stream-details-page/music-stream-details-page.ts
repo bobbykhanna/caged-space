@@ -5,6 +5,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { StreamService } from '../../providers/stream-service';
 import { UtilityService } from '../../providers/utility-service';
 
+
 @Component({
   selector: 'page-music-stream-details',
   templateUrl: 'music-stream-details-page.html'

@@ -6,7 +6,6 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
   <ion-fab right bottom *ngIf="!isEditing">
@@ -41,6 +40,10 @@
 
             <form *ngIf="isEditing" [formGroup]="editStreamForm" (ngSubmit)="editStream(editStreamForm.valid)">
 
+              <div padding *ngIf="isEditing">
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
+
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
@@ -64,6 +67,10 @@
 
               <div padding>
                 <button color="primary" ion-button block type="submit">Update Stream's Info</button>
+              </div>
+              
+              <div style="height:0px;overflow:hidden">
+                <input #imageInputEdit type="file" accept="image/*" />
               </div>
 
             </form>
