@@ -93,7 +93,7 @@ export class EventService {
 
             newEvent.eventImageUrl = '../../assets/thumbnail-totoro.png';
 
-            this._http.post(this._config.addMusicianUrl, newEvent).subscribe(response => {
+            this._http.post(this._config.addEventUrl, newEvent).subscribe(response => {
 
               resolve(this._mapEvent(response));
 
@@ -130,7 +130,7 @@ export class EventService {
 
           updatedEvent.eventImageUrl = imageUrl;
 
-          this._http.put(this._config.updateMusicianUrl, updatedEvent).subscribe(response => {
+          this._http.put(this._config.updateEventUrl, updatedEvent).subscribe(response => {
 
             resolve(this._mapEvent(response));
 
@@ -148,7 +148,7 @@ export class EventService {
 
       } else {
 
-        this._http.put(this._config.updateMusicianUrl, updatedEvent).subscribe(response => {
+        this._http.put(this._config.updateEventUrl, updatedEvent).subscribe(response => {
 
           resolve(this._mapEvent(response));
 

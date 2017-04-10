@@ -99,18 +99,18 @@ export class EventDetailsPage {
       this._util.StartSpinner('Updating Event\'s Info...');
 
       let updatedEvent = this.event;
-      this.editEventForm.value.name = this.event.name;
-      this.editEventForm.value.description = this.event.description;
-      this.editEventForm.value.beginDate = this.event.beginDate;
-      this.editEventForm.value.endDate = this.event.endDate;
-      this.editEventForm.value.location = this.event.location;
+      updatedEvent.name = this.editEventForm.value.name
+      updatedEvent.description = this.editEventForm.value.description;
+      updatedEvent.beginDate=this.editEventForm.value.beginDate;
+      updatedEvent.endDate=this.editEventForm.value.endDate
+      updatedEvent.location=this.editEventForm.value.location;
 
-      this._eventService.editEvent(updatedEvent,this.hasUploadedNewImage, this.eventProfileImage)
+      this._eventService.editEvent(updatedEvent,  this.hasUploadedNewImage, this.eventProfileImage)
         .then(event => {
 
           this._util.StopSpinner();
 
-          // Navigate back to musicians list page.
+          // Navigate back to event list page.
           this.navCtrl.pop();
 
         }).catch(error => {
