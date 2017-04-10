@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { StreamModel } from '../../models/stream';
 import { FormBuilder, Validators } from '@angular/forms';
 import { StreamService } from '../../providers/stream-service';
@@ -15,7 +15,7 @@ export class MusicStreamDetailsPage {
   public stream: StreamModel;
   editStreamForm: any;
 
-  constructor(private _streamService: StreamService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
+  constructor(private _streamService: StreamService, private _alertCtrl: AlertController, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
 
     this.stream = new StreamModel();
 
@@ -81,6 +81,50 @@ export class MusicStreamDetailsPage {
         });
 
     }
+
+  }
+
+  // Display Delete Stream Confirmation.
+  public toggleDeleteMusician() {
+
+    let confirm = this._alertCtrl.create({
+      title: 'Delete Musician',
+      message: 'Are you sure you want to delete this musician?',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            confirm.dismiss();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+
+            // Instantiate spinner. 
+            this._util.StartSpinner('Deleting Musician...');
+
+            this._streamService.deleteStream(this.stream.id)
+              .subscribe(message => {
+
+                this._util.StopSpinner();
+
+                this._nav.pop();
+
+              }, error => {
+
+                this._util.StopSpinner();
+
+                this._util.ShowAlert('Internal Error', 'Could not delete Musician.');
+
+              });
+
+          }
+        }
+      ]
+    });
+
+    confirm.present();
 
   }
 

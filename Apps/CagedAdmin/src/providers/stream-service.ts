@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import { StreamModel } from '../models/stream';
 import { AddStreamModel } from '../models/addStream';
 import { AngularFire } from 'angularfire2';
+import { FileService } from '../providers/file-service';
 
 @Injectable()
 export class StreamService {
@@ -21,7 +22,7 @@ export class StreamService {
     streams: Array<StreamModel>
   };
 
-  constructor(private _http: Http, private _config: ConfigService, private _af: AngularFire) {
+  constructor(private _http: Http, private _config: ConfigService, private _af: AngularFire, private _fileService: FileService) {
 
     this._streamsStore = { streams: new Array<StreamModel>() };
 
@@ -30,6 +31,67 @@ export class StreamService {
     this.streams$ = this._streams$.asObservable();
 
     this._getStreams();
+
+  }
+
+  // Add new Stream.
+  public addStream(model: StreamModel, hasUploadedNewImage: boolean, profileImage: string): Promise<StreamModel> {
+
+    let promise = new Promise<StreamModel>((resolve, reject) => {
+
+      this._getNewStreamId()
+        .subscribe(streamId => {
+
+          let newStream = model;
+          newStream.id = streamId;
+
+          if (hasUploadedNewImage) {
+
+            this._uploadStreamProfileImage(streamId, profileImage).then(imageUrl => {
+
+              newStream.streamImageUrl = imageUrl;
+
+              this._http.post(this._config.addStreamUrl, newStream).subscribe(response => {
+
+                resolve(this._mapStream(response));
+
+              }, error => {
+
+                reject(error);
+
+              });
+
+            }).catch(error => {
+
+              reject(error);
+
+            });
+
+          } else {
+
+            newStream.streamImageUrl = '../../assets/thumbnail-totoro.png';
+
+            this._http.post(this._config.addStreamUrl, newStream).subscribe(response => {
+
+              resolve(this._mapStream(response));
+
+            }, error => {
+
+              reject(error);
+
+            });
+
+          }
+
+        }, error => {
+
+          reject(error);
+
+        });
+
+    });
+
+    return promise;
 
   }
 
@@ -46,30 +108,125 @@ export class StreamService {
 
   }
 
+  // Modify existing stream.
+  public editStream(model: StreamModel, hasUploadedNewImage: boolean, profileImage: string): Promise<StreamModel> {
+
+    let promise = new Promise<StreamModel>((resolve, reject) => {
+
+      let updatedStream = model;
+
+      if (hasUploadedNewImage) {
+
+        this._uploadStreamImage(updatedStream.id, profileImage).then(imageUrl => {
+
+          updatedStream.streamImageUrl = imageUrl;
+
+          this._http.put(this._config.updateStreamUrl, updatedStream).subscribe(response => {
+
+            resolve(this._mapStream(response));
+
+          }, error => {
+
+            reject(error);
+
+          });
+
+        }).catch(error => {
+
+          reject(error);
+
+        });
+
+      } else {
+
+        this._http.put(this._config.updateStreamUrl, updatedStream).subscribe(response => {
+
+          resolve(this._mapStream(response));
+
+        }, error => {
+
+          reject(error);
+
+        });
+
+      }
+
+    });
+
+    return promise;
+
+  }
+
+  private _uploadStreamImage(streamId: string, file: string): Promise<any> {
+
+    let promise = new Promise<any>((res, rej) => {
+
+      let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(file);
+
+      this._fileService.uploadFile('streams', streamId, fileName, file).then(function (imageUrl) {
+
+        res(imageUrl);
+
+      }).catch(function (error) {
+
+        rej(error);
+
+      });
+
+    });
+
+    return promise;
+
+  }
+
+  // Delete Functionality
+  public deleteStream(streamId: string): Observable<string> {
+
+    return this._http.delete(this._config.deleteStreamUrl + '/' + streamId)
+      .map(res => {
+        return res.json().message;
+      });
+
+  }
+
+  // Get New Stream ID 
+  private _getNewStreamId(): Observable<string> {
+
+    return this._http.get(this._config.getNewStreamIdUrl)
+      .map(res => {
+        return res.json().data;
+      });
+
+  }
+
+  private _uploadStreamProfileImage(streamId: string, file: string): Promise<any> {
+
+    let promise = new Promise<any>((res, rej) => {
+
+      let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(file);
+
+      this._fileService.uploadFile('streams', streamId, fileName, file).then(function (imageUrl) {
+
+        res(imageUrl);
+
+      }).catch(function (error) {
+
+        rej(error);
+
+      });
+
+    });
+
+    return promise;
+
+  }
+
   // Maps raw JSON data to StreamModels.
-  private _MapStream(response: any) {
+  private _mapStream(response: any) {
 
-    let newStream: StreamModel = response.json().data;
+    let newMusician: StreamModel = response.json().data;
 
-    return newStream;
-
-  }
-
-  public addStream(model: AddStreamModel): Observable<StreamModel> {
-
-    return this._http.post(this._config.addStreamUrl, model)
-      .map(res => {
-        return this._MapStream(res);
-      });
-
-  }
-
-  public editStream(model: StreamModel): Observable<StreamModel> {
-
-    return this._http.put(this._config.updateStreamUrl, model)
-      .map(res => {
-        return this._MapStream(res);
-      });
+    return newMusician;
 
   }
 

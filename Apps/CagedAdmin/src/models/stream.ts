@@ -1,7 +1,7 @@
 // Model class for holding music stream's information.
 export class StreamModel  {
 
-    public id: number;
+    public id: string;
     public name: string;
     public description: string;
     public ip: string;
