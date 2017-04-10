@@ -37,8 +37,8 @@ export class LoginPage {
       this._util.StartSpinner('Signing In...');
 
       // Initiate Login.
-    //  this._userService.Login(email, password)
-    //    .subscribe(user => {
+  //    this._userService.Login(email, password)
+  //      .subscribe(user => {
 
           // Navigate to Home Page after successful loggin in.
      //     this._nav.setRoot(MusiciansPage);
