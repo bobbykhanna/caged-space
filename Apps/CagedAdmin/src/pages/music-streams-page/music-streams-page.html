@@ -33,30 +33,6 @@
 
   </ion-list>
 
-  <!--<ion-list *ngIf="isMobileDevice">
-    <ion-item-sliding *ngFor="let stream of streams" no-lines>
-      <ion-item (click)="openDetails(stream)">
-
-        <ion-thumbnail item-left>
-          <img [src]="stream.streamImageUrl">
-        </ion-thumbnail>
-
-        <h2>{{stream.name}}</h2>
-        <p>Stream IP: {{stream.ip}}</p>
-        <p>Desc: {{stream.description}}</p>
-        
-      </ion-item>
-    
-      <ion-item-options side="right">
-        <button ion-button color="danger" (click)="deleteStream(stream)">
-          <ion-icon name="trash"></ion-icon>
-          Delete
-        </button>
-      </ion-item-options>
-  </ion-item-sliding>
-
-  </ion-list>-->
-
   <ion-grid *ngIf="!isMobileDevice">
     <ion-row>
 
@@ -97,10 +73,10 @@
 
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="!isMobileDevice">
 
   <ion-toolbar>
-    <ion-searchbar end *ngIf="!isMobileDevice" (ionInput)="filterStreams($event)"></ion-searchbar>
+    <ion-searchbar (ionInput)="filterStreams($event)"></ion-searchbar>
   </ion-toolbar>
 
 </ion-footer>
