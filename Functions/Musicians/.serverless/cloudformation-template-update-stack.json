@@ -48,6 +48,121 @@
             }
           ]
         },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "dev",
+                  "musicians",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "GetNewMusicianIdLogGroup",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "AddMusicianLogGroup",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "UpdateMusicianLogGroup",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "DeleteMusicianLogGroup",
+                        "Arn"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          {
+                            "Fn::GetAtt": [
+                              "GetNewMusicianIdLogGroup",
+                              "Arn"
+                            ]
+                          },
+                          "*"
+                        ]
+                      ]
+                    },
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          {
+                            "Fn::GetAtt": [
+                              "AddMusicianLogGroup",
+                              "Arn"
+                            ]
+                          },
+                          "*"
+                        ]
+                      ]
+                    },
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          {
+                            "Fn::GetAtt": [
+                              "UpdateMusicianLogGroup",
+                              "Arn"
+                            ]
+                          },
+                          "*"
+                        ]
+                      ]
+                    },
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          {
+                            "Fn::GetAtt": [
+                              "DeleteMusicianLogGroup",
+                              "Arn"
+                            ]
+                          },
+                          "*"
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ],
         "Path": "/",
         "RoleName": {
           "Fn::Join": [
@@ -62,99 +177,6 @@
         }
       }
     },
-    "IamPolicyLambdaExecution": {
-      "Type": "AWS::IAM::Policy",
-      "DependsOn": [
-        "IamRoleLambdaExecution"
-      ],
-      "Properties": {
-        "PolicyName": {
-          "Fn::Join": [
-            "-",
-            [
-              "dev",
-              "musicians",
-              "lambda"
-            ]
-          ]
-        },
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    ":",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "GetNewMusicianIdLogGroup",
-                          "Arn"
-                        ]
-                      },
-                      "*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    ":",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "AddMusicianLogGroup",
-                          "Arn"
-                        ]
-                      },
-                      "*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    ":",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "UpdateMusicianLogGroup",
-                          "Arn"
-                        ]
-                      },
-                      "*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    ":",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "DeleteMusicianLogGroup",
-                          "Arn"
-                        ]
-                      },
-                      "*"
-                    ]
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        "Roles": [
-          {
-            "Ref": "IamRoleLambdaExecution"
-          }
-        ]
-      }
-    },
     "GetNewMusicianIdLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -162,7 +184,11 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491709557446-2017-04-09T03:45:57.446Z/musicians.zip"
+<<<<<<< Updated upstream
+          "S3Key": "serverless/musicians/dev/1491781025586-2017-04-09T23:37:05.586Z/musicians.zip"
+=======
+          "S3Key": "serverless/musicians/dev/1491775568650-2017-04-09T22:06:08.650Z/musicians.zip"
+>>>>>>> Stashed changes
         },
         "FunctionName": "musicians-dev-getNewMusicianId",
         "Handler": "handler.getNewMusicianId",
@@ -177,18 +203,25 @@
         "Timeout": 6
       },
       "DependsOn": [
-        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "GetNewMusicianIdLambdaVersion86BPfDahC2DlmXhTqNV5XW2afleTEWeKIYcMwe8ZvA": {
+<<<<<<< Updated upstream
+    "GetNewMusicianIdLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU": {
+=======
+    "GetNewMusicianIdLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c": {
+>>>>>>> Stashed changes
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetNewMusicianIdLambdaFunction"
         },
-        "CodeSha256": "86BPfDahC2DlmXhTqNV5XW2afleTEWeKIYc+Mwe8ZvA="
+<<<<<<< Updated upstream
+        "CodeSha256": "amSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU="
+=======
+        "CodeSha256": "TqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c="
+>>>>>>> Stashed changes
       }
     },
     "AddMusicianLambdaFunction": {
@@ -198,7 +231,11 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491709557446-2017-04-09T03:45:57.446Z/musicians.zip"
+<<<<<<< Updated upstream
+          "S3Key": "serverless/musicians/dev/1491781025586-2017-04-09T23:37:05.586Z/musicians.zip"
+=======
+          "S3Key": "serverless/musicians/dev/1491775568650-2017-04-09T22:06:08.650Z/musicians.zip"
+>>>>>>> Stashed changes
         },
         "FunctionName": "musicians-dev-addMusician",
         "Handler": "handler.addMusician",
@@ -213,18 +250,25 @@
         "Timeout": 6
       },
       "DependsOn": [
-        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "AddMusicianLambdaVersion86BPfDahC2DlmXhTqNV5XW2afleTEWeKIYcMwe8ZvA": {
+<<<<<<< Updated upstream
+    "AddMusicianLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU": {
+=======
+    "AddMusicianLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c": {
+>>>>>>> Stashed changes
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AddMusicianLambdaFunction"
         },
-        "CodeSha256": "86BPfDahC2DlmXhTqNV5XW2afleTEWeKIYc+Mwe8ZvA="
+<<<<<<< Updated upstream
+        "CodeSha256": "amSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU="
+=======
+        "CodeSha256": "TqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c="
+>>>>>>> Stashed changes
       }
     },
     "UpdateMusicianLambdaFunction": {
@@ -234,7 +278,11 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491709557446-2017-04-09T03:45:57.446Z/musicians.zip"
+<<<<<<< Updated upstream
+          "S3Key": "serverless/musicians/dev/1491781025586-2017-04-09T23:37:05.586Z/musicians.zip"
+=======
+          "S3Key": "serverless/musicians/dev/1491775568650-2017-04-09T22:06:08.650Z/musicians.zip"
+>>>>>>> Stashed changes
         },
         "FunctionName": "musicians-dev-updateMusician",
         "Handler": "handler.updateMusician",
@@ -249,18 +297,25 @@
         "Timeout": 6
       },
       "DependsOn": [
-        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateMusicianLambdaVersion86BPfDahC2DlmXhTqNV5XW2afleTEWeKIYcMwe8ZvA": {
+<<<<<<< Updated upstream
+    "UpdateMusicianLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU": {
+=======
+    "UpdateMusicianLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c": {
+>>>>>>> Stashed changes
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateMusicianLambdaFunction"
         },
-        "CodeSha256": "86BPfDahC2DlmXhTqNV5XW2afleTEWeKIYc+Mwe8ZvA="
+<<<<<<< Updated upstream
+        "CodeSha256": "amSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU="
+=======
+        "CodeSha256": "TqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c="
+>>>>>>> Stashed changes
       }
     },
     "DeleteMusicianLambdaFunction": {
@@ -270,7 +325,11 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491709557446-2017-04-09T03:45:57.446Z/musicians.zip"
+<<<<<<< Updated upstream
+          "S3Key": "serverless/musicians/dev/1491781025586-2017-04-09T23:37:05.586Z/musicians.zip"
+=======
+          "S3Key": "serverless/musicians/dev/1491775568650-2017-04-09T22:06:08.650Z/musicians.zip"
+>>>>>>> Stashed changes
         },
         "FunctionName": "musicians-dev-deleteMusician",
         "Handler": "handler.deleteMusician",
@@ -285,18 +344,25 @@
         "Timeout": 6
       },
       "DependsOn": [
-        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteMusicianLambdaVersion86BPfDahC2DlmXhTqNV5XW2afleTEWeKIYcMwe8ZvA": {
+<<<<<<< Updated upstream
+    "DeleteMusicianLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU": {
+=======
+    "DeleteMusicianLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c": {
+>>>>>>> Stashed changes
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteMusicianLambdaFunction"
         },
-        "CodeSha256": "86BPfDahC2DlmXhTqNV5XW2afleTEWeKIYc+Mwe8ZvA="
+<<<<<<< Updated upstream
+        "CodeSha256": "amSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU="
+=======
+        "CodeSha256": "TqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c="
+>>>>>>> Stashed changes
       }
     },
     "ApiGatewayRestApi": {
@@ -634,7 +700,11 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1491709557480": {
+<<<<<<< Updated upstream
+    "ApiGatewayDeployment1491781025618": {
+=======
+    "ApiGatewayDeployment1491775568696": {
+>>>>>>> Stashed changes
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -791,25 +861,41 @@
     "GetNewMusicianIdLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetNewMusicianIdLambdaVersion86BPfDahC2DlmXhTqNV5XW2afleTEWeKIYcMwe8ZvA"
+<<<<<<< Updated upstream
+        "Ref": "GetNewMusicianIdLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU"
+=======
+        "Ref": "GetNewMusicianIdLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c"
+>>>>>>> Stashed changes
       }
     },
     "AddMusicianLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddMusicianLambdaVersion86BPfDahC2DlmXhTqNV5XW2afleTEWeKIYcMwe8ZvA"
+<<<<<<< Updated upstream
+        "Ref": "AddMusicianLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU"
+=======
+        "Ref": "AddMusicianLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c"
+>>>>>>> Stashed changes
       }
     },
     "UpdateMusicianLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateMusicianLambdaVersion86BPfDahC2DlmXhTqNV5XW2afleTEWeKIYcMwe8ZvA"
+<<<<<<< Updated upstream
+        "Ref": "UpdateMusicianLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU"
+=======
+        "Ref": "UpdateMusicianLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c"
+>>>>>>> Stashed changes
       }
     },
     "DeleteMusicianLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteMusicianLambdaVersion86BPfDahC2DlmXhTqNV5XW2afleTEWeKIYcMwe8ZvA"
+<<<<<<< Updated upstream
+        "Ref": "DeleteMusicianLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU"
+=======
+        "Ref": "DeleteMusicianLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c"
+>>>>>>> Stashed changes
       }
     },
     "ServiceEndpoint": {

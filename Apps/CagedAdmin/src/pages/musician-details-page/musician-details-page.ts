@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { MusicianModel } from '../../models/musician';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import { UtilityService } from '../../providers/utility-service';
   templateUrl: 'musician-details-page.html'
 })
 export class MusicianDetailsPage {
-  @ViewChild('imageInput') imageInput :ElementRef;
+  @ViewChild('imageInputEdit') imageInputEdit: ElementRef;
 
   public isEditing: boolean = false;
   public musician: MusicianModel;
@@ -46,9 +46,14 @@ export class MusicianDetailsPage {
   ngAfterViewInit() {
 
     // Create an event listener when musician's image is uploaded. 
-    this.imageInput.nativeElement.addEventListener('change', event => {
-      this.readSingleFile(event);
-    }, false);
+
+    if (this.imageInputEdit) {
+
+      this.imageInputEdit.nativeElement.addEventListener('change', event => {
+        this.readSingleFile(event);
+      }, false);
+
+    }
 
   }
 
@@ -125,7 +130,7 @@ export class MusicianDetailsPage {
 
   public toggleImageUpload() {
 
-    this.imageInput.nativeElement.click();
+    this.imageInputEdit.nativeElement.click();
 
   }
 

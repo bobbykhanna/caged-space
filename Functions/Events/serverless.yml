@@ -8,6 +8,13 @@ provider:
   region: us-east-1
 
 functions:
+  getNewEventId:
+    handler: handler.getNewEventId
+    events:
+      - http:
+          path: events/getNewEventId
+          method: get
+          cors: true
   addEvent:
     handler: handler.addEvent
     events:
@@ -28,7 +35,6 @@ functions:
       - http:
           path: events/{id}
           method: delete
-          integration: lambda
           request:
             parameters:
               paths:
