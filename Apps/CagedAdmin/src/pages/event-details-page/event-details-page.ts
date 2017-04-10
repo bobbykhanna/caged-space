@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { EventModel } from '../../models/event';
 import { FormBuilder, Validators } from '@angular/forms';
 import { EventService } from '../../providers/event-service';
@@ -10,14 +10,15 @@ import { UtilityService } from '../../providers/utility-service';
   templateUrl: 'event-details-page.html'
 })
 export class EventDetailsPage {
+  @ViewChild('imageInputEdit') imageInputEdit: ElementRef;
 
   public isEditing: boolean = false;
   public event: EventModel;
   editEventForm: any;
   hasUploadedNewImage: boolean;
-  eventProfileImage: string = '../../assets/thumbnail-totoro.png';
+  eventProfileImage: string;
 
-  constructor(private _eventService: EventService, private _util: UtilityService, public navCtrl: NavController, public _navParams: NavParams, private _fb: FormBuilder) {
+  constructor(private _eventService: EventService, private _util: UtilityService, public navCtrl: NavController, public _navParams: NavParams, private _fb: FormBuilder, private _alertCtrl: AlertController) {
 
     this.event = new EventModel();
     this.editEventForm = this._fb.group({
@@ -27,10 +28,22 @@ export class EventDetailsPage {
       name: ['', Validators.required],
       description: ['', Validators.required]
     });
+
+    this.event = this._navParams.get('model');
+
+    if (this.event.eventImageUrl) {
+
+      this.eventProfileImage = this.event.eventImageUrl;
+
+    } else {
+
+      this.eventProfileImage = '../../assets/thumbnail-totoro.png';
+
+    }
   }
 
 
-  ionViewDidEnter() {
+  /*ionViewDidEnter() {
     console.log('ionViewDidLoad EventDetailsPage');
     this.event = this._navParams.get('model');
     this.editEventForm.value.name = this.event.name;
@@ -38,17 +51,30 @@ export class EventDetailsPage {
     this.editEventForm.value.beginDate = this.event.beginDate;
     this.editEventForm.value.endDate = this.event.endDate;
     this.editEventForm.value.location = this.event.location;
+  }*/
+  ngAfterViewInit() {
+
+    // Create an event listener when event's image is uploaded. 
+
+    if (this.imageInputEdit) {
+
+      this.imageInputEdit.nativeElement.addEventListener('change', event => {
+        this.readSingleFile(event);
+      }, false);
+
+    }
+
   }
-
-  ionViewDidLoad() {
-
-    // Create an event listener when musician's image is uploaded. 
-    document.getElementById('editEventImageUpload').addEventListener('change', event => {
-      this.readSingleFile(event);
-    }, false);
-
-  }
-
+  /*
+    ionViewDidLoad() {
+  
+      // Create an event listener when musician's image is uploaded. 
+      document.getElementById('editEventImageUpload').addEventListener('change', event => {
+        this.readSingleFile(event);
+      }, false);
+  
+    }
+  */
   // Display Edit Event Form.
   public toggleEditEvent() {
 
@@ -72,27 +98,22 @@ export class EventDetailsPage {
       // Instantiate spinner. 
       this._util.StartSpinner('Updating Event\'s Info...');
 
-      let updatedEvent = this.editEventForm.value;
-      updatedEvent.id = this.event.id;
-      
-      //let model = new AddEventModel();
-      
-      /*if (this.hasUploadedNewImage) {
+      let updatedEvent = this.event;
+      this.editEventForm.value.name = this.event.name;
+      this.editEventForm.value.description = this.event.description;
+      this.editEventForm.value.beginDate = this.event.beginDate;
+      this.editEventForm.value.endDate = this.event.endDate;
+      this.editEventForm.value.location = this.event.location;
 
-        model.hasUploadedNewImage = true;
-        model.eventImage = this.eventProfileImage;
-
-      }*/
-      this._eventService.editEvent(updatedEvent)
-        .subscribe(event => {
+      this._eventService.editEvent(updatedEvent,this.hasUploadedNewImage, this.eventProfileImage)
+        .then(event => {
 
           this._util.StopSpinner();
 
-          this.event = event;
+          // Navigate back to musicians list page.
+          this.navCtrl.pop();
 
-          this.isEditing = false;
-
-        }, error => {
+        }).catch(error => {
 
           this._util.StopSpinner();
 
@@ -129,10 +150,52 @@ export class EventDetailsPage {
 
   public toggleImageUpload() {
 
-    document.getElementById('editEventImageUpload').click();
+    this.imageInputEdit.nativeElement.click();
 
   }
 
+  // Display Delete event Confirmation.
+  public toggleDeleteEvent() {
 
+    let confirm = this._alertCtrl.create({
+      title: 'Delete Event',
+      message: 'Are you sure you want to delete this Event?',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            confirm.dismiss();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+
+            // Instantiate spinner. 
+            this._util.StartSpinner('Deleting Event...');
+
+            this._eventService.deleteEvent(this.event.id)
+              .subscribe(message => {
+
+                this._util.StopSpinner();
+
+                this.navCtrl.pop();
+
+              }, error => {
+
+                this._util.StopSpinner();
+
+                this._util.ShowAlert('Internal Error', 'Could not delete Event.');
+
+              });
+
+          }
+        }
+      ]
+    });
+
+    confirm.present();
+
+  }s
 
 }

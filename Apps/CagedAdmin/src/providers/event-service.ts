@@ -7,7 +7,6 @@ import { FileService } from '../providers/file-service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { EventModel } from '../models/event';
-import { AddEventModel } from '../models/addEvent';
 import { AngularFire } from 'angularfire2';
 
 @Injectable()
@@ -49,7 +48,7 @@ export class EventService {
   }
 
   // Maps raw JSON data to EventModels.
-  private _MapEvent(response: any) {
+  private _mapEvent(response: any) {
 
     let newEvent: EventModel = response.json().data;
 
@@ -76,7 +75,7 @@ export class EventService {
 
               this._http.post(this._config.addEventUrl, newEvent).subscribe(response => {
 
-                resolve(this._MapEvent(response));
+                resolve(this._mapEvent(response));
 
               }, error => {
 
@@ -96,7 +95,7 @@ export class EventService {
 
             this._http.post(this._config.addMusicianUrl, newEvent).subscribe(response => {
 
-              resolve(this._MapEvent(response));
+              resolve(this._mapEvent(response));
 
             }, error => {
 
@@ -118,13 +117,62 @@ export class EventService {
 
   }
 
-  public editEvent(model: EventModel): Observable<EventModel> {
+  // Modify existing events.
+  public editEvent(model: EventModel, hasUploadedNewImage: boolean, profileImage: string): Promise<EventModel> {
 
-    return this._http.put(this._config.updateEventUrl, model)
-      .map(res => {
-        return this._MapEvent(res);
-      });
+    let promise = new Promise<EventModel>((resolve, reject) => {
+
+      let updatedEvent = model;
+
+      if (hasUploadedNewImage) {
+
+        this._uploadEventProfileImage(updatedEvent.id, profileImage).then(imageUrl => {
+
+          updatedEvent.eventImageUrl = imageUrl;
+
+          this._http.put(this._config.updateMusicianUrl, updatedEvent).subscribe(response => {
+
+            resolve(this._mapEvent(response));
+
+          }, error => {
+
+            reject(error);
+
+          });
+
+        }).catch(error => {
+
+          reject(error);
+
+        });
+
+      } else {
+
+        this._http.put(this._config.updateMusicianUrl, updatedEvent).subscribe(response => {
+
+          resolve(this._mapEvent(response));
+
+        }, error => {
+
+          reject(error);
+
+        });
+
+      }
+
+    });
+
+    return promise;
+
   }
+
+   public deleteEvent(eventId: string): Observable<string> {
+
+    return this._http.delete(this._config.deleteEventUrl + '/' + eventId)
+      .map(res => {
+        return res.json().message;
+      });
+   }
 
     private _getNewEventId(): Observable<string> {
 
