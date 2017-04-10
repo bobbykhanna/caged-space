@@ -1,8 +1,9 @@
+
 'use strict';
 
 var firebase = require("firebase");
 
-module.exports.addBeacon = (event, context, callback) => {
+module.exports.getNewBeaconId = (event, context, callback) => {
 
   context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
@@ -11,15 +12,37 @@ module.exports.addBeacon = (event, context, callback) => {
 
   let newKey = firebase.database().ref('beacons').push().key;
 
+  const response = {
+    statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+      "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+    },
+    body: JSON.stringify({
+      message: 'New Id Created',
+      data: newKey
+    })
+  };
+  
+  callback(null, response);
+
+};
+
+module.exports.addBeacon = (event, context, callback) => {
+
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+
+  // Initialize Firebase
+  initializeFirebase();
+
   let beacon = JSON.parse(event.body);
-  beacon.id = newKey;
 
   var updates = {};
-  updates['/beacons/' + newKey] = beacon;
+  updates['/beacons/' + beacon.id] = beacon;
 
   firebase.database().ref().update(updates).then(function () {
 
-    firebase.database().ref('beacons/' + newKey).once('value').then(function (snapshot) {
+    firebase.database().ref('beacons/' + beacon.id).once('value').then(function (snapshot) {
 
       const response = {
         statusCode: 200,
@@ -77,31 +100,32 @@ module.exports.updateBeacon = (event, context, callback) => {
 
 };
 
-
 module.exports.deleteBeacon = (event, context, callback) => {
 
-context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
   // Initialize Firebase
   initializeFirebase();
 
-  let key = JSON.parse(event.body).id;
-  
-  firebase.database().ref('beacons/' + key).remove();  //<---- Firebase Delete Query
+  var updates = {};
+  updates[event.path] = null;
 
-  const response = {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-      "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
-    },
-    body: JSON.stringify({
-      message: 'Beacon Deleted',
-      data: event.body
-    }),
-  };
+  firebase.database().ref().update(updates).then(function () {
 
-  callback(null, response);
+      const response = {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+          "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+        },
+        body: JSON.stringify({
+          message: 'Beacon Deleted'
+        })
+      };
+
+      callback(null, response);
+
+  });
 
 };
 
@@ -122,4 +146,4 @@ let initializeFirebase = function () {
 
   }
 
-} 
+}

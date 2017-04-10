@@ -8,6 +8,13 @@ provider:
   region: us-east-1
 
 functions:
+  getNewUserId:
+    handler: handler.getNewUserId
+    events:
+      - http:
+          path: users/getNewUserId
+          method: get
+          cors: true
   login:
     handler: handler.login
     events:
@@ -35,7 +42,6 @@ functions:
       - http:
           path: users/{id}
           method: delete
-          integration: lambda
           request:
             parameters:
               paths:
