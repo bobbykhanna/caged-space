@@ -12,20 +12,22 @@ import { AddBeaconPage } from '../../pages/add-beacon-page/add-beacon-page';
 })
 export class BeaconsPage {
 
-  private beacons: Array<BeaconModel>
-  private _isMobileDevice: boolean;
+  private unfilteredBeacons: Array<BeaconModel>;
+  private filteredBeacons: Array<BeaconModel>;
+  private isMobileDevice: boolean;
 
   constructor(private _beaconService: BeaconService, private _nav: NavController, private _platform: Platform) {
 
     this._platform.ready().then((readySource) => {
 
-      this._isMobileDevice = (this._platform.width() <= 768);
+      this.isMobileDevice = (this._platform.width() <= 768);
 
     });
 
     this._beaconService.beacons$.subscribe(beacons => {
 
-      this.beacons = beacons;
+      this.unfilteredBeacons = beacons;
+      this.filteredBeacons = beacons;
 
     });
 
@@ -48,7 +50,30 @@ export class BeaconsPage {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
 
-    this._isMobileDevice = (event.target.innerWidth <= 768);
+    this.isMobileDevice = (event.target.innerWidth <= 768);
+
+  }
+
+  // Search beacons by name.
+  filterBeacons(event: any) {
+
+    let allBeacons = this.unfilteredBeacons;
+
+    let searchText = event.target.value;
+
+    if (searchText && searchText.trim() != '') {
+
+      this.filteredBeacons = allBeacons.filter((item) => {
+
+        return (item.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
+
+      });
+
+    } else {
+
+      this.filteredBeacons = allBeacons;
+
+    }
 
   }
 

@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Neww Beacon</ion-title>
+    <ion-title>Add New Beacon</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -14,9 +14,16 @@
       <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
 
         <ion-card>
+
+          <img [src]="beaconProfileImage" />
+
           <ion-card-content>
 
             <form [formGroup]="addBeaconForm" (ngSubmit)="addBeacon(addBeaconForm.valid)">
+
+              <div padding>
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
 
               <div padding>
                 <ion-item secondary>
@@ -34,13 +41,17 @@
 
               <div padding>
                 <ion-item secondary>
-                  <ion-label floating>guid:</ion-label>
-                  <ion-input type="text" formControlName="guid"></ion-input>
+                  <ion-label floating>Guid:</ion-label>
+                  <ion-textarea type="text" formControlName="guid"></ion-textarea>
                 </ion-item>
               </div>
 
               <div padding>
                 <button color="secondary" ion-button block type="submit">Add Beacon</button>
+              </div>
+
+              <div style="height:0px;overflow:hidden">
+                <input #imageInput type="file" accept="image/*" />
               </div>
 
             </form>

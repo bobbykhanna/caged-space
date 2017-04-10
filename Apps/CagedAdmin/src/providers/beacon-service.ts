@@ -3,9 +3,10 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ConfigService } from '../providers/config-service';
+import { FileService } from '../providers/file-service';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
 import { BeaconModel } from '../models/beacon';
-import { AddBeaconModel } from '../models/addBeacon';
 import { AngularFire } from 'angularfire2';
 
 @Injectable()
@@ -16,12 +17,12 @@ export class BeaconService {
   // Service consumers can subscribe to this observable to get latest beacons data.
   public beacons$: Observable<Array<BeaconModel>>;
 
-  // Local beacons cache.
+  // Local beacon cache.
   private _beaconsStore: {
     beacons: Array<BeaconModel>
   };
 
-  constructor(private _http: Http, private _config: ConfigService, private _af: AngularFire) {
+  constructor(private _http: Http, private _config: ConfigService, private _af: AngularFire, private _fileService: FileService) {
 
     this._beaconsStore = { beacons: new Array<BeaconModel>() };
 
@@ -30,6 +31,156 @@ export class BeaconService {
     this.beacons$ = this._beacons$.asObservable();
 
     this._getBeacons();
+
+  }
+
+  // Add new Beacon.
+  public addBeacon(model: BeaconModel, hasUploadedNewImage: boolean, profileImage: string): Promise<BeaconModel> {
+
+    let promise = new Promise<BeaconModel>((resolve, reject) => {
+
+      this._getNewBeaconId()
+        .subscribe(beaconId => {
+
+          let newBeacon = model;
+          newBeacon.id = beaconId;
+
+          if (hasUploadedNewImage) {
+
+            this._uploadBeaconProfileImage(beaconId, profileImage).then(imageUrl => {
+
+              newBeacon.profileImageUrl = imageUrl;
+
+              this._http.post(this._config.addBeaconUrl, newBeacon).subscribe(response => {
+
+                resolve(this._mapBeacon(response));
+
+              }, error => {
+
+                reject(error);
+
+              });
+
+            }).catch(error => {
+
+              reject(error);
+
+            });
+
+          } else {
+
+            newBeacon.profileImageUrl = '../../assets/thumbnail-totoro.png';
+
+            this._http.post(this._config.addBeaconUrl, newBeacon).subscribe(response => {
+
+              resolve(this._mapBeacon(response));
+
+            }, error => {
+
+              reject(error);
+
+            });
+
+          }
+
+        }, error => {
+
+          reject(error);
+
+        });
+
+    });
+
+    return promise;
+
+  }
+
+  // Modify existing beacon.
+  public editBeacon(model: BeaconModel, hasUploadedNewImage: boolean, profileImage: string): Promise<BeaconModel> {
+
+    let promise = new Promise<BeaconModel>((resolve, reject) => {
+
+      let updatedBeacon = model;
+
+      if (hasUploadedNewImage) {
+
+        this._uploadBeaconProfileImage(updatedBeacon.id, profileImage).then(imageUrl => {
+
+          updatedBeacon.profileImageUrl = imageUrl;
+
+          this._http.put(this._config.updateBeaconUrl, updatedBeacon).subscribe(response => {
+
+            resolve(this._mapBeacon(response));
+
+          }, error => {
+
+            reject(error);
+
+          });
+
+        }).catch(error => {
+
+          reject(error);
+
+        });
+
+      } else {
+
+        this._http.put(this._config.updateBeaconUrl, updatedBeacon).subscribe(response => {
+
+          resolve(this._mapBeacon(response));
+
+        }, error => {
+
+          reject(error);
+
+        });
+
+      }
+
+    });
+
+    return promise;
+
+  }
+
+  public deleteBeacon(beaconId: string): Observable<string> {
+
+    return this._http.delete(this._config.deleteBeaconUrl + '/' + beaconId)
+      .map(res => {
+        return res.json().message;
+      });
+
+  }
+
+  private _getNewBeaconId(): Observable<string> {
+
+    return this._http.get(this._config.getNewBeaconIdUrl)
+      .map(res => {
+        return res.json().data;
+      });
+
+  }
+
+  private _uploadBeaconProfileImage(beaconId: string, file: string): Promise<any> {
+
+    let promise = new Promise<any>((res, rej) => {
+
+      let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(file);
+
+      this._fileService.uploadFile('beacons', beaconId, fileName, file).then(function (imageUrl) {
+
+        res(imageUrl);
+
+      }).catch(function (error) {
+
+        rej(error);
+
+      });
+
+    });
+
+    return promise;
 
   }
 
@@ -47,29 +198,11 @@ export class BeaconService {
   }
 
   // Maps raw JSON data to BeaconModels.
-  private _MapBeacon(response: any) {
+  private _mapBeacon(response: any) {
 
     let newBeacon: BeaconModel = response.json().data;
 
     return newBeacon;
-
-  }
-
-  public addBeacon(model: AddBeaconModel): Observable<BeaconModel> {
-
-    return this._http.post(this._config.addBeaconUrl, model)
-      .map(res => {
-        return this._MapBeacon(res);
-      });
-
-  }
-
-  public editBeacon(model: BeaconModel): Observable<BeaconModel> {
-
-    return this._http.put(this._config.addBeaconUrl, model)
-      .map(res => {
-        return this._MapBeacon(res);
-      });
 
   }
 
