@@ -78,6 +78,10 @@ export class ConfigService {
     return this._functionsConfig.getNewMusicianIdUrl;
   }
 
+  get getNewStreamIdUrl(): string {
+    return this._functionsConfig.getNewStreamIdUrl;
+  }
+
   // Events
 
     get getNewEventIdUrl(): string {

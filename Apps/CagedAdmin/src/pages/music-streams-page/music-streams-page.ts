@@ -13,41 +13,26 @@ import { UtilityService } from '../../providers/utility-service';
 })
 export class MusicStreamsPage {
 
-  private streams: Array<StreamModel>
-  private _isMobileDevice: boolean;
+  private unfilteredStreams: Array<StreamModel>;
+  private filteredStreams: Array<StreamModel>;
+  private isMobileDevice: boolean;
 
-  constructor(private _streamService: StreamService, private _nav: NavController, private _platform: Platform, private _util: UtilityService) {
+  constructor(private _streamService: StreamService, private _nav: NavController, private _platform: Platform) {
 
     this._platform.ready().then((readySource) => {
 
-      this._isMobileDevice = (this._platform.width() <= 768);
+      this.isMobileDevice = (this._platform.width() <= 768);
 
     });
 
-    this._streamService.streams$.subscribe(streams => {
+    this._streamService.streams$.subscribe(musicians => {
 
-      this.streams = streams;
+      this.unfilteredStreams = musicians;
+      this.filteredStreams = musicians;
 
     });
 
   }
-
-  // deleteStream(deleteModel: StreamModel) {
-  //   console.log("Delete Pressed");
-  //   this._streamService.deleteStream(deleteModel)
-  //     .subscribe(stream => {
-
-  //         this._util.StopSpinner();
-
-
-  //       }, error => {
-
-  //         this._util.StopSpinner();
-
-  //         this._util.ShowAlert('Internal Error', 'Could not delete Stream.');
-
-  //       });;
-  // }
 
   openDetails(detailsModel: StreamModel) {
 
@@ -66,7 +51,30 @@ export class MusicStreamsPage {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
 
-    this._isMobileDevice = (event.target.innerWidth <= 768);
+    this.isMobileDevice = (event.target.innerWidth <= 768);
+
+  }
+
+  // Search streams by name.
+  filterStreams(event: any) {
+
+    let allMusicians = this.unfilteredStreams;
+
+    let searchText = event.target.value;
+
+    if (searchText && searchText.trim() != '') {
+
+      this.filteredStreams = allMusicians.filter((item) => {
+
+        return (item.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
+
+      });
+
+    } else {
+
+      this.filteredStreams = allMusicians;
+
+    }
 
   }
 }

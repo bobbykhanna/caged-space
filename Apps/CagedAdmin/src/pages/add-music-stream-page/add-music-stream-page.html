@@ -15,7 +15,7 @@
 
         <ion-card>
 
-          <img [src]="streamProfileImage" />
+          <img [src]="streamImage" />
 
           <ion-card-content>
 
@@ -51,7 +51,7 @@
               </div>
 
               <div style="height:0px;overflow:hidden">
-                <input type="file" id="streamImageUpload" name="streamImageUpload" accept="image/*" />
+                <input #imageInput type="file" accept="image/*" />
               </div>
 
             </form>

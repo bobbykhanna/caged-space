@@ -6,11 +6,14 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
-  <ion-fab bottom right *ngIf="!isEditing">
-    <button ion-fab (click)="toggleEditStream()"><ion-icon name="create"></ion-icon></button>
+  <ion-fab right bottom *ngIf="!isEditing">
+    <button ion-fab color="primary"><ion-icon name="build"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab color="danger" (click)="toggleDeleteStream()"><ion-icon name="trash"></ion-icon></button>
+      <button ion-fab color="primary" (click)="toggleEditStream()"><ion-icon name="create"></ion-icon></button>
+    </ion-fab-list>
   </ion-fab>
 
   <ion-fab bottom right *ngIf="isEditing">
@@ -22,7 +25,7 @@
       <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
 
         <ion-card>
-          <img src="http://lorempixel.com/200/200/technics" />
+          <img [src]="streamImage" />
 
           <ion-card-content>
 
@@ -37,24 +40,28 @@
 
             <form *ngIf="isEditing" [formGroup]="editStreamForm" (ngSubmit)="editStream(editStreamForm.valid)">
 
+              <div padding *ngIf="isEditing">
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
+
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
-                  <ion-input type="text" formControlName="name" value="{{stream.name}}"></ion-input>
+                  <ion-input type="text" formControlName="name" [ngModel]="stream.name"></ion-input>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Stream IP:</ion-label>
-                  <ion-textarea type="text" formControlName="ip" value="{{stream.ip}}"></ion-textarea>
+                  <ion-textarea type="text" formControlName="ip" [ngModel]="stream.ip"></ion-textarea>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Description:</ion-label>
-                  <ion-textarea type="text" formControlName="description" value="{{stream.description}}"></ion-textarea>
+                  <ion-textarea type="text" formControlName="description" [ngModel]="stream.description"></ion-textarea>
                 </ion-item>
               </div>
 
@@ -63,6 +70,10 @@
               </div>
 
             </form>
+
+            <div style="height:0px;overflow:hidden">
+              <input #imageInputEdit type="file" accept="image/*" />
+            </div>
 
           </ion-card-content>
 
