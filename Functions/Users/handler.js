@@ -2,6 +2,31 @@
 
 var firebase = require("firebase");
 
+module.exports.getNewUserId = (event, context, callback) => {
+
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+
+  // Initialize Firebase
+  initializeFirebase();
+
+  let newKey = firebase.database().ref('users').push().key;
+
+  const response = {
+    statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+      "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+    },
+    body: JSON.stringify({
+      message: 'New Id Created',
+      data: newKey
+    })
+  };
+  
+  callback(null, response);
+
+};
+
 module.exports.addUser = (event, context, callback) => {
 
   context.callbackWaitsForEmptyEventLoop = false;  //<---Important
@@ -80,28 +105,30 @@ module.exports.updateUser = (event, context, callback) => {
 
 module.exports.deleteUser = (event, context, callback) => {
 
-context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
 
   // Initialize Firebase
   initializeFirebase();
 
-  let key = JSON.parse(event.body).id;
-  
-  firebase.database().ref('users/' + key).remove();  //<---- Firebase Delete Query
+  var updates = {};
+  updates[event.path] = null;
 
-  const response = {
-    statusCode: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-      "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
-    },
-    body: JSON.stringify({
-      message: 'User Deleted',
-      data: event.body
-    }),
-  };
+  firebase.database().ref().update(updates).then(function () {
 
-  callback(null, response);
+      const response = {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+          "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+        },
+        body: JSON.stringify({
+          message: 'User Deleted'
+        })
+      };
+
+      callback(null, response);
+
+  });
 
 };
 

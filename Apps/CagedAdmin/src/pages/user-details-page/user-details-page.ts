@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { UserModel } from '../../models/user';
 import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../providers/user-service';
@@ -10,48 +10,50 @@ import { UtilityService } from '../../providers/utility-service';
   selector: 'page-user-details',
   templateUrl: 'user-details-page.html'
 })
-
-
 export class UserDetailsPage {
+  @ViewChild('imageInputEdit') imageInputEdit: ElementRef;
 
   public isEditing: boolean = false;
   public user: UserModel;
-    hasUploadedNewImage: boolean;
-  userProfileImage: string = '../../assets/thumbnail-totoro.png';
+  hasUploadedNewImage: boolean;
+  userProfileImage: string;
   editUserForm: any;
 
-  constructor(private _userService: UserService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
+  constructor(private _userService: UserService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder, private _alertCtrl: AlertController) {
 
     this.user = new UserModel();
 
     this.editUserForm = this._fb.group({
       name: ['', Validators.required],
-   
       email: ['', Validators.required]
       
     });
 
-  }
-
-  ionViewDidEnter() {
-
     this.user = this._navParams.get('model');
 
-    this.editUserForm.value.name = this.user.name;
-   
-    this.editUserForm.value.email = this.user.email;
+    if (this.user.profileImageUrl) {
 
- 
+      this.userProfileImage = this.user.profileImageUrl;
+
+    } else {
+
+      this.userProfileImage = '../../assets/thumbnail-totoro.png';
+
+    }
+
   }
 
-
-  
-  ionViewDidLoad() {
+  ngAfterViewInit() {
 
     // Create an event listener when user's image is uploaded. 
-    document.getElementById('editUserImageUpload').addEventListener('change', event => {
-      this.readSingleFile(event);
-    }, false);
+
+    if (this.imageInputEdit) {
+
+      this.imageInputEdit.nativeElement.addEventListener('change', event => {
+        this.readSingleFile(event);
+      }, false);
+
+    }
 
   }
 
@@ -78,30 +80,32 @@ export class UserDetailsPage {
       // Instantiate spinner. 
       this._util.StartSpinner('Updating User\'s Info...');
 
-      let updatedUser = this.editUserForm.value;
-      updatedUser.id = this.user.id;
+      let updatedUser = this.user;
+      updatedUser.name = this.editUserForm.value.name;
+      updatedUser.email = this.editUserForm.value.email;
+     
 
-      this._userService.editUser(updatedUser)
-        .subscribe(user => {
-
-          this._util.StopSpinner();
-
-          this.user = user;
-
-          this.isEditing = false;
-
-        }, error => {
+      this._userService.editUser(updatedUser, this.hasUploadedNewImage, this.userProfileImage)
+        .then(user => {
 
           this._util.StopSpinner();
 
-          this._util.ShowAlert('Internal Error', 'Could not edit User.');
+          // Navigate back to users list page.
+          this._nav.pop();
+
+        }).catch(error => {
+
+          this._util.StopSpinner();
+
+          this._util.ShowAlert('Internal Error', 'Could not add new User.');
 
         });
 
     }
 
   }
-   // Enables uploaded image preview.
+
+  // Enables uploaded image preview.
   public readSingleFile(event: any) {
 
     let fileName = event.target.files[0];
@@ -126,11 +130,52 @@ export class UserDetailsPage {
 
   public toggleImageUpload() {
 
-    document.getElementById('editUserImageUpload').click();
+    this.imageInputEdit.nativeElement.click();
 
   }
 
+  // Display Delete User Confirmation.
+  public toggleDeleteUser() {
 
+    let confirm = this._alertCtrl.create({
+      title: 'Delete User',
+      message: 'Are you sure you want to delete this user?',
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: () => {
+            confirm.dismiss();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+
+            // Instantiate spinner. 
+            this._util.StartSpinner('Deleting User...');
+
+            this._userService.deleteUser(this.user.id)
+              .subscribe(message => {
+
+                this._util.StopSpinner();
+
+                this._nav.pop();
+
+              }, error => {
+
+                this._util.StopSpinner();
+
+                this._util.ShowAlert('Internal Error', 'Could not delete User.');
+
+              });
+
+          }
+        }
+      ]
+    });
+
+    confirm.present();
+
+  }
 
 }
- 

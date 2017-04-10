@@ -8,6 +8,13 @@ provider:
   region: us-east-1
 
 functions:
+  getNewBeaconId:
+    handler: handler.getNewBeaconId
+    events:
+      - http:
+          path: beacons/getNewBeaconId
+          method: get
+          cors: true
   addBeacon:
     handler: handler.addBeacon
     events:
@@ -28,7 +35,6 @@ functions:
       - http:
           path: beacons/{id}
           method: delete
-          integration: lambda
           request:
             parameters:
               paths:

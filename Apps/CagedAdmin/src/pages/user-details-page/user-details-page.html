@@ -8,8 +8,12 @@
 
 <ion-content padding>
 
-  <ion-fab bottom right *ngIf="!isEditing">
-    <button ion-fab (click)="toggleEditUser()"><ion-icon name="create"></ion-icon></button>
+  <ion-fab right bottom *ngIf="!isEditing">
+    <button ion-fab color="primary"><ion-icon name="build"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab color="danger" (click)="toggleDeleteUser()"><ion-icon name="trash"></ion-icon></button>
+      <button ion-fab color="primary" (click)="toggleEditUser()"><ion-icon name="create"></ion-icon></button>
+    </ion-fab-list>
   </ion-fab>
 
   <ion-fab bottom right *ngIf="isEditing">
@@ -21,50 +25,45 @@
       <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
 
         <ion-card>
-             <img [src]="userProfileImage" />
+          <img [src]="userProfileImage" />
 
           <ion-card-content>
 
             <div *ngIf="!isEditing">
-               
-            
+              
               <p>
-                <strong>Email: </strong>{{user.email}}
+                <strong>Email:</strong>{{user.email}}
               </p>
-             
             </div>
 
             <form *ngIf="isEditing" [formGroup]="editUserForm" (ngSubmit)="editUser(editUserForm.valid)">
-                    <div padding *ngIf="isEditing">
+
+              <div padding *ngIf="isEditing">
                 <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
               </div>
 
-
-
-              <div padding>
+             <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
-                  <ion-input type="text" formControlName="name"></ion-input>
+                  <ion-textarea type="text" formControlName="name" [ngModel]="user.name"></ion-textarea>
                 </ion-item>
               </div>
-             
+
+      
+
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Email:</ion-label>
-                  <ion-input type="email" formControlName="email"></ion-input>
+                  <ion-textarea type="email" formControlName="email" [ngModel]="user.email"></ion-textarea>
                 </ion-item>
               </div>
-             
-
-
-              
 
               <div padding>
-                <button color="primary" ion-button block type="submit">Update User's' Info</button>
+                <button color="primary" ion-button block type="submit">Update User's Info</button>
               </div>
 
-                <div style="height:0px;overflow:hidden">
-                <input type="file" id="editUserImageUpload" name="editUserImageUpload" accept="image/*" />
+              <div style="height:0px;overflow:hidden">
+                <input #imageInputEdit type="file" accept="image/*" />
               </div>
 
             </form>
