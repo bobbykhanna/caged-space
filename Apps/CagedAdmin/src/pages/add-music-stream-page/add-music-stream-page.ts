@@ -5,6 +5,7 @@ import { StreamService } from '../../providers/stream-service';
 import { UtilityService } from '../../providers/utility-service';
 import { StreamModel } from '../../models/stream';
 
+
 @Component({
   selector: 'page-add-music-stream',
   templateUrl: 'add-music-stream-page.html'
@@ -25,7 +26,7 @@ export class AddMusicStreamPage {
     });
 
   }
-
+  
   ngAfterViewInit() {
 
     // Create an event listener when stream's image is uploaded. 
@@ -34,7 +35,6 @@ export class AddMusicStreamPage {
     }, false);
 
   }
-  
 
   // Add New Stream.
   public addStream(isValid: boolean) {
