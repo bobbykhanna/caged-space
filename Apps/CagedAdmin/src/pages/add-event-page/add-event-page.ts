@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { EventService } from '../../providers/event-service';
 import { UtilityService } from '../../providers/utility-service';
 import { AddEventModel } from '../../models/addEvent';
+import { EventModel } from '../../models/event';
 
 /*
   Generated class for the AddEventPage page.
@@ -16,13 +17,13 @@ import { AddEventModel } from '../../models/addEvent';
   templateUrl: 'add-event-page.html'
 })
 export class AddEventPage {
+ @ViewChild('imageInput') imageInput: ElementRef;
 
   addEventForm: any;
   hasUploadedNewImage: boolean;
   eventProfileImage: string = '../../assets/thumbnail-totoro.png';
 // -------- Written by Saransh Bhardwaj on 2nd April 2017 ------------
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    private _fb: FormBuilder, private _eventService: EventService,
+  constructor(public navCtrl: NavController, public navParams: NavParams, private _fb: FormBuilder, private _eventService: EventService,
     private _util: UtilityService, private _nav: NavController) {
 
      this.addEventForm = this._fb.group({
@@ -35,10 +36,10 @@ export class AddEventPage {
     });
   }
 
-ionViewDidLoad() {
+  ngAfterViewInit() {
 
     // Create an event listener when musician's image is uploaded. 
-    document.getElementById('eventImageUpload').addEventListener('change', event => {
+    this.imageInput.nativeElement.addEventListener('change', event => {
       this.readSingleFile(event);
     }, false);
 
@@ -53,27 +54,27 @@ ionViewDidLoad() {
       // Instantiate spinner. 
       this._util.StartSpinner('Adding New Event...');
 
-      let model = new AddEventModel();
+      let model = new EventModel();
 
-      if (this.hasUploadedNewImage) {
+      model.name = this.addEventForm.value.name;
+      model.location = this.addEventForm.value.location;
+      model.beginDate = this.addEventForm.value.beginDate;
+      model.endDate = this.addEventForm.value.endDate;
+      model.description = this.addEventForm.value.description;
 
-        model.hasUploadedNewImage = true;
-        model.eventImage = this.eventProfileImage;
-
-      }
-      this._eventService.addEvent(this.addEventForm.value) //Calling addEvent Service and Subscribing to it
-        .subscribe(event => {
+      this._eventService.addEvent(model, this.hasUploadedNewImage, this.eventProfileImage)
+        .then(musician => {
 
           this._util.StopSpinner();
 
-          // Navigate back to event list page.
+          // Navigate back to musicians list page.
           this._nav.pop();
 
-        }, error => {
+        }).catch(error => {
 
           this._util.StopSpinner();
 
-          this._util.ShowAlert('Internal Error', 'Could not add new Event.');
+          this._util.ShowAlert('Internal Error', 'Could not add new Musician.');
 
         });
 
@@ -106,7 +107,7 @@ ionViewDidLoad() {
 
   public toggleImageUpload() {
 
-    document.getElementById('eventImageUpload').click();
+    this.imageInput.nativeElement.click();
 
-  }s
+  }
 }
