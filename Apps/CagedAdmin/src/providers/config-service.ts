@@ -57,6 +57,9 @@ export class ConfigService {
   get deleteUserUrl(): string {
     return this._functionsConfig.deleteUserUrl;
   }
+  get getNewUserIdUrl(): string {
+    return this._functionsConfig.getNewUserIdUrl;
+  }
 
   // Musicans
   get addMusicianUrl(): string {
