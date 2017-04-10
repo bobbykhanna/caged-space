@@ -3,22 +3,18 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ConfigService } from '../providers/config-service';
+import { FileService } from '../providers/file-service';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
 import { UserModel } from '../models/user';
-import { AddUserModel } from '../models/addUser';
 import { AngularFire } from 'angularfire2';
 
 @Injectable()
 export class UserService {
 
-  private _user: UserModel;
-  private _user$: BehaviorSubject<UserModel>;
-  // Service consumers can subscribe to this observable to get latest app user data.
-  public user$: Observable<UserModel>;
-
   private _users$: BehaviorSubject<Array<UserModel>>;
 
-  // Service consumers can subscribe to this observable to get latest users data.
+  // Service consumers can subscribe to this observable to get latest user's data.
   public users$: Observable<Array<UserModel>>;
 
   // Local users cache.
@@ -26,11 +22,7 @@ export class UserService {
     users: Array<UserModel>
   };
 
-  constructor(private _http: Http, private _config: ConfigService, private _af: AngularFire) {
-
-    this._user = new UserModel();
-    this._user$ = new BehaviorSubject(new UserModel);
-    this.user$ = this._user$.asObservable();
+  constructor(private _http: Http, private _config: ConfigService, private _af: AngularFire, private _fileService: FileService) {
 
     this._usersStore = { users: new Array<UserModel>() };
 
@@ -42,40 +34,153 @@ export class UserService {
 
   }
 
-  // Primary Login function.
-  public Login(username: string, password: string): Observable<UserModel> {
+  // Add new User
+  public addUser(model: UserModel, hasUploadedNewImage: boolean, profileImage: string): Promise<UserModel> {
 
-    var credentials: any = { UserName: username, Password: password };
+    let promise = new Promise<UserModel>((resolve, reject) => {
 
-    return this._http.post(this._config.userLoginUrl, credentials)
+      this._getNewUserId()
+        .subscribe(userId => {
+
+          let newUser = model;
+          newUser.id = userId;
+
+          if (hasUploadedNewImage) {
+
+            this._uploadUserProfileImage(userId, profileImage).then(imageUrl => {
+
+              newUser.profileImageUrl = imageUrl;
+
+              this._http.post(this._config.addUserUrl, newUser).subscribe(response => {
+
+                resolve(this._mapUser(response));
+
+              }, error => {
+
+                reject(error);
+
+              });
+
+            }).catch(error => {
+
+              reject(error);
+
+            });
+
+          } else {
+
+            newUser.profileImageUrl = '../../assets/thumbnail-totoro.png';
+
+            this._http.post(this._config.addUserUrl, newUser).subscribe(response => {
+
+              resolve(this._mapUser(response));
+
+            }, error => {
+
+              reject(error);
+
+            });
+
+          }
+
+        }, error => {
+
+          reject(error);
+
+        });
+
+    });
+
+    return promise;
+
+  }
+
+  // Modify existing user.
+  public editUser(model: UserModel, hasUploadedNewImage: boolean, profileImage: string): Promise<UserModel> {
+
+    let promise = new Promise<UserModel>((resolve, reject) => {
+
+      let updatedUser = model;
+
+      if (hasUploadedNewImage) {
+
+        this._uploadUserProfileImage(updatedUser.id, profileImage).then(imageUrl => {
+
+          updatedUser.profileImageUrl = imageUrl;
+
+          this._http.put(this._config.updateUserUrl, updatedUser).subscribe(response => {
+
+            resolve(this._mapUser(response));
+
+          }, error => {
+
+            reject(error);
+
+          });
+
+        }).catch(error => {
+
+          reject(error);
+
+        });
+
+      } else {
+
+        this._http.put(this._config.updateUserUrl, updatedUser).subscribe(response => {
+
+          resolve(this._mapUser(response));
+
+        }, error => {
+
+          reject(error);
+
+        });
+
+      }
+
+    });
+
+    return promise;
+
+  }
+
+  public deleteUser(userId: string): Observable<string> {
+
+    return this._http.delete(this._config.deleteUserUrl + '/' + userId)
       .map(res => {
-        return this._ParseUserFromJSON(res);
+        return res.json().message;
       });
 
   }
 
-  // Retrieve currently-authenticated user.
-  public GetCurrentUser() { return this._user; }
+  private _getNewUserId(): Observable<string> {
 
-  // Convert JSON to Typed UserModel.
-  private _ParseUserFromJSON(res: Response) {
+    return this._http.get(this._config.getNewUserIdUrl)
+      .map(res => {
+        return res.json().data;
+      });
 
-    let user = res.json();
+  }
 
-    // New instance of UserModel.
-    this._user = new UserModel();
+  private _uploadUserProfileImage(userId: string, file: string): Promise<any> {
 
-    // Set Properties.
-    this._user.id = user.id;
-    this._user.name = user.name;
-    this._user.email = user.email;
-    this._user.isLoggedIn = user.isLoggedIn;
+    let promise = new Promise<any>((res, rej) => {
 
-    // Propogate user model to all subscribers.
-    this._user$.next(this._user);
+      let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(file);
 
-    // Return UserModel object.
-    return this._user;
+      this._fileService.uploadFile('users', userId, fileName, file).then(function (imageUrl) {
+
+        res(imageUrl);
+
+      }).catch(function (error) {
+
+        rej(error);
+
+      });
+
+    });
+
+    return promise;
 
   }
 
@@ -93,29 +198,11 @@ export class UserService {
   }
 
   // Maps raw JSON data to UserModels.
-  private _MapUser(response: any) {
+  private _mapUser(response: any) {
 
     let newUser: UserModel = response.json().data;
 
     return newUser;
-
-  }
-
-  public addUser(model: AddUserModel): Observable<UserModel> {
-
-    return this._http.post(this._config.addUserUrl, model)
-      .map(res => {
-        return this._MapUser(res);
-      });
-
-  }
-
-  public editUser(model: UserModel): Observable<UserModel> {
-
-    return this._http.put(this._config.addUserUrl, model)
-      .map(res => {
-        return this._MapUser(res);
-      });
 
   }
 

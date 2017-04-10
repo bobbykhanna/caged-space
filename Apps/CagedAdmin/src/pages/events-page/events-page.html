@@ -9,18 +9,20 @@
 
 </ion-header>
 
-<ion-fab bottom right *ngIf="_isMobileDevice">
+<ion-fab bottom right *ngIf="isMobileDevice">
     <button ion-fab color="secondary" (click)="addNewEvent()"><ion-icon name="add"></ion-icon></button>
 </ion-fab>
 
-<ion-content padding>
+<ion-content>
 
-    <ion-list *ngIf="_isMobileDevice">
+    <ion-searchbar padding *ngIf="isMobileDevice" (ionInput)="filterEvents($event)"></ion-searchbar>
 
-        <ion-item *ngFor="let event of events" no-lines (click)="openDetails(event)">
+    <ion-list padding *ngIf="isMobileDevice">
+
+        <ion-item *ngFor="let event of filteredEvents" no-lines (click)="openDetails(event)">
 
             <ion-thumbnail item-left>
-                <img src="../../assets/thumbnail-totoro.png">
+                <img [src]="event.eventImageUrl">
             </ion-thumbnail>
 
             <h2>{{event.name}}</h2>
@@ -30,14 +32,14 @@
 
     </ion-list>
 
-    <ion-grid *ngIf="!_isMobileDevice">
+    <ion-grid *ngIf="!isMobileDevice">
         <ion-row>
 
             <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 (click)="addNewEvent()">
 
                 <ion-card>
 
-                    <img src="../../assets/new_user.png" />
+                    <img src="../../assets/new_event.png" />
 
 
                     <ion-card-content>
@@ -52,10 +54,10 @@
 
             </ion-col>
 
-            <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 *ngFor="let event of events" (click)="openDetails(event)">
+            <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 *ngFor="let event of filteredEvents" (click)="openDetails(event)">
 
                 <ion-card>
-                    <img src="../../assets/thumbnail-totoro.png" />
+                    <img [src]="event.eventImageUrl">
                     <ion-card-content>
 
                         <ion-card-title>
@@ -70,3 +72,11 @@
     </ion-grid>
 
 </ion-content>
+
+<ion-footer *ngIf="!isMobileDevice">
+
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="filterEvents($event)"></ion-searchbar>
+  </ion-toolbar>
+
+</ion-footer>

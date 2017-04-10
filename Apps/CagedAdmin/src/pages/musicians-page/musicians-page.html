@@ -4,33 +4,37 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+
     <ion-title>Musicians</ion-title>
+
   </ion-navbar>
 
 </ion-header>
 
-<ion-fab bottom right *ngIf="_isMobileDevice">
+<ion-fab bottom right *ngIf="isMobileDevice">
   <button ion-fab color="secondary" (click)="addNewMusician()"><ion-icon name="add"></ion-icon></button>
 </ion-fab>
 
-<ion-content padding>
+<ion-content>
 
-  <ion-list *ngIf="_isMobileDevice">
+  <ion-searchbar padding *ngIf="isMobileDevice" (ionInput)="filterMusicians($event)"></ion-searchbar>
 
-    <ion-item *ngFor="let musician of musicians" no-lines (click)="openDetails(musician)">
+  <ion-list padding *ngIf="isMobileDevice">
+
+    <ion-item *ngFor="let musician of filteredMusicians" no-lines (click)="openDetails(musician)">
 
       <ion-thumbnail item-left>
-        <img src="../../assets/thumbnail-totoro.png">
+        <img [src]="musician.profileImageUrl">
       </ion-thumbnail>
 
       <h2>{{musician.name}}</h2>
       <p>Instrument: {{musician.instrument}}</p>
-      
+
     </ion-item>
 
   </ion-list>
 
-  <ion-grid *ngIf="!_isMobileDevice">
+  <ion-grid *ngIf="!isMobileDevice">
     <ion-row>
 
       <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 (click)="addNewMusician()">
@@ -51,10 +55,10 @@
 
       </ion-col>
 
-      <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 *ngFor="let musician of musicians" (click)="openDetails(musician)">
+      <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 *ngFor="let musician of filteredMusicians" (click)="openDetails(musician)">
 
         <ion-card>
-          <img src="../../assets/thumbnail-totoro.png" />
+          <img [src]="musician.profileImageUrl" />
           <ion-card-content>
 
             <ion-card-title>
@@ -69,3 +73,11 @@
   </ion-grid>
 
 </ion-content>
+
+<ion-footer *ngIf="!isMobileDevice">
+
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="filterMusicians($event)"></ion-searchbar>
+  </ion-toolbar>
+
+</ion-footer>

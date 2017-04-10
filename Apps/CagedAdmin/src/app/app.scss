@@ -14,3 +14,18 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+// Make split-pane menu less wide on large screens.
+.menu-enabled.split-pane-side:not(.show-menu) {
+    max-width: 280px!important;
+}
+
+// Hide menu scrollbar.
+.menu-enabled.split-pane-side:not(.show-menu) .scroll-content {
+    overflow-y: hidden!important;
+}
+
+// Hide alert scrollbar.
+.alert-message {
+    overflow-y: hidden!important;
+}

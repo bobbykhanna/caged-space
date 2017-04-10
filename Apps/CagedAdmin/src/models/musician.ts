@@ -6,6 +6,5 @@ export class MusicianModel  {
     public description: string;
     public instrument: string;
     public profileImageUrl: string;
-    public profileImageThumbnailUrl: string;
 
 }

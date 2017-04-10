@@ -27,14 +27,11 @@
           <ion-card-content>
 
             <div *ngIf="!isEditing">
-              <ion-card-title>
-                {{stream.name}}
-              </ion-card-title>
               <p>
-                <strong>Description: </strong>{{stream.description}}
+                <strong>Stream IP: </strong>{{stream.ip}}
               </p>
               <p>
-                <strong>Stream: </strong>{{stream.streamUrl}}
+                <strong>Description: </strong>{{stream.description}}
               </p>
             </div>
 
@@ -43,21 +40,21 @@
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
-                  <ion-input type="text" formControlName="name"></ion-input>
+                  <ion-input type="text" formControlName="name" value="{{stream.name}}"></ion-input>
+                </ion-item>
+              </div>
+
+              <div padding>
+                <ion-item secondary>
+                  <ion-label floating>Stream IP:</ion-label>
+                  <ion-textarea type="text" formControlName="ip" value="{{stream.ip}}"></ion-textarea>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Description:</ion-label>
-                  <ion-textarea type="text" formControlName="description"></ion-textarea>
-                </ion-item>
-              </div>
-
-              <div padding>
-                <ion-item secondary>
-                  <ion-label floating>Stream Url:</ion-label>
-                  <ion-textarea type="text" formControlName="streamUrl"></ion-textarea>
+                  <ion-textarea type="text" formControlName="description" value="{{stream.description}}"></ion-textarea>
                 </ion-item>
               </div>
 

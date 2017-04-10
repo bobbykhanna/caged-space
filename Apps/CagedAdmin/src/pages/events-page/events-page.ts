@@ -11,21 +11,22 @@ import { AddEventPage } from '../../pages/add-event-page/add-event-page';
   templateUrl: 'events-page.html'
 })
 export class EventsPage {
-
-  private events: Array<EventModel>
-  private _isMobileDevice: boolean;
+  private unfilteredEvents: Array<EventModel>;
+  private filteredEvents: Array<EventModel>
+  private isMobileDevice: boolean;
 
   constructor(private _eventService: EventService, private _nav: NavController, private _platform: Platform) {
 
     this._platform.ready().then((readySource) => {
 
-      this._isMobileDevice = (this._platform.width() <= 768);
+      this.isMobileDevice = (this._platform.width() <= 768);
 
     });
 
     this._eventService.events$.subscribe(events => {
 
-      this.events = events;
+      this.unfilteredEvents = events;
+      this.filteredEvents = events;
 
     });
 
@@ -48,8 +49,30 @@ export class EventsPage {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
 
-    this._isMobileDevice = (event.target.innerWidth <= 768);
+    this.isMobileDevice = (event.target.innerWidth <= 768);
 
   }
 
+  // Search events by name.
+  filterEvents(event: any) {
+
+    let allEvents = this.unfilteredEvents;
+
+    let searchText = event.target.value;
+
+    if (searchText && searchText.trim() != '') {
+
+      this.filteredEvents = allEvents.filter((item) => {
+
+        return (item.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
+
+      });
+
+    } else {
+
+      this.filteredEvents = allEvents;
+
+    }
+
+  }
 }
