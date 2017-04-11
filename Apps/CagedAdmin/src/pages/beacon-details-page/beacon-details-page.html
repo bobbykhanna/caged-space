@@ -8,8 +8,12 @@
 
 <ion-content padding>
 
-  <ion-fab bottom right *ngIf="!isEditing">
-    <button ion-fab (click)="toggleEditBeacon()"><ion-icon name="create"></ion-icon></button>
+  <ion-fab right bottom *ngIf="!isEditing">
+    <button ion-fab color="primary"><ion-icon name="build"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab color="danger" (click)="toggleDeleteBeacon()"><ion-icon name="trash"></ion-icon></button>
+      <button ion-fab color="primary" (click)="toggleEditBeacon()"><ion-icon name="create"></ion-icon></button>
+    </ion-fab-list>
   </ion-fab>
 
   <ion-fab bottom right *ngIf="isEditing">
@@ -21,49 +25,52 @@
       <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
 
         <ion-card>
-          <img src="../../assets/thumbnail-totoro.png" />
+          <img [src]="BeaconProfileImage" />
 
           <ion-card-content>
 
             <div *ngIf="!isEditing">
-           
+              <p>
+                <strong>Guid: </strong>{{beacon.guid}}
+              </p>
               <p>
                 <strong>Description: </strong>{{beacon.description}}
-              </p>              
-              <p>
-                <strong>guid: </strong>{{beacon.guid}}
               </p>
             </div>
+
             <form *ngIf="isEditing" [formGroup]="editBeaconForm" (ngSubmit)="editBeacon(editBeaconForm.valid)">
+
+              <div padding *ngIf="isEditing">
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
-                  <ion-input type="text" formControlName="name"></ion-input>
+                  <ion-input type="text" formControlName="name" [ngModel]="beacon.name"></ion-input>
                 </ion-item>
               </div>
-
-             
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Description:</ion-label>
-                  <ion-textarea type="text" formControlName="description"></ion-textarea>
+                  <ion-input type="text" formControlName="description" [ngModel]="beacon.description"></ion-input>
                 </ion-item>
               </div>
-
-               
 
               <div padding>
                 <ion-item secondary>
-                  <ion-label floating>GUID:</ion-label>
-                  <ion-input type="text" formControlName="guid"></ion-input>
+                  <ion-label floating>Guid:</ion-label>
+                  <ion-textarea type="text" formControlName="Guid" [ngModel]="beacon.guid"></ion-textarea>
                 </ion-item>
               </div>
 
-
               <div padding>
-                <button color="primary" ion-button block type="submit">Update Beacon's Info</button>
+                <button color="primary" ion-button block type="submit">Update Beacons's Info</button>
+              </div>
+
+              <div style="height:0px;overflow:hidden">
+                <input #image type="file" accept="image/*" />
               </div>
 
             </form>

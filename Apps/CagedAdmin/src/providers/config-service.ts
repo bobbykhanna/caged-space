@@ -101,16 +101,20 @@ export class ConfigService {
   }
 
   // Beacons
-  get deleteBeaconUrl(): string {
-    return this._functionsConfig.deleteBeaconUrl;
-  }
-
   get addBeaconUrl(): string {
     return this._functionsConfig.createBeaconUrl;
   }
 
   get updateBeaconUrl(): string {
     return this._functionsConfig.updateBeaconUrl;
+  }
+
+  get deleteBeaconUrl(): string {
+    return this._functionsConfig.deleteBeaconUrl;
+  }
+
+  get getNewBeaconIdUrl(): string {
+    return this._functionsConfig.getNewBeaconIdUrl;
   }
 
   // Streams
