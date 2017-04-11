@@ -10,7 +10,7 @@ import { UtilityService } from '../../providers/utility-service';
   templateUrl: 'event-details-page.html'
 })
 export class EventDetailsPage {
-  @ViewChild('imageInputEdit') imageInputEdit: ElementRef;
+  @ViewChild('eventImageInputEdit') eventImageInputEdit: ElementRef;
 
   public isEditing: boolean = false;
   public event: EventModel;
@@ -42,39 +42,19 @@ export class EventDetailsPage {
     }
   }
 
-
-  /*ionViewDidEnter() {
-    console.log('ionViewDidLoad EventDetailsPage');
-    this.event = this._navParams.get('model');
-    this.editEventForm.value.name = this.event.name;
-    this.editEventForm.value.description = this.event.description;
-    this.editEventForm.value.beginDate = this.event.beginDate;
-    this.editEventForm.value.endDate = this.event.endDate;
-    this.editEventForm.value.location = this.event.location;
-  }*/
   ngAfterViewInit() {
 
     // Create an event listener when event's image is uploaded. 
+    if (this.eventImageInputEdit) {
 
-    if (this.imageInputEdit) {
-
-      this.imageInputEdit.nativeElement.addEventListener('change', event => {
+      this.eventImageInputEdit.nativeElement.addEventListener('change', event => {
         this.readSingleFile(event);
       }, false);
 
     }
 
   }
-  /*
-    ionViewDidLoad() {
-  
-      // Create an event listener when musician's image is uploaded. 
-      document.getElementById('editEventImageUpload').addEventListener('change', event => {
-        this.readSingleFile(event);
-      }, false);
-  
-    }
-  */
+
   // Display Edit Event Form.
   public toggleEditEvent() {
 
@@ -156,7 +136,7 @@ export class EventDetailsPage {
 
   public toggleImageUpload() {
 
-    this.imageInputEdit.nativeElement.click();
+    this.eventImageInputEdit.nativeElement.click();
 
   }
 

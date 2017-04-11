@@ -21,7 +21,6 @@ export class AddUserPage {
 
     this.addUserForm = this._fb.group({
       name: ['', Validators.required],
-      id: ['', Validators.required],
       email: ['', Validators.required]
     });
 
@@ -47,10 +46,7 @@ export class AddUserPage {
       let model = new UserModel();
 
       model.name = this.addUserForm.value.name;
-      model.id = this.addUserForm.value.id;
       model.email = this.addUserForm.value.email;
-
-     
 
       this._userService.addUser(model, this.hasUploadedNewImage, this.userProfileImage)
         .then(user => {

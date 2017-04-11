@@ -25,13 +25,13 @@
       <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
 
         <ion-card>
-          <img [src]="BeaconProfileImage" />
+          <img [src]="beaconProfileImage" />
 
           <ion-card-content>
 
             <div *ngIf="!isEditing">
               <p>
-                <strong>Guid: </strong>{{beacon.guid}}
+                <strong>GUID: </strong>{{beacon.guid}}
               </p>
               <p>
                 <strong>Description: </strong>{{beacon.description}}
@@ -53,15 +53,15 @@
 
               <div padding>
                 <ion-item secondary>
-                  <ion-label floating>Description:</ion-label>
-                  <ion-input type="text" formControlName="description" [ngModel]="beacon.description"></ion-input>
+                  <ion-label floating>GUID:</ion-label>
+                  <ion-input type="text" formControlName="guid" [ngModel]="beacon.guid"></ion-input>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
-                  <ion-label floating>Guid:</ion-label>
-                  <ion-textarea type="text" formControlName="Guid" [ngModel]="beacon.guid"></ion-textarea>
+                  <ion-label floating>Description:</ion-label>
+                  <ion-input type="text" formControlName="description" [ngModel]="beacon.description"></ion-input>
                 </ion-item>
               </div>
 
@@ -69,11 +69,11 @@
                 <button color="primary" ion-button block type="submit">Update Beacons's Info</button>
               </div>
 
-              <div style="height:0px;overflow:hidden">
-                <input #image type="file" accept="image/*" />
-              </div>
-
             </form>
+
+            <div style="height:0px;overflow:hidden">
+              <input #beaconImageInputEdit type="file" accept="image/*" />
+            </div>
 
           </ion-card-content>
 

@@ -49,7 +49,7 @@
               <p>
                 <strong>Description: </strong>{{event.description}}
               </p>
-              
+
             </div>
 
             <form *ngIf="isEditing" [formGroup]="editEventForm" (ngSubmit)="editEvent(editEventForm.valid)">
@@ -61,14 +61,14 @@
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
-                  <ion-input type="text" formControlName="name"[ngModel]="event.name"></ion-input>
+                  <ion-input type="text" formControlName="name" [ngModel]="event.name"></ion-input>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Location:</ion-label>
-                  <ion-input type="text" formControlName="location"[ngModel]="event.location"></ion-input>
+                  <ion-input type="text" formControlName="location" [ngModel]="event.location"></ion-input>
                 </ion-item>
               </div>
 
@@ -89,19 +89,19 @@
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Description:</ion-label>
-                  <ion-textarea type="text" formControlName="description"[ngModel]="event.description"></ion-textarea>
+                  <ion-textarea type="text" formControlName="description" [ngModel]="event.description"></ion-textarea>
                 </ion-item>
               </div>
-              
+
               <div padding>
                 <button color="primary" ion-button block type="submit">Update Event's Info</button>
               </div>
 
-              <div style="height:0px;overflow:hidden">
-                <input #imageInputEdit type="file" accept="image/*" />
-              </div>
-
             </form>
+
+            <div style="height:0px;overflow:hidden">
+              <input #eventImageInputEdit type="file" accept="image/*" />
+            </div>
 
           </ion-card-content>
 

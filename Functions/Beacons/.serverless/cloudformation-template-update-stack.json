@@ -48,121 +48,6 @@
             }
           ]
         },
-        "Policies": [
-          {
-            "PolicyName": {
-              "Fn::Join": [
-                "-",
-                [
-                  "dev",
-                  "beacons",
-                  "lambda"
-                ]
-              ]
-            },
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogStream"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::GetAtt": [
-                        "GetNewBeaconIdLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "AddBeaconLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "UpdateBeaconLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "DeleteBeaconLogGroup",
-                        "Arn"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:PutLogEvents"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "GetNewBeaconIdLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "AddBeaconLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "UpdateBeaconLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "DeleteBeaconLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        ],
         "Path": "/",
         "RoleName": {
           "Fn::Join": [
@@ -177,6 +62,99 @@
         }
       }
     },
+    "IamPolicyLambdaExecution": {
+      "Type": "AWS::IAM::Policy",
+      "DependsOn": [
+        "IamRoleLambdaExecution"
+      ],
+      "Properties": {
+        "PolicyName": {
+          "Fn::Join": [
+            "-",
+            [
+              "dev",
+              "beacons",
+              "lambda"
+            ]
+          ]
+        },
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "GetNewBeaconIdLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "AddBeaconLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "UpdateBeaconLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "DeleteBeaconLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "IamRoleLambdaExecution"
+          }
+        ]
+      }
+    },
     "GetNewBeaconIdLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -184,7 +162,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/beacons/dev/1491783602533-2017-04-10T00:20:02.533Z/beacons.zip"
+          "S3Key": "serverless/beacons/dev/1491873761500-2017-04-11T01:22:41.500Z/beacons.zip"
         },
         "FunctionName": "beacons-dev-getNewBeaconId",
         "Handler": "handler.getNewBeaconId",
@@ -199,17 +177,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "GetNewBeaconIdLambdaVersionWCViYkK5x1PyuQCYIdG75ua2AcO6OsrqEclFi0ys": {
+    "GetNewBeaconIdLambdaVersionncQAwBxN2RJ2p57qnNOIjS49tZdioJNXzgAdOxGtbM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetNewBeaconIdLambdaFunction"
         },
-        "CodeSha256": "WCViYkK5x1PyuQCY+I+dG75ua2AcO6OsrqEclFi0+ys="
+        "CodeSha256": "ncQAwBx/N2RJ2p57qnNOIjS49tZdioJNXzgAdOxGtbM="
       }
     },
     "AddBeaconLambdaFunction": {
@@ -219,7 +198,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/beacons/dev/1491783602533-2017-04-10T00:20:02.533Z/beacons.zip"
+          "S3Key": "serverless/beacons/dev/1491873761500-2017-04-11T01:22:41.500Z/beacons.zip"
         },
         "FunctionName": "beacons-dev-addBeacon",
         "Handler": "handler.addBeacon",
@@ -234,17 +213,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "AddBeaconLambdaVersionWCViYkK5x1PyuQCYIdG75ua2AcO6OsrqEclFi0ys": {
+    "AddBeaconLambdaVersionncQAwBxN2RJ2p57qnNOIjS49tZdioJNXzgAdOxGtbM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AddBeaconLambdaFunction"
         },
-        "CodeSha256": "WCViYkK5x1PyuQCY+I+dG75ua2AcO6OsrqEclFi0+ys="
+        "CodeSha256": "ncQAwBx/N2RJ2p57qnNOIjS49tZdioJNXzgAdOxGtbM="
       }
     },
     "UpdateBeaconLambdaFunction": {
@@ -254,7 +234,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/beacons/dev/1491783602533-2017-04-10T00:20:02.533Z/beacons.zip"
+          "S3Key": "serverless/beacons/dev/1491873761500-2017-04-11T01:22:41.500Z/beacons.zip"
         },
         "FunctionName": "beacons-dev-updateBeacon",
         "Handler": "handler.updateBeacon",
@@ -269,17 +249,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateBeaconLambdaVersionWCViYkK5x1PyuQCYIdG75ua2AcO6OsrqEclFi0ys": {
+    "UpdateBeaconLambdaVersionncQAwBxN2RJ2p57qnNOIjS49tZdioJNXzgAdOxGtbM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateBeaconLambdaFunction"
         },
-        "CodeSha256": "WCViYkK5x1PyuQCY+I+dG75ua2AcO6OsrqEclFi0+ys="
+        "CodeSha256": "ncQAwBx/N2RJ2p57qnNOIjS49tZdioJNXzgAdOxGtbM="
       }
     },
     "DeleteBeaconLambdaFunction": {
@@ -289,7 +270,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/beacons/dev/1491783602533-2017-04-10T00:20:02.533Z/beacons.zip"
+          "S3Key": "serverless/beacons/dev/1491873761500-2017-04-11T01:22:41.500Z/beacons.zip"
         },
         "FunctionName": "beacons-dev-deleteBeacon",
         "Handler": "handler.deleteBeacon",
@@ -304,17 +285,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteBeaconLambdaVersionWCViYkK5x1PyuQCYIdG75ua2AcO6OsrqEclFi0ys": {
+    "DeleteBeaconLambdaVersionncQAwBxN2RJ2p57qnNOIjS49tZdioJNXzgAdOxGtbM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteBeaconLambdaFunction"
         },
-        "CodeSha256": "WCViYkK5x1PyuQCY+I+dG75ua2AcO6OsrqEclFi0+ys="
+        "CodeSha256": "ncQAwBx/N2RJ2p57qnNOIjS49tZdioJNXzgAdOxGtbM="
       }
     },
     "ApiGatewayRestApi": {
@@ -652,7 +634,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1491783602679": {
+    "ApiGatewayDeployment1491873761531": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -809,25 +791,25 @@
     "GetNewBeaconIdLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetNewBeaconIdLambdaVersionWCViYkK5x1PyuQCYIdG75ua2AcO6OsrqEclFi0ys"
+        "Ref": "GetNewBeaconIdLambdaVersionncQAwBxN2RJ2p57qnNOIjS49tZdioJNXzgAdOxGtbM"
       }
     },
     "AddBeaconLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddBeaconLambdaVersionWCViYkK5x1PyuQCYIdG75ua2AcO6OsrqEclFi0ys"
+        "Ref": "AddBeaconLambdaVersionncQAwBxN2RJ2p57qnNOIjS49tZdioJNXzgAdOxGtbM"
       }
     },
     "UpdateBeaconLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateBeaconLambdaVersionWCViYkK5x1PyuQCYIdG75ua2AcO6OsrqEclFi0ys"
+        "Ref": "UpdateBeaconLambdaVersionncQAwBxN2RJ2p57qnNOIjS49tZdioJNXzgAdOxGtbM"
       }
     },
     "DeleteBeaconLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteBeaconLambdaVersionWCViYkK5x1PyuQCYIdG75ua2AcO6OsrqEclFi0ys"
+        "Ref": "DeleteBeaconLambdaVersionncQAwBxN2RJ2p57qnNOIjS49tZdioJNXzgAdOxGtbM"
       }
     },
     "ServiceEndpoint": {

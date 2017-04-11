@@ -11,7 +11,7 @@ import { UtilityService } from '../../providers/utility-service';
   templateUrl: 'music-stream-details-page.html'
 })
 export class MusicStreamDetailsPage {
-  @ViewChild('imageInputEdit') imageInputEdit: ElementRef;
+  @ViewChild('streamImageInputEdit') streamImageInputEdit: ElementRef;
 
   public isEditing: boolean = false;
   public stream: StreamModel;
@@ -46,10 +46,9 @@ export class MusicStreamDetailsPage {
   ngAfterViewInit() {
 
     // Create an event listener when stream's image is uploaded. 
-    console.log("in AfterView");
-    if (this.imageInputEdit) {
+    if (this.streamImageInputEdit) {
 
-      this.imageInputEdit.nativeElement.addEventListener('change', event => {
+      this.streamImageInputEdit.nativeElement.addEventListener('change', event => {
         this.readSingleFile(event);
       }, false);
 
@@ -129,7 +128,7 @@ export class MusicStreamDetailsPage {
 
   public toggleImageUpload() {
 
-    this.imageInputEdit.nativeElement.click();
+    this.streamImageInputEdit.nativeElement.click();
     
   }
 

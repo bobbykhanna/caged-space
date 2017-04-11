@@ -30,9 +30,9 @@
           <ion-card-content>
 
             <div *ngIf="!isEditing">
-              
+
               <p>
-                <strong>Email:</strong>{{user.email}}
+                <strong>Email:</strong> {{user.email}}
               </p>
             </div>
 
@@ -42,14 +42,14 @@
                 <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
               </div>
 
-             <div padding>
+              <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
                   <ion-textarea type="text" formControlName="name" [ngModel]="user.name"></ion-textarea>
                 </ion-item>
               </div>
 
-      
+
 
               <div padding>
                 <ion-item secondary>
@@ -62,11 +62,11 @@
                 <button color="primary" ion-button block type="submit">Update User's Info</button>
               </div>
 
-              <div style="height:0px;overflow:hidden">
-                <input #imageInputEdit type="file" accept="image/*" />
-              </div>
-
             </form>
+
+            <div style="height:0px;overflow:hidden">
+              <input #userImageInputEdit type="file" accept="image/*" />
+            </div>
 
           </ion-card-content>
 

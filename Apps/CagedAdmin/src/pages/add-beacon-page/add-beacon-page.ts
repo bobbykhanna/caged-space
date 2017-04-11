@@ -47,9 +47,8 @@ export class AddBeaconPage {
       let model = new BeaconModel();
 
       model.name = this.addBeaconForm.value.name;
-      
       model.description = this.addBeaconForm.value.description;
-      model.guid = this.addBeaconForm.value.instrument;
+      model.guid = this.addBeaconForm.value.guid;
 
       this._beaconService.addBeacon(model, this.hasUploadedNewImage, this.beaconProfileImage)
         .then(beacon => {

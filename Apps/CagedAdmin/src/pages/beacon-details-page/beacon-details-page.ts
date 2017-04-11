@@ -11,7 +11,7 @@ import { UtilityService } from '../../providers/utility-service';
   templateUrl: 'beacon-details-page.html'
 })
 export class BeaconDetailsPage {
-  @ViewChild('image') input: ElementRef;
+  @ViewChild('beaconImageInputEdit') beaconImageInputEdit: ElementRef;
 
   public isEditing: boolean = false;
   public beacon: BeaconModel;
@@ -26,7 +26,7 @@ export class BeaconDetailsPage {
     this.editBeaconForm = this._fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      Guid: ['', Validators.required]
+      guid: ['', Validators.required]
     });
 
     this.beacon = this._navParams.get('model');
@@ -46,10 +46,9 @@ export class BeaconDetailsPage {
   ngAfterViewInit() {
 
     // Create an event listener when beacon's image is uploaded. 
+    if (this.beaconImageInputEdit) {
 
-    if (this.input) {
-
-      this.input.nativeElement.addEventListener('change', event => {
+      this.beaconImageInputEdit.nativeElement.addEventListener('change', event => {
         this.readSingleFile(event);
       }, false);
 
@@ -130,7 +129,7 @@ export class BeaconDetailsPage {
 
   public toggleImageUpload() {
 
-    this.input.nativeElement.click();
+    this.beaconImageInputEdit.nativeElement.click();
 
   }
 

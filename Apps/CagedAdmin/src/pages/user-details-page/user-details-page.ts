@@ -11,7 +11,7 @@ import { UtilityService } from '../../providers/utility-service';
   templateUrl: 'user-details-page.html'
 })
 export class UserDetailsPage {
-  @ViewChild('imageInputEdit') imageInputEdit: ElementRef;
+  @ViewChild('userImageInputEdit') userImageInputEdit: ElementRef;
 
   public isEditing: boolean = false;
   public user: UserModel;
@@ -46,10 +46,9 @@ export class UserDetailsPage {
   ngAfterViewInit() {
 
     // Create an event listener when user's image is uploaded. 
+    if (this.userImageInputEdit) {
 
-    if (this.imageInputEdit) {
-
-      this.imageInputEdit.nativeElement.addEventListener('change', event => {
+      this.userImageInputEdit.nativeElement.addEventListener('change', event => {
         this.readSingleFile(event);
       }, false);
 
@@ -130,7 +129,7 @@ export class UserDetailsPage {
 
   public toggleImageUpload() {
 
-    this.imageInputEdit.nativeElement.click();
+    this.userImageInputEdit.nativeElement.click();
 
   }
 

@@ -11,7 +11,7 @@ import { UtilityService } from '../../providers/utility-service';
   templateUrl: 'musician-details-page.html'
 })
 export class MusicianDetailsPage {
-  @ViewChild('image') input: ElementRef;
+  @ViewChild('musicianImageInputEdit') musicianImageInputEdit: ElementRef;
 
   public isEditing: boolean = false;
   public musician: MusicianModel;
@@ -46,10 +46,9 @@ export class MusicianDetailsPage {
   ngAfterViewInit() {
 
     // Create an event listener when musician's image is uploaded. 
+    if (this.musicianImageInputEdit) {
 
-    if (this.input) {
-
-      this.input.nativeElement.addEventListener('change', event => {
+      this.musicianImageInputEdit.nativeElement.addEventListener('change', event => {
         this.readSingleFile(event);
       }, false);
 
@@ -130,7 +129,7 @@ export class MusicianDetailsPage {
 
   public toggleImageUpload() {
 
-    this.input.nativeElement.click();
+    this.musicianImageInputEdit.nativeElement.click();
 
   }
 
