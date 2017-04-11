@@ -17,22 +17,22 @@ import { EventModel } from '../../models/event';
   templateUrl: 'add-event-page.html'
 })
 export class AddEventPage {
- @ViewChild('imageInput') imageInput: ElementRef;
+  @ViewChild('imageInput') imageInput: ElementRef;
 
   addEventForm: any;
   hasUploadedNewImage: boolean;
   eventProfileImage: string = '../../assets/thumbnail-totoro.png';
-// -------- Written by Saransh Bhardwaj on 2nd April 2017 ------------
+  // -------- Written by Saransh Bhardwaj on 2nd April 2017 ------------
   constructor(public navCtrl: NavController, public navParams: NavParams, private _fb: FormBuilder, private _eventService: EventService,
     private _util: UtilityService, private _nav: NavController) {
 
-     this.addEventForm = this._fb.group({
+    this.addEventForm = this._fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       beginDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      endDate: ['', Validators.required,],
       location: ['', Validators.required],
-     
+
     });
   }
 
@@ -45,12 +45,17 @@ export class AddEventPage {
 
   }
 
-    // Add New Event.
-    /* this method will get called when a user clicks on Add Event button of Add Event page */
+  // Add New Event.
+  /* this method will get called when a user clicks on Add Event button of Add Event page */
   public addEvent(isValid: boolean) {
 
     if (isValid) {
 
+      if (this.addEventForm.value.endDate < this.addEventForm.value.beginDate) {
+
+        this._util.ShowAlert('', 'Event End Date cannot be less than Event Start Date');
+        return;
+      }
       // Instantiate spinner. 
       this._util.StartSpinner('Adding New Event...');
 
@@ -61,6 +66,7 @@ export class AddEventPage {
       model.beginDate = this.addEventForm.value.beginDate;
       model.endDate = this.addEventForm.value.endDate;
       model.description = this.addEventForm.value.description;
+
 
       this._eventService.addEvent(model, this.hasUploadedNewImage, this.eventProfileImage)
         .then(musician => {
@@ -74,7 +80,7 @@ export class AddEventPage {
 
           this._util.StopSpinner();
 
-          this._util.ShowAlert('Internal Error', 'Could not add new Musician.');
+          this._util.ShowAlert('Internal Error', 'Could not add new Event.');
 
         });
 
@@ -82,7 +88,7 @@ export class AddEventPage {
 
   }
   // -------- Written by Saransh Bhardwaj till here ------------
-// Enables uploaded image preview.
+  // Enables uploaded image preview.
   public readSingleFile(event: any) {
 
     let fileName = event.target.files[0];

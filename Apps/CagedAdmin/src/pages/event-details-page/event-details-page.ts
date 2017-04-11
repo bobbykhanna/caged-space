@@ -95,17 +95,23 @@ export class EventDetailsPage {
 
     if (isValid) {
 
+      if (this.editEventForm.value.endDate < this.editEventForm.value.beginDate) {
+
+        this._util.ShowAlert('', 'Event End Date cannot be less than Event Start Date');
+        return;
+      }
+
       // Instantiate spinner. 
       this._util.StartSpinner('Updating Event\'s Info...');
 
       let updatedEvent = this.event;
       updatedEvent.name = this.editEventForm.value.name
       updatedEvent.description = this.editEventForm.value.description;
-      updatedEvent.beginDate=this.editEventForm.value.beginDate;
-      updatedEvent.endDate=this.editEventForm.value.endDate
-      updatedEvent.location=this.editEventForm.value.location;
+      updatedEvent.beginDate = this.editEventForm.value.beginDate;
+      updatedEvent.endDate = this.editEventForm.value.endDate
+      updatedEvent.location = this.editEventForm.value.location;
 
-      this._eventService.editEvent(updatedEvent,  this.hasUploadedNewImage, this.eventProfileImage)
+      this._eventService.editEvent(updatedEvent, this.hasUploadedNewImage, this.eventProfileImage)
         .then(event => {
 
           this._util.StopSpinner();
@@ -196,6 +202,6 @@ export class EventDetailsPage {
 
     confirm.present();
 
-  }s
+  } s
 
 }
