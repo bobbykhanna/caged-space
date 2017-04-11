@@ -50,12 +50,12 @@ export class AddEventPage {
   public addEvent(isValid: boolean) {
 
     if (isValid) {
-      
-    if (this.addEventForm.value.endDate < this.addEventForm.value.beginDate) {
 
-      this._util.ShowAlert('', 'Event End Date cannot be less than Event Start Date');
-      return;
-    }
+      if (this.addEventForm.value.endDate < this.addEventForm.value.beginDate) {
+
+        this._util.ShowAlert('', 'Event End Date cannot be less than Event Start Date');
+        return;
+      }
       // Instantiate spinner. 
       this._util.StartSpinner('Adding New Event...');
 

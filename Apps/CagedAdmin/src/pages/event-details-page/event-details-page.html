@@ -75,14 +75,14 @@
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Event Start Date:</ion-label>
-                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="beginDate"[ngModel]="event.beginDate"></ion-datetime>
+                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="beginDate" max="2020-10-31" [ngModel]="event.beginDate"></ion-datetime>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Event End Date:</ion-label>
-                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="endDate"[ngModel]="event.endDate"></ion-datetime>
+                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="endDate" max="2020-10-31" [ngModel]="event.endDate"></ion-datetime>
                 </ion-item>
               </div>
 
