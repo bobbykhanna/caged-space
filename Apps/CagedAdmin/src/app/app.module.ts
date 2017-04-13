@@ -13,14 +13,17 @@ import { EventDetailsPage } from '../pages/event-details-page/event-details-page
 import { MusiciansPage } from '../pages/musicians-page/musicians-page';
 import { AddMusicianPage } from '../pages/add-musician-page/add-musician-page';
 import { MusicianDetailsPage } from '../pages/musician-details-page/musician-details-page';
+import { MusiciansPopoverPage } from '../pages/musicians-popover-page/musicians-popover-page';
 
 import { BeaconsPage } from '../pages/beacons-page/beacons-page';
 import { AddBeaconPage } from '../pages/add-beacon-page/add-beacon-page';
 import { BeaconDetailsPage } from '../pages/beacon-details-page/beacon-details-page';
+import { BeaconsPopoverPage } from '../pages/beacons-popover-page/beacons-popover-page';
 
 import { MusicStreamsPage } from '../pages/music-streams-page/music-streams-page';
 import { AddMusicStreamPage } from '../pages/add-music-stream-page/add-music-stream-page';
 import { MusicStreamDetailsPage } from '../pages/music-stream-details-page/music-stream-details-page';
+import { StreamsPopoverPage } from '../pages/streams-popover-page/streams-popover-page';
 
 import { UsersPage } from '../pages/users-page/users-page';
 import { AddUserPage } from '../pages/add-user-page/add-user-page';
@@ -57,12 +60,15 @@ export const firebaseConfig = {
     MusiciansPage,
     AddMusicianPage,
     MusicianDetailsPage,
+    MusiciansPopoverPage,
     BeaconsPage,
     AddBeaconPage,
     BeaconDetailsPage,
+    BeaconsPopoverPage,
     MusicStreamsPage,
     AddMusicStreamPage,
     MusicStreamDetailsPage,
+    StreamsPopoverPage,
     UsersPage,
     AddUserPage,
     UserDetailsPage
@@ -81,12 +87,15 @@ export const firebaseConfig = {
     MusiciansPage,
     AddMusicianPage,
     MusicianDetailsPage,
+    MusiciansPopoverPage,
     BeaconsPage,
     AddBeaconPage,
     BeaconDetailsPage,
+    BeaconsPopoverPage,
     MusicStreamsPage,
     AddMusicStreamPage,
     MusicStreamDetailsPage,
+    StreamsPopoverPage,
     UsersPage,
     AddUserPage,
     UserDetailsPage

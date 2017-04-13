@@ -1,9 +1,13 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, PopoverController, PopoverOptions, ViewController } from 'ionic-angular';
 import { EventModel } from '../../models/event';
 import { MusicianModel } from '../../models/musician';
 import { StreamModel } from '../../models/stream';
+import { EventStreamModel } from '../../models/eventStream';
+import { EventMusicianModel } from '../../models/eventMusician';
 import { MusicianDetailsPage } from '../musician-details-page/musician-details-page';
+import { MusiciansPopoverPage } from '../musicians-popover-page/musicians-popover-page';
+import { StreamsPopoverPage } from '../streams-popover-page/streams-popover-page';
 import { MusicStreamDetailsPage } from '../music-stream-details-page/music-stream-details-page';
 import { FormBuilder, Validators } from '@angular/forms';
 import { EventService } from '../../providers/event-service';
@@ -24,8 +28,10 @@ export class EventDetailsPage {
   editEventForm: any;
   hasUploadedNewImage: boolean;
   eventProfileImage: string;
-  private musicians: Array<MusicianModel>;;
-  streams: Array<StreamModel>;
+  private musicians: Array<MusicianModel>;
+  private availableMusicians: Array<MusicianModel>;
+  private streams: Array<StreamModel>;
+  private availableStreams: Array<StreamModel>;
 
   constructor(
     private _eventService: EventService,
@@ -35,7 +41,8 @@ export class EventDetailsPage {
     private _navCtrl: NavController,
     public _navParams: NavParams,
     private _fb: FormBuilder,
-    private _alertCtrl: AlertController
+    private _alertCtrl: AlertController,
+    private _popOver: PopoverController
   ) {
 
     this.event = new EventModel();
@@ -67,32 +74,52 @@ export class EventDetailsPage {
     this._musicianService.musicians$.subscribe(newMusicians => {
 
       let musicians = new Array<MusicianModel>();
+      let availableMusicians = new Array<MusicianModel>();
 
       let musiciansIds = this.event.musicians;
 
       newMusicians.forEach(function (musician) {
 
-        if (_.some(musiciansIds, function (id) { return id === musician.id; })) { musicians.push(musician); }
+        if (_.some(musiciansIds, function (id) { return id === musician.id; })) {
+
+          musicians.push(musician);
+
+        } else {
+
+          availableMusicians.push(musician);
+
+        }
 
       });
 
       this.musicians = musicians;
+      this.availableMusicians = availableMusicians;
 
     });
 
     this._streamService.streams$.subscribe(newStreams => {
 
       let streams = new Array<StreamModel>();
+      let availableStreams = new Array<StreamModel>();
 
       let streamsIds = this.event.streams;
 
       newStreams.forEach(function (stream) {
 
-        if (_.some(streamsIds, function (id) { return id === stream.id; })) { streams.push(stream); }
+        if (_.some(streamsIds, function (id) { return id === stream.id; })) {
+
+          streams.push(stream);
+
+        } else {
+
+          availableStreams.push(stream);
+
+        }
 
       });
 
       this.streams = streams;
+      this.availableStreams = availableStreams;
 
     });
 
@@ -257,14 +284,186 @@ export class EventDetailsPage {
 
   }
 
-  removeMusician(model: MusicianModel) {
+  unassignMusician(musician: MusicianModel) {
 
+    let model = new EventMusicianModel();
+
+    this._utilService.StartSpinner('Unassigning Musician...');
+
+    model.eventId = this.event.id;
+    model.musicianId = musician.id;
+
+    this._eventService.unassignMusicianFromEvent(model).subscribe(response => {
+
+      var index = this.musicians.indexOf(musician, 0);
+
+      if (index > -1) {
+        this.musicians.splice(index, 1);
+      }
+
+      this.event.musicians[musician.id] = null;
+
+      this.availableMusicians.push(musician);
+
+      this._utilService.StopSpinner();
+
+    }, error => {
+
+      this._utilService.StopSpinner();
+      this._utilService.ShowAlert('Internal Error', 'Cannot unassign Musician from Event');
+
+    });
 
   }
 
-  removeStream(model: StreamModel) {
+  unassignStream(stream: StreamModel) {
 
+    let model = new EventStreamModel();
+
+    this._utilService.StartSpinner('Unassigning Stream...');
+
+    model.eventId = this.event.id;
+    model.streamId = stream.id;
+
+    this._eventService.unassignStreamFromEvent(model).subscribe(response => {
+
+      var index = this.streams.indexOf(stream, 0);
+
+      if (index > -1) {
+        this.streams.splice(index, 1);
+      }
+
+      this.event.streams[stream.id] = null;
+
+      this.availableStreams.push(stream);
+
+      this._utilService.StopSpinner();
+
+    }, error => {
+
+      this._utilService.StopSpinner();
+      this._utilService.ShowAlert('Internal Error', 'Cannot unassign Stream from Event');
+
+    });
+
+  }
+
+  presentMusiciansPopover() {
+
+    if (this.availableMusicians.length > 0) {
+
+      let options: PopoverOptions = {};
+      options.enableBackdropDismiss = true;
+      options.showBackdrop = true;
+
+      let popover = this._popOver.create(MusiciansPopoverPage, this.availableMusicians, options);
+
+      popover.onDidDismiss(musician => this.assignMusician(musician));
+
+      popover.present();
+
+    } else {
+
+      this._utilService.ShowAlert('Alert', 'All musicians already assigned');
+
+    }
+
+  }
+
+  presentStreamsPopover() {
+
+    if (this.availableStreams.length > 0) {
+
+      let options: PopoverOptions = {};
+      options.enableBackdropDismiss = true;
+      options.showBackdrop = true;
+
+      let popover = this._popOver.create(StreamsPopoverPage, this.availableStreams, options);
+
+      popover.onDidDismiss(stream => this.assignStream(stream));
+
+      popover.present();
+
+    } else {
+
+      this._utilService.ShowAlert('Alert', 'All streams already assigned');
+
+    }
+
+  }
+
+  assignStream(stream: StreamModel) {
+
+    if (stream != null) {
+
+      this._utilService.StartSpinner('Assigning Stream...');
+
+      let model = new EventStreamModel();
+      model.eventId = this.event.id;
+      model.streamId = stream.id;
+
+      this._eventService.assignStreamToEvent(model).subscribe(response => {
+
+        var index = this.availableStreams.indexOf(stream, 0);
+
+        if (index > -1) {
+          this.availableStreams.splice(index, 1);
+        }
+
+        this.streams.push(stream);
+
+        if (!this.event.streams) { this.event.streams = new Array<string>(); }
+        this.event.streams[stream.id] = stream.id;
+
+        this._utilService.StopSpinner();
+
+      }, error => {
+
+        this._utilService.StopSpinner();
+        this._utilService.ShowAlert('Internal Error', 'Cannot assign Stream to Event');
+
+      });
+
+    }
+
+  }
+
+  assignMusician(musician: MusicianModel) {
+
+    if (musician != null) {
+
+      this._utilService.StartSpinner('Assigning Musician...');
+
+      let model = new EventMusicianModel();
+      model.eventId = this.event.id;
+      model.musicianId = musician.id;
+
+      this._eventService.assignMusicianToEvent(model).subscribe(response => {
+
+        var index = this.availableMusicians.indexOf(musician, 0);
+
+        if (index > -1) {
+          this.availableMusicians.splice(index, 1);
+        }
+
+        this.musicians.push(musician);
+
+        if (!this.event.musicians) { this.event.musicians = new Array<string>(); }
+        this.event.musicians[musician.id] = musician.id;
+
+        this._utilService.StopSpinner();
+
+      }, error => {
+
+        this._utilService.StopSpinner();
+        this._utilService.ShowAlert('Internal Error', 'Cannot assign Musician to Event');
+
+      });
+
+    }
 
   }
 
 }
+
+

@@ -120,12 +120,12 @@
                 <img [src]="musician.musicianImageFileName ? (musician.musicianImageDataUrl ? musician.musicianImageDataUrl : musician.musicianImageUrl) : '../../assets/default_image_square.png'">
               </ion-avatar>
               {{musician.name}}
-              <button ion-button color="danger" round item-right (click)="removeMusician(musician)"><ion-icon name="close"></ion-icon></button>
+              <button ion-button color="danger" round item-right (click)="unassignMusician(musician)"><ion-icon name="close"></ion-icon></button>
             </ion-item>
           </ion-list>
 
           <div padding *ngIf="isEditing">
-            <button color="primary" ion-button block type="button">Attach Musician</button>
+            <button color="primary" ion-button block type="button" (click)="presentMusiciansPopover()">Assign Musician</button>
           </div>
 
         </ion-card>
@@ -143,12 +143,12 @@
                 <img [src]="stream.streamImageFileName ? (stream.streamImageDataUrl ? stream.streamImageDataUrl : stream.streamImageUrl) : '../../assets/default_image_square.png'">
               </ion-avatar>
               {{stream.name}}
-              <button ion-button color="danger" round item-right (click)="removeStream(stream)"><ion-icon name="close"></ion-icon></button>
+              <button ion-button color="danger" round item-right (click)="unassignStream(stream)"><ion-icon name="close"></ion-icon></button>
             </ion-item>
           </ion-list>
 
           <div padding *ngIf="isEditing">
-            <button color="primary" ion-button block type="button">Attach Stream</button>
+            <button color="primary" ion-button block type="button" (click)="presentStreamsPopover()">Assign Stream</button>
           </div>
 
         </ion-card>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ConfigService } from '../providers/config-service';
@@ -7,6 +7,8 @@ import { FileService } from '../providers/file-service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { EventModel } from '../models/event';
+import { EventStreamModel } from '../models/eventStream';
+import { EventMusicianModel } from '../models/eventMusician';
 import { AngularFire } from 'angularfire2';
 
 @Injectable()
@@ -238,4 +240,49 @@ export class EventService {
     return promise;
 
   }
+
+  public assignStreamToEvent(model: EventStreamModel): Observable<any> {
+
+    let url = this._config.assignStreamToEventUrl.replace('{eventId}', model.eventId);
+
+    return this._http.post(url, model)
+      .map(res => {
+        return res.json();
+      });
+
+  }
+
+  public unassignStreamFromEvent(model: EventStreamModel): Observable<any> {
+
+    let url = this._config.unassignStreamFromEventUrl.replace('{eventId}', model.eventId);
+
+    return this._http.delete(url, new RequestOptions({body: model}))
+      .map(res => {
+        return res.json();
+      });
+
+  }
+
+  public assignMusicianToEvent(model: EventMusicianModel): Observable<any> {
+
+    let url = this._config.assignMusicianToEventUrl.replace('{eventId}', model.eventId);
+
+    return this._http.post(url, model)
+      .map(res => {
+        return res.json();
+      });
+
+  }
+
+  public unassignMusicianFromEvent(model: EventMusicianModel): Observable<any> {
+
+    let url = this._config.unassignMusicianFromEventUrl.replace('{eventId}', model.eventId);
+
+    return this._http.delete(url, new RequestOptions({body: model}))
+      .map(res => {
+        return res.json();
+      });
+
+  }
+
 }

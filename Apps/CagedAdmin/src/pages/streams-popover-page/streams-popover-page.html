@@ -1,0 +1,3 @@
+<ion-list>
+  <button ion-item *ngFor="let stream of streams" (click)="selectStream(stream)"><ion-avatar item-left><img [src]="stream.streamImageFileName ? (stream.streamImageDataUrl ? stream.streamImageDataUrl : stream.streamImageUrl) : '../../assets/default_image_square.png'"></ion-avatar>{{stream.name}}</button>
+</ion-list>

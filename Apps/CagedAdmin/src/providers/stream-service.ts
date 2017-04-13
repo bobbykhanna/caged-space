@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ConfigService } from '../providers/config-service';
 import 'rxjs/add/operator/map';
 import { StreamModel } from '../models/stream';
-import { AddStreamModel } from '../models/addStream';
+import { StreamBeaconModel } from '../models/streamBeacon';
 import { AngularFire } from 'angularfire2';
 import { FileService } from '../providers/file-service';
 
@@ -218,6 +218,28 @@ export class StreamService {
       .map(res => {
         this._fileService.deleteResourceFile('streams', streamId, imageFileName);
         return res.json().message;
+      });
+
+  }
+
+  public assignBeaconToStream(model: StreamBeaconModel): Observable<any> {
+
+    let url = this._config.assignBeaconToStreamUrl.replace('{streamId}', model.streamId);
+
+    return this._http.post(url, model)
+      .map(res => {
+        return res.json();
+      });
+
+  }
+
+  public unassignBeaconFromStream(model: StreamBeaconModel): Observable<any> {
+
+    let url = this._config.unassignBeaconFromStreamUrl.replace('{streamId}', model.streamId);
+
+    return this._http.delete(url, new RequestOptions({body: model}))
+      .map(res => {
+        return res.json();
       });
 
   }

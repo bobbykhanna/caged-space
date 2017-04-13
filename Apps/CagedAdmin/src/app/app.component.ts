@@ -21,11 +21,11 @@ import { BeaconService } from '../providers/beacon-service';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = MusiciansPage;
+  rootPage: any = LoginPage;
 
   menuPages: Array<{ title: string, component: any, icon: string }>;
 
-// Injecting App's resource services to kick-off data pre-fetch process.
+  // Injecting App's resource services to kick-off data pre-fetch process.
   constructor(
     private _platform: Platform,
     private _user: UserService,

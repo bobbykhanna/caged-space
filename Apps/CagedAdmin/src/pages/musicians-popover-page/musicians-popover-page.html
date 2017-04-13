@@ -1,0 +1,3 @@
+<ion-list>
+  <button ion-item *ngFor="let musician of musicians" (click)="selectMusician(musician)"><ion-avatar item-left><img [src]="musician.musicianImageFileName ? (musician.musicianImageDataUrl ? musician.musicianImageDataUrl : musician.musicianImageUrl) : '../../assets/default_image_square.png'"></ion-avatar>{{musician.name}}</button>
+</ion-list>
