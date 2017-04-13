@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": "apps/cagedadmin/www",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

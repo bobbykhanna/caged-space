@@ -31,11 +31,16 @@ export class BeaconDetailsPage {
 
     this.beacon = this._navParams.get('model');
 
-    if (this.beacon.profileImageUrl) {
+    if (this.beacon.beaconImageDataUrl) {
 
-      this.beaconProfileImage = this.beacon.profileImageUrl;
+      this.beaconProfileImage = this.beacon.beaconImageDataUrl;
 
-    } else {
+    } else if (this.beacon.beaconImageUrl) {
+
+      this.beaconProfileImage = this.beacon.beaconImageUrl;
+
+    }
+    else {
 
       this.beaconProfileImage = '../../assets/thumbnail-totoro.png';
 
@@ -83,6 +88,7 @@ export class BeaconDetailsPage {
       updatedBeacon.name = this.editBeaconForm.value.name;
       updatedBeacon.description = this.editBeaconForm.value.description;
       updatedBeacon.guid = this.editBeaconForm.value.guid;
+      updatedBeacon.beaconImageDataUrl = null;
 
       this._beaconService.editBeacon(updatedBeacon, this.hasUploadedNewImage, this.beaconProfileImage)
         .then(beacon => {

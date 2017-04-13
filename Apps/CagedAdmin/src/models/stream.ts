@@ -6,5 +6,7 @@ export class StreamModel  {
     public description: string;
     public ip: string;
     public streamImageUrl: string;
-    public streamImageThumbnailUrl: string;
+    public streamImageDataUrl: string;
+    public streamImageFileName: string;
+    
 }

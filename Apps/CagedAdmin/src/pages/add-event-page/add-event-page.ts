@@ -66,7 +66,7 @@ export class AddEventPage {
       model.beginDate = this.addEventForm.value.beginDate;
       model.endDate = this.addEventForm.value.endDate;
       model.description = this.addEventForm.value.description;
-
+      model.eventImageDataUrl = null;
 
       this._eventService.addEvent(model, this.hasUploadedNewImage, this.eventProfileImage)
         .then(musician => {

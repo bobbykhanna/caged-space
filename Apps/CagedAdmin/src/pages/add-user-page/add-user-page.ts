@@ -47,6 +47,7 @@ export class AddUserPage {
 
       model.name = this.addUserForm.value.name;
       model.email = this.addUserForm.value.email;
+      model.userImageDataUrl = null;
 
       this._userService.addUser(model, this.hasUploadedNewImage, this.userProfileImage)
         .then(user => {

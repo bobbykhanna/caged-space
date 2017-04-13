@@ -24,7 +24,7 @@
     <ion-item *ngFor="let beacon of filteredBeacons" no-lines (click)="openDetails(beacon)">
 
       <ion-thumbnail item-left>
-        <img [src]="beacon.profileImageUrl">
+        <img [src]="beacon.beaconImageDataUrl ? beacon.beaconImageDataUrl : beacon.beaconImageUrl">
       </ion-thumbnail>
 
       <h2>{{beacon.name}}</h2>
@@ -59,7 +59,7 @@
       <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 *ngFor="let beacon of filteredBeacons" (click)="openDetails(beacon)">
 
         <ion-card>
-          <img [src]="beacon.profileImageUrl" />
+          <img [src]="beacon.beaconImageDataUrl ? beacon.beaconImageDataUrl : beacon.beaconImageUrl" />
           <ion-card-content>
 
             <ion-card-title>

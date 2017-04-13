@@ -22,7 +22,7 @@
     <ion-item *ngFor="let stream of filteredStreams" no-lines (click)="openDetails(stream)">
 
       <ion-thumbnail item-left>
-          <img [src]="stream.streamImageUrl">
+          <img [src]="stream.streamImageDataUrl ? stream.streamImageDataUrl : stream.streamImageUrl">
       </ion-thumbnail>
 
       <h2>{{stream.name}}</h2>
@@ -57,7 +57,7 @@
       <ion-col col-12 col-sm-9 col-md-6 col-lg-4 col-xl-3 *ngFor="let stream of filteredStreams" (click)="openDetails(stream)">
 
         <ion-card>
-          <img [src]="stream.streamImageUrl" />
+          <img [src]="stream.streamImageDataUrl ? stream.streamImageDataUrl : stream.streamImageUrl" />
           <ion-card-content>
 
             <ion-card-title>

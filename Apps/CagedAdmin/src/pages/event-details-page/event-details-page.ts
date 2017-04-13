@@ -31,15 +31,21 @@ export class EventDetailsPage {
 
     this.event = this._navParams.get('model');
 
-    if (this.event.eventImageUrl) {
+    if (this.event.eventImageDataUrl) {
+
+      this.eventProfileImage = this.event.eventImageDataUrl;
+
+    } else if (this.event.eventImageUrl) {
 
       this.eventProfileImage = this.event.eventImageUrl;
 
-    } else {
+    }
+    else {
 
       this.eventProfileImage = '../../assets/thumbnail-totoro.png';
 
     }
+
   }
 
   ngAfterViewInit() {
@@ -90,6 +96,7 @@ export class EventDetailsPage {
       updatedEvent.beginDate = this.editEventForm.value.beginDate;
       updatedEvent.endDate = this.editEventForm.value.endDate
       updatedEvent.location = this.editEventForm.value.location;
+      updatedEvent.eventImageDataUrl = null;
 
       this._eventService.editEvent(updatedEvent, this.hasUploadedNewImage, this.eventProfileImage)
         .then(event => {

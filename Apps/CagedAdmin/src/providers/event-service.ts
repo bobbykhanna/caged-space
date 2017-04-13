@@ -12,6 +12,8 @@ import { AngularFire } from 'angularfire2';
 @Injectable()
 export class EventService {
 
+  private _isDataPrimed: boolean = false;
+
   private _events$: BehaviorSubject<Array<EventModel>>;
 
   // Service consumers can subscribe to this observable to get latest events data.
@@ -43,6 +45,33 @@ export class EventService {
 
       this._events$.next(this._eventsStore.events);
 
+      // Preload images.
+      if (!this._isDataPrimed) {
+
+        this._eventsStore.events.forEach(event => {
+
+          if (event.eventImageFileName) {
+
+            this._fileService.getFileAsDataUrl('events', event.id, event.eventImageFileName).then(dataUrl => {
+
+              let index = this._eventsStore.events.indexOf(event, 0);
+
+              if (index > -1) {
+                this._eventsStore.events[index].eventImageDataUrl = dataUrl;
+              }
+
+              this._events$.next(this._eventsStore.events);
+
+            });
+
+          }
+
+        });
+
+        this._isDataPrimed = true;
+
+      }
+
     });
 
   }
@@ -69,9 +98,12 @@ export class EventService {
 
           if (hasUploadedNewImage) {
 
-            this._uploadEventProfileImage(eventId, profileImage).then(imageUrl => {
+            let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(profileImage);
+
+            this._uploadEventProfileImage(eventId, fileName, profileImage).then(imageUrl => {
 
               newEvent.eventImageUrl = imageUrl;
+              newEvent.eventImageFileName = fileName;
 
               this._http.post(this._config.addEventUrl, newEvent).subscribe(response => {
 
@@ -126,9 +158,12 @@ export class EventService {
 
       if (hasUploadedNewImage) {
 
-        this._uploadEventProfileImage(updatedEvent.id, profileImage).then(imageUrl => {
+        let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(profileImage);
+
+        this._uploadEventProfileImage(updatedEvent.id, fileName, profileImage).then(imageUrl => {
 
           updatedEvent.eventImageUrl = imageUrl;
+          updatedEvent.eventImageFileName = fileName;
 
           this._http.put(this._config.updateEventUrl, updatedEvent).subscribe(response => {
 
@@ -166,15 +201,15 @@ export class EventService {
 
   }
 
-   public deleteEvent(eventId: string): Observable<string> {
+  public deleteEvent(eventId: string): Observable<string> {
 
     return this._http.delete(this._config.deleteEventUrl + '/' + eventId)
       .map(res => {
         return res.json().message;
       });
-   }
+  }
 
-    private _getNewEventId(): Observable<string> {
+  private _getNewEventId(): Observable<string> {
 
     return this._http.get(this._config.getNewEventIdUrl)
       .map(res => {
@@ -183,11 +218,9 @@ export class EventService {
 
   }
 
-    private _uploadEventProfileImage(eventId: string, file: string): Promise<any> {
+  private _uploadEventProfileImage(eventId: string, fileName: string, file: string): Promise<any> {
 
     let promise = new Promise<any>((res, rej) => {
-
-      let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(file);
 
       this._fileService.uploadFile('events', eventId, fileName, file).then(function (imageUrl) {
 

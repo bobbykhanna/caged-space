@@ -8,6 +8,7 @@ export class EventModel {
     public endDate: Date;
     public location: string;
     public eventImageUrl: string;
-    //public eventImageThumbnailUrl: string;
+    public eventImageDataUrl: string;
+    public eventImageFileName: string;
 
 }

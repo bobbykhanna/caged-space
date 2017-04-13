@@ -12,6 +12,8 @@ import { FileService } from '../providers/file-service';
 @Injectable()
 export class StreamService {
 
+  private _isDataPrimed: boolean = false;
+
   private _streams$: BehaviorSubject<Array<StreamModel>>;
 
   // Service consumers can subscribe to this observable to get latest streams data.
@@ -47,9 +49,12 @@ export class StreamService {
 
           if (hasUploadedNewImage) {
 
-            this._uploadStreamImage(streamId, profileImage).then(imageUrl => {
+            let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(profileImage);
+
+            this._uploadStreamImage(streamId, fileName, profileImage).then(imageUrl => {
 
               newStream.streamImageUrl = imageUrl;
+              newStream.streamImageFileName = fileName;
 
               this._http.post(this._config.addStreamUrl, newStream).subscribe(response => {
 
@@ -104,6 +109,33 @@ export class StreamService {
 
       this._streams$.next(this._streamsStore.streams);
 
+      // Preload images.
+      if (!this._isDataPrimed) {
+
+        this._streamsStore.streams.forEach(stream => {
+
+          if (stream.streamImageFileName) {
+
+            this._fileService.getFileAsDataUrl('streams', stream.id, stream.streamImageFileName).then(dataUrl => {
+
+              let index = this._streamsStore.streams.indexOf(stream, 0);
+
+              if (index > -1) {
+                this._streamsStore.streams[index].streamImageDataUrl = dataUrl;
+              }
+
+              this._streams$.next(this._streamsStore.streams);
+
+            });
+
+          }
+
+        });
+
+        this._isDataPrimed = true;
+
+      }
+
     });
 
   }
@@ -117,9 +149,12 @@ export class StreamService {
 
       if (hasUploadedNewImage) {
 
-        this._uploadStreamImage(updatedStream.id, profileImage).then(imageUrl => {
+        let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(profileImage);
+
+        this._uploadStreamImage(updatedStream.id, fileName, profileImage).then(imageUrl => {
 
           updatedStream.streamImageUrl = imageUrl;
+          updatedStream.streamImageFileName = fileName;
 
           this._http.put(this._config.updateStreamUrl, updatedStream).subscribe(response => {
 
@@ -157,11 +192,9 @@ export class StreamService {
 
   }
 
-  private _uploadStreamImage(streamId: string, file: string): Promise<any> {
+  private _uploadStreamImage(streamId: string, fileName: string, file: string): Promise<any> {
 
     let promise = new Promise<any>((res, rej) => {
-
-      let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(file);
 
       this._fileService.uploadFile('streams', streamId, fileName, file).then(function (imageUrl) {
 

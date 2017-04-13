@@ -12,6 +12,8 @@ import { AngularFire } from 'angularfire2';
 @Injectable()
 export class MusicianService {
 
+  private _isDataPrimed: boolean = false;
+
   private _musicians$: BehaviorSubject<Array<MusicianModel>>;
 
   // Service consumers can subscribe to this observable to get latest musicians data.
@@ -47,9 +49,12 @@ export class MusicianService {
 
           if (hasUploadedNewImage) {
 
-            this._uploadMusicianProfileImage(musicianId, profileImage).then(imageUrl => {
+            let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(profileImage);
 
-              newMusician.profileImageUrl = imageUrl;
+            this._uploadMusicianProfileImage(musicianId, fileName, profileImage).then(imageUrl => {
+
+              newMusician.musicianImageUrl = imageUrl;
+              newMusician.musicianImageFileName = fileName;
 
               this._http.post(this._config.addMusicianUrl, newMusician).subscribe(response => {
 
@@ -69,7 +74,7 @@ export class MusicianService {
 
           } else {
 
-            newMusician.profileImageUrl = '../../assets/thumbnail-totoro.png';
+            newMusician.musicianImageUrl = '../../assets/thumbnail-totoro.png';
 
             this._http.post(this._config.addMusicianUrl, newMusician).subscribe(response => {
 
@@ -104,9 +109,12 @@ export class MusicianService {
 
       if (hasUploadedNewImage) {
 
-        this._uploadMusicianProfileImage(updatedMusician.id, profileImage).then(imageUrl => {
+        let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(profileImage);
 
-          updatedMusician.profileImageUrl = imageUrl;
+        this._uploadMusicianProfileImage(updatedMusician.id, fileName, profileImage).then(imageUrl => {
+
+          updatedMusician.musicianImageUrl = imageUrl;
+          updatedMusician.musicianImageFileName = fileName;
 
           this._http.put(this._config.updateMusicianUrl, updatedMusician).subscribe(response => {
 
@@ -162,11 +170,9 @@ export class MusicianService {
 
   }
 
-  private _uploadMusicianProfileImage(musicianId: string, file: string): Promise<any> {
+  private _uploadMusicianProfileImage(musicianId: string, fileName: string, file: string): Promise<any> {
 
     let promise = new Promise<any>((res, rej) => {
-
-      let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(file);
 
       this._fileService.uploadFile('musicians', musicianId, fileName, file).then(function (imageUrl) {
 
@@ -192,6 +198,33 @@ export class MusicianService {
       this._musiciansStore = { musicians: newMusicians };
 
       this._musicians$.next(this._musiciansStore.musicians);
+
+      // Preload images.
+      if (!this._isDataPrimed) {
+
+        this._musiciansStore.musicians.forEach(musician => {
+
+          if (musician.musicianImageFileName) {
+
+            this._fileService.getFileAsDataUrl('musicians', musician.id, musician.musicianImageFileName).then(dataUrl => {
+
+              let index = this._musiciansStore.musicians.indexOf(musician, 0);
+
+              if (index > -1) {
+                this._musiciansStore.musicians[index].musicianImageDataUrl = dataUrl;
+              }
+
+              this._musicians$.next(this._musiciansStore.musicians);
+
+            });
+
+          }
+
+        });
+
+        this._isDataPrimed = true;
+
+      }
 
     });
 

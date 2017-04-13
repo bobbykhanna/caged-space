@@ -12,6 +12,8 @@ import { AngularFire } from 'angularfire2';
 @Injectable()
 export class BeaconService {
 
+  private _isDataPrimed: boolean = false;
+
   private _beacons$: BehaviorSubject<Array<BeaconModel>>;
 
   // Service consumers can subscribe to this observable to get latest beacons data.
@@ -47,9 +49,12 @@ export class BeaconService {
 
           if (hasUploadedNewImage) {
 
-            this._uploadBeaconProfileImage(beaconId, profileImage).then(imageUrl => {
+            let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(profileImage);
 
-              newBeacon.profileImageUrl = imageUrl;
+            this._uploadBeaconProfileImage(beaconId, fileName, profileImage).then(imageUrl => {
+
+              newBeacon.beaconImageUrl = imageUrl;
+              newBeacon.beaconImageFileName = fileName;
 
               this._http.post(this._config.addBeaconUrl, newBeacon).subscribe(response => {
 
@@ -69,7 +74,7 @@ export class BeaconService {
 
           } else {
 
-            newBeacon.profileImageUrl = '../../assets/thumbnail-totoro.png';
+            newBeacon.beaconImageUrl = '../../assets/thumbnail-totoro.png';
 
             this._http.post(this._config.addBeaconUrl, newBeacon).subscribe(response => {
 
@@ -104,9 +109,12 @@ export class BeaconService {
 
       if (hasUploadedNewImage) {
 
-        this._uploadBeaconProfileImage(updatedBeacon.id, profileImage).then(imageUrl => {
+        let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(profileImage);
 
-          updatedBeacon.profileImageUrl = imageUrl;
+        this._uploadBeaconProfileImage(updatedBeacon.id, fileName, profileImage).then(imageUrl => {
+
+          updatedBeacon.beaconImageUrl = imageUrl;
+          updatedBeacon.beaconImageFileName = fileName;
 
           this._http.put(this._config.updateBeaconUrl, updatedBeacon).subscribe(response => {
 
@@ -162,11 +170,9 @@ export class BeaconService {
 
   }
 
-  private _uploadBeaconProfileImage(beaconId: string, file: string): Promise<any> {
+  private _uploadBeaconProfileImage(beaconId: string, fileName: string, file: string): Promise<any> {
 
     let promise = new Promise<any>((res, rej) => {
-
-      let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(file);
 
       this._fileService.uploadFile('beacons', beaconId, fileName, file).then(function (imageUrl) {
 
@@ -192,6 +198,33 @@ export class BeaconService {
       this._beaconsStore = { beacons: newBeacons };
 
       this._beacons$.next(this._beaconsStore.beacons);
+
+      // Preload images.
+      if (!this._isDataPrimed) {
+
+        this._beaconsStore.beacons.forEach(beacon => {
+
+          if (beacon.beaconImageFileName) {
+
+            this._fileService.getFileAsDataUrl('beacons', beacon.id, beacon.beaconImageFileName).then(dataUrl => {
+
+              let index = this._beaconsStore.beacons.indexOf(beacon, 0);
+
+              if (index > -1) {
+                this._beaconsStore.beacons[index].beaconImageDataUrl = dataUrl;
+              }
+
+              this._beacons$.next(this._beaconsStore.beacons);
+
+            });
+
+          }
+
+        });
+
+        this._isDataPrimed = true;
+
+      }
 
     });
 

@@ -9,6 +9,12 @@ import { BeaconsPage } from '../pages/beacons-page/beacons-page';
 import { MusicStreamsPage } from '../pages/music-streams-page/music-streams-page';
 import { UsersPage } from '../pages/users-page/users-page';
 
+import { UserService } from '../providers/user-service';
+import { MusicianService } from '../providers/musician-service';
+import { StreamService } from '../providers/stream-service'
+import { EventService } from '../providers/event-service';
+import { BeaconService } from '../providers/beacon-service';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -17,9 +23,17 @@ export class MyApp {
 
   rootPage: any = MusiciansPage;
 
-  menuPages: Array<{title: string, component: any, icon: string}>;
+  menuPages: Array<{ title: string, component: any, icon: string }>;
 
-  constructor(public platform: Platform) {
+// Injecting App's resource services to kick-off data pre-fetch process.
+  constructor(
+    private _platform: Platform,
+    private _user: UserService,
+    private _musician: MusicianService,
+    private _stream: StreamService,
+    private _event: EventService,
+    private _beacon: BeaconService
+  ) {
     this.initializeApp();
 
     // Populates side menu.
@@ -35,7 +49,7 @@ export class MyApp {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
+    this._platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
     });

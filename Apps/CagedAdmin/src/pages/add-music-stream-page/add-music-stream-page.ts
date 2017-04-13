@@ -49,6 +49,7 @@ export class AddMusicStreamPage {
       model.name = this.addStreamForm.value.name;
       model.ip = this.addStreamForm.value.ip;
       model.description = this.addStreamForm.value.description;
+      model.streamImageDataUrl = null;
 
       this._streamService.addStream(model, this.hasUploadedNewImage, this.streamImage)
         .then(stream => {

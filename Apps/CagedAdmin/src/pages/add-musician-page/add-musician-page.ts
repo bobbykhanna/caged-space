@@ -48,6 +48,7 @@ export class AddMusicianPage {
       model.name = this.addMusicianForm.value.name;
       model.instrument = this.addMusicianForm.value.instrument;
       model.description = this.addMusicianForm.value.description;
+      model.musicianImageDataUrl = null;
 
       this._musicianService.addMusician(model, this.hasUploadedNewImage, this.musicianProfileImage)
         .then(musician => {

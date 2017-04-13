@@ -5,6 +5,7 @@ export class BeaconModel {
     public name: string;
     public description: string;
     public guid: string;
-    public profileImageUrl: string;
-
+    public beaconImageUrl: string;
+    public beaconImageDataUrl: string;
+    public beaconImageFileName: string;
 }

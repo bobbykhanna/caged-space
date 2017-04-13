@@ -31,11 +31,16 @@ export class MusicianDetailsPage {
 
     this.musician = this._navParams.get('model');
 
-    if (this.musician.profileImageUrl) {
+    if (this.musician.musicianImageDataUrl) {
 
-      this.musicianProfileImage = this.musician.profileImageUrl;
+      this.musicianProfileImage = this.musician.musicianImageDataUrl;
 
-    } else {
+    } else if (this.musician.musicianImageUrl) {
+
+      this.musicianProfileImage = this.musician.musicianImageUrl;
+
+    }
+    else {
 
       this.musicianProfileImage = '../../assets/thumbnail-totoro.png';
 
@@ -45,11 +50,11 @@ export class MusicianDetailsPage {
 
   ngAfterViewInit() {
 
-    // Create an event listener when musician's image is uploaded. 
+    // Create an musician listener when musician's image is uploaded. 
     if (this.musicianImageInputEdit) {
 
-      this.musicianImageInputEdit.nativeElement.addEventListener('change', event => {
-        this.readSingleFile(event);
+      this.musicianImageInputEdit.nativeElement.addmusicianListener('change', musician => {
+        this.readSingleFile(musician);
       }, false);
 
     }
@@ -83,6 +88,7 @@ export class MusicianDetailsPage {
       updatedMusician.name = this.editMusicianForm.value.name;
       updatedMusician.instrument = this.editMusicianForm.value.instrument;
       updatedMusician.description = this.editMusicianForm.value.description;
+      updatedMusician.musicianImageDataUrl = null;
 
       this._musicianService.editMusician(updatedMusician, this.hasUploadedNewImage, this.musicianProfileImage)
         .then(musician => {
@@ -105,9 +111,9 @@ export class MusicianDetailsPage {
   }
 
   // Enables uploaded image preview.
-  public readSingleFile(event: any) {
+  public readSingleFile(musician: any) {
 
-    let fileName = event.target.files[0];
+    let fileName = musician.target.files[0];
     
     if (!fileName) {
       return;

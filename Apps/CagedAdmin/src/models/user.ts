@@ -5,6 +5,7 @@ export class UserModel  {
     public name: string;
     public email: string;
     public isLoggedIn: boolean;
-    public profileImageUrl: string;
-    public profileImageThumbnailUrl: string;
+    public userImageUrl: string;
+    public userImageDataUrl: string;
+    public userImageFileName: string;
 }

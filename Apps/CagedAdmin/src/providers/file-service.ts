@@ -6,7 +6,7 @@ import _ from 'lodash';
 export class FileService {
 
 
-  constructor( @Inject(FirebaseApp) private firebaseApp: any) {}
+  constructor( @Inject(FirebaseApp) private firebaseApp: any) { }
 
   public uploadFile(resourceCategory: string, resourceId: string, fileName: string, file: string): Promise<any> {
 
@@ -23,6 +23,49 @@ export class FileService {
         rej(error);
 
       });
+
+    });
+
+    return promise;
+
+  }
+
+  public getFileAsDataUrl(resourceCategory: string, resourceId: string, fileName: string): Promise<string> {
+
+    let promise = new Promise<string>((res, rej) => {
+
+      let ref = this.firebaseApp.storage().ref(`/${resourceCategory}/${resourceId}/${fileName}`);
+
+      ref.getDownloadURL().then(function (url) {
+
+        let xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+
+        xhr.onload = function (event) {
+          let blob = xhr.response;
+
+          let reader = new FileReader();
+
+          reader.onload = file => {
+
+            let contents: any = file.target;
+            res(contents.result);
+
+          };
+
+          reader.readAsDataURL(blob);
+  
+        };
+
+        xhr.open('GET', url);
+        xhr.send();
+
+      }).catch(function (error) {
+
+        rej(error);
+        
+      });
+
 
     });
 

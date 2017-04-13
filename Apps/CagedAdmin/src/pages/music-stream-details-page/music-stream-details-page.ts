@@ -31,11 +31,16 @@ export class MusicStreamDetailsPage {
 
     this.stream = this._navParams.get('model');
 
-    if (this.stream.streamImageUrl) {
+    if (this.stream.streamImageDataUrl) {
+
+      this.streamImage = this.stream.streamImageDataUrl;
+
+    } else if (this.stream.streamImageUrl) {
 
       this.streamImage = this.stream.streamImageUrl;
 
-    } else {
+    }
+    else {
 
       this.streamImage = '../../assets/thumbnail-totoro.png';
 
@@ -45,11 +50,11 @@ export class MusicStreamDetailsPage {
 
   ngAfterViewInit() {
 
-    // Create an event listener when stream's image is uploaded. 
+    // Create an stream listener when stream's image is uploaded. 
     if (this.streamImageInputEdit) {
 
-      this.streamImageInputEdit.nativeElement.addEventListener('change', event => {
-        this.readSingleFile(event);
+      this.streamImageInputEdit.nativeElement.addstreamListener('change', stream => {
+        this.readSingleFile(stream);
       }, false);
 
     }
@@ -83,6 +88,7 @@ export class MusicStreamDetailsPage {
       updatedStream.name = this.editStreamForm.value.name;
       updatedStream.ip = this.editStreamForm.value.ip;
       updatedStream.description = this.editStreamForm.value.description;
+      updatedStream.streamImageDataUrl = null;
 
       this._streamService.editStream(updatedStream, this.hasUploadedNewImage, this.streamImage)
         .then(stream => {
@@ -104,9 +110,9 @@ export class MusicStreamDetailsPage {
 
   }
 
-  public readSingleFile(event: any) {
+  public readSingleFile(stream: any) {
 
-    let fileName = event.target.files[0];
+    let fileName = stream.target.files[0];
 
     if (!fileName) {
       return;

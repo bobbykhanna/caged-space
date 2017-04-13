@@ -12,6 +12,8 @@ import { AngularFire } from 'angularfire2';
 @Injectable()
 export class UserService {
 
+  private _isDataPrimed: boolean = false;
+
   private _users$: BehaviorSubject<Array<UserModel>>;
 
   // Service consumers can subscribe to this observable to get latest user's data.
@@ -47,9 +49,12 @@ export class UserService {
 
           if (hasUploadedNewImage) {
 
-            this._uploadUserProfileImage(userId, profileImage).then(imageUrl => {
+            let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(profileImage);
 
-              newUser.profileImageUrl = imageUrl;
+            this._uploadUserProfileImage(userId, fileName, profileImage).then(imageUrl => {
+
+              newUser.userImageUrl = imageUrl;
+              newUser.userImageFileName = fileName;
 
               this._http.post(this._config.addUserUrl, newUser).subscribe(response => {
 
@@ -69,7 +74,7 @@ export class UserService {
 
           } else {
 
-            newUser.profileImageUrl = '../../assets/thumbnail-totoro.png';
+            newUser.userImageUrl = '../../assets/thumbnail-totoro.png';
 
             this._http.post(this._config.addUserUrl, newUser).subscribe(response => {
 
@@ -104,9 +109,12 @@ export class UserService {
 
       if (hasUploadedNewImage) {
 
-        this._uploadUserProfileImage(updatedUser.id, profileImage).then(imageUrl => {
+        let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(profileImage);
 
-          updatedUser.profileImageUrl = imageUrl;
+        this._uploadUserProfileImage(updatedUser.id, fileName, profileImage).then(imageUrl => {
+
+          updatedUser.userImageUrl = imageUrl;
+          updatedUser.userImageFileName = fileName;
 
           this._http.put(this._config.updateUserUrl, updatedUser).subscribe(response => {
 
@@ -162,11 +170,9 @@ export class UserService {
 
   }
 
-  private _uploadUserProfileImage(userId: string, file: string): Promise<any> {
+  private _uploadUserProfileImage(userId: string, fileName: string, file: string): Promise<any> {
 
     let promise = new Promise<any>((res, rej) => {
-
-      let fileName = 'resource_image' + this._fileService.getFileExtensionFromDataString(file);
 
       this._fileService.uploadFile('users', userId, fileName, file).then(function (imageUrl) {
 
@@ -192,6 +198,33 @@ export class UserService {
       this._usersStore = { users: newUsers };
 
       this._users$.next(this._usersStore.users);
+
+      // Preload images.
+      if (!this._isDataPrimed) {
+
+        this._usersStore.users.forEach(user => {
+
+          if (user.userImageFileName) {
+
+            this._fileService.getFileAsDataUrl('users', user.id, user.userImageFileName).then(dataUrl => {
+
+              let index = this._usersStore.users.indexOf(user, 0);
+
+              if (index > -1) {
+                this._usersStore.users[index].userImageDataUrl = dataUrl;
+              }
+
+              this._users$.next(this._usersStore.users);
+
+            });
+
+          }
+
+        });
+
+        this._isDataPrimed = true;
+
+      }
 
     });
 

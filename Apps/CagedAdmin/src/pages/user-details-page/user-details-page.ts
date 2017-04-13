@@ -26,16 +26,21 @@ export class UserDetailsPage {
     this.editUserForm = this._fb.group({
       name: ['', Validators.required],
       email: ['', Validators.required]
-      
+
     });
 
     this.user = this._navParams.get('model');
 
-    if (this.user.profileImageUrl) {
+    if (this.user.userImageDataUrl) {
 
-      this.userProfileImage = this.user.profileImageUrl;
+      this.userProfileImage = this.user.userImageDataUrl;
 
-    } else {
+    } else if (this.user.userImageUrl) {
+
+      this.userProfileImage = this.user.userImageUrl;
+
+    }
+    else {
 
       this.userProfileImage = '../../assets/thumbnail-totoro.png';
 
@@ -45,11 +50,11 @@ export class UserDetailsPage {
 
   ngAfterViewInit() {
 
-    // Create an event listener when user's image is uploaded. 
+    // Create an user listener when user's image is uploaded. 
     if (this.userImageInputEdit) {
 
-      this.userImageInputEdit.nativeElement.addEventListener('change', event => {
-        this.readSingleFile(event);
+      this.userImageInputEdit.nativeElement.adduserListener('change', user => {
+        this.readSingleFile(user);
       }, false);
 
     }
@@ -82,7 +87,7 @@ export class UserDetailsPage {
       let updatedUser = this.user;
       updatedUser.name = this.editUserForm.value.name;
       updatedUser.email = this.editUserForm.value.email;
-     
+      updatedUser.userImageDataUrl = null;
 
       this._userService.editUser(updatedUser, this.hasUploadedNewImage, this.userProfileImage)
         .then(user => {
@@ -105,9 +110,9 @@ export class UserDetailsPage {
   }
 
   // Enables uploaded image preview.
-  public readSingleFile(event: any) {
+  public readSingleFile(user: any) {
 
-    let fileName = event.target.files[0];
+    let fileName = user.target.files[0];
 
     if (!fileName) {
       return;
