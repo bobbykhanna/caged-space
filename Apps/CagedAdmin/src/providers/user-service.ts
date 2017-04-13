@@ -74,7 +74,7 @@ export class UserService {
 
           } else {
 
-            newUser.userImageUrl = '../../assets/thumbnail-totoro.png';
+            newUser.userImageUrl = '../../assets/default_image.png';
 
             this._http.post(this._config.addUserUrl, newUser).subscribe(response => {
 
@@ -152,10 +152,11 @@ export class UserService {
 
   }
 
-  public deleteUser(userId: string): Observable<string> {
+  public deleteUser(userId: string, imageFileName: string): Observable<string> {
 
     return this._http.delete(this._config.deleteUserUrl + '/' + userId)
       .map(res => {
+        this._fileService.deleteResourceFile('users', userId, imageFileName);
         return res.json().message;
       });
 

@@ -42,7 +42,7 @@ export class EventDetailsPage {
     }
     else {
 
-      this.eventProfileImage = '../../assets/thumbnail-totoro.png';
+      this.eventProfileImage = '../../assets/default_image.png';
 
     }
 
@@ -167,7 +167,7 @@ export class EventDetailsPage {
             // Instantiate spinner. 
             this._util.StartSpinner('Deleting Event...');
 
-            this._eventService.deleteEvent(this.event.id)
+            this._eventService.deleteEvent(this.event.id, this.event.eventImageFileName)
               .subscribe(message => {
 
                 this._util.StopSpinner();

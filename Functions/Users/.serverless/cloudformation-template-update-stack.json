@@ -54,141 +54,6 @@
             }
           ]
         },
-        "Policies": [
-          {
-            "PolicyName": {
-              "Fn::Join": [
-                "-",
-                [
-                  "dev",
-                  "users",
-                  "lambda"
-                ]
-              ]
-            },
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogStream"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::GetAtt": [
-                        "GetNewUserIdLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "LoginLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "AddUserLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "UpdateUserLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "DeleteUserLogGroup",
-                        "Arn"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:PutLogEvents"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "GetNewUserIdLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "LoginLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "AddUserLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "UpdateUserLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "DeleteUserLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        ],
         "Path": "/",
         "RoleName": {
           "Fn::Join": [
@@ -203,6 +68,113 @@
         }
       }
     },
+    "IamPolicyLambdaExecution": {
+      "Type": "AWS::IAM::Policy",
+      "DependsOn": [
+        "IamRoleLambdaExecution"
+      ],
+      "Properties": {
+        "PolicyName": {
+          "Fn::Join": [
+            "-",
+            [
+              "dev",
+              "users",
+              "lambda"
+            ]
+          ]
+        },
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "GetNewUserIdLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "LoginLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "AddUserLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "UpdateUserLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "DeleteUserLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "IamRoleLambdaExecution"
+          }
+        ]
+      }
+    },
     "GetNewUserIdLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -210,7 +182,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/users/dev/1491782194815-2017-04-09T23:56:34.815Z/users.zip"
+          "S3Key": "serverless/users/dev/1492053183030-2017-04-13T03:13:03.030Z/users.zip"
         },
         "FunctionName": "users-dev-getNewUserId",
         "Handler": "handler.getNewUserId",
@@ -225,17 +197,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "GetNewUserIdLambdaVersionYXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M": {
+    "GetNewUserIdLambdaVersionLClxx35rvSwVpSXjgbjRr4Tgw6IbHjN6Jd1mUESCc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetNewUserIdLambdaFunction"
         },
-        "CodeSha256": "YXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M="
+        "CodeSha256": "/LClxx35rvSwVpSXjgbjRr4Tgw6IbHj+N6Jd1mUESCc="
       }
     },
     "LoginLambdaFunction": {
@@ -245,7 +218,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/users/dev/1491782194815-2017-04-09T23:56:34.815Z/users.zip"
+          "S3Key": "serverless/users/dev/1492053183030-2017-04-13T03:13:03.030Z/users.zip"
         },
         "FunctionName": "users-dev-login",
         "Handler": "handler.login",
@@ -260,17 +233,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "LoginLambdaVersionYXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M": {
+    "LoginLambdaVersionLClxx35rvSwVpSXjgbjRr4Tgw6IbHjN6Jd1mUESCc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "LoginLambdaFunction"
         },
-        "CodeSha256": "YXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M="
+        "CodeSha256": "/LClxx35rvSwVpSXjgbjRr4Tgw6IbHj+N6Jd1mUESCc="
       }
     },
     "AddUserLambdaFunction": {
@@ -280,7 +254,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/users/dev/1491782194815-2017-04-09T23:56:34.815Z/users.zip"
+          "S3Key": "serverless/users/dev/1492053183030-2017-04-13T03:13:03.030Z/users.zip"
         },
         "FunctionName": "users-dev-addUser",
         "Handler": "handler.addUser",
@@ -295,17 +269,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "AddUserLambdaVersionYXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M": {
+    "AddUserLambdaVersionLClxx35rvSwVpSXjgbjRr4Tgw6IbHjN6Jd1mUESCc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AddUserLambdaFunction"
         },
-        "CodeSha256": "YXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M="
+        "CodeSha256": "/LClxx35rvSwVpSXjgbjRr4Tgw6IbHj+N6Jd1mUESCc="
       }
     },
     "UpdateUserLambdaFunction": {
@@ -315,7 +290,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/users/dev/1491782194815-2017-04-09T23:56:34.815Z/users.zip"
+          "S3Key": "serverless/users/dev/1492053183030-2017-04-13T03:13:03.030Z/users.zip"
         },
         "FunctionName": "users-dev-updateUser",
         "Handler": "handler.updateUser",
@@ -330,17 +305,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateUserLambdaVersionYXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M": {
+    "UpdateUserLambdaVersionLClxx35rvSwVpSXjgbjRr4Tgw6IbHjN6Jd1mUESCc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateUserLambdaFunction"
         },
-        "CodeSha256": "YXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M="
+        "CodeSha256": "/LClxx35rvSwVpSXjgbjRr4Tgw6IbHj+N6Jd1mUESCc="
       }
     },
     "DeleteUserLambdaFunction": {
@@ -350,7 +326,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/users/dev/1491782194815-2017-04-09T23:56:34.815Z/users.zip"
+          "S3Key": "serverless/users/dev/1492053183030-2017-04-13T03:13:03.030Z/users.zip"
         },
         "FunctionName": "users-dev-deleteUser",
         "Handler": "handler.deleteUser",
@@ -365,17 +341,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteUserLambdaVersionYXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M": {
+    "DeleteUserLambdaVersionLClxx35rvSwVpSXjgbjRr4Tgw6IbHjN6Jd1mUESCc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteUserLambdaFunction"
         },
-        "CodeSha256": "YXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M="
+        "CodeSha256": "/LClxx35rvSwVpSXjgbjRr4Tgw6IbHj+N6Jd1mUESCc="
       }
     },
     "ApiGatewayRestApi": {
@@ -809,7 +786,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1491782194977": {
+    "ApiGatewayDeployment1492053183067": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -1000,31 +977,31 @@
     "GetNewUserIdLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetNewUserIdLambdaVersionYXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M"
+        "Ref": "GetNewUserIdLambdaVersionLClxx35rvSwVpSXjgbjRr4Tgw6IbHjN6Jd1mUESCc"
       }
     },
     "LoginLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "LoginLambdaVersionYXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M"
+        "Ref": "LoginLambdaVersionLClxx35rvSwVpSXjgbjRr4Tgw6IbHjN6Jd1mUESCc"
       }
     },
     "AddUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddUserLambdaVersionYXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M"
+        "Ref": "AddUserLambdaVersionLClxx35rvSwVpSXjgbjRr4Tgw6IbHjN6Jd1mUESCc"
       }
     },
     "UpdateUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateUserLambdaVersionYXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M"
+        "Ref": "UpdateUserLambdaVersionLClxx35rvSwVpSXjgbjRr4Tgw6IbHjN6Jd1mUESCc"
       }
     },
     "DeleteUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteUserLambdaVersionYXdZXyXTeetpK7zw29DreprFWMYUCzMzasYsmNzsx4M"
+        "Ref": "DeleteUserLambdaVersionLClxx35rvSwVpSXjgbjRr4Tgw6IbHjN6Jd1mUESCc"
       }
     },
     "ServiceEndpoint": {

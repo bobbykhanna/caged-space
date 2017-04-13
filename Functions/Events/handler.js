@@ -34,17 +34,14 @@ module.exports.addEvent = (event, context, callback) => {
   // Initialize Firebase
   initializeFirebase();
 
-  let newKey = firebase.database().ref('events').push().key;
-
   let myEvent = JSON.parse(event.body);
-  myEvent.id = newKey;
 
   var updates = {};
-  updates['/events/' + newKey] = myEvent;
+  updates['/events/' + myEvent.id] = myEvent;
 
   firebase.database().ref().update(updates).then(function () {
 
-    firebase.database().ref('events/' + newKey).once('value').then(function (snapshot) {
+    firebase.database().ref('events/' + myEvent.id).once('value').then(function (snapshot) {
 
       const response = {
         statusCode: 200,

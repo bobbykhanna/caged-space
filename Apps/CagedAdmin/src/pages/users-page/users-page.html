@@ -24,7 +24,7 @@
     <ion-item *ngFor="let user of filteredUsers" no-lines (click)="openDetails(user)">
 
       <ion-thumbnail item-left>
-        <img [src]="user.userImageDataUrl ? user.userImageDataUrl : user.userImageUrl">
+        <img [src]="user.userImageFileName ? (user.userImageDataUrl ? user.userImageDataUrl : user.userImageUrl) : '../../assets/default_image_square.png'">
       </ion-thumbnail>
 
       <h2>{{user.name}}</h2>

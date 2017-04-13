@@ -48,121 +48,6 @@
             }
           ]
         },
-        "Policies": [
-          {
-            "PolicyName": {
-              "Fn::Join": [
-                "-",
-                [
-                  "dev",
-                  "events",
-                  "lambda"
-                ]
-              ]
-            },
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogStream"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::GetAtt": [
-                        "GetNewEventIdLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "AddEventLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "UpdateEventLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "DeleteEventLogGroup",
-                        "Arn"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:PutLogEvents"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "GetNewEventIdLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "AddEventLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "UpdateEventLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "DeleteEventLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        ],
         "Path": "/",
         "RoleName": {
           "Fn::Join": [
@@ -177,6 +62,99 @@
         }
       }
     },
+    "IamPolicyLambdaExecution": {
+      "Type": "AWS::IAM::Policy",
+      "DependsOn": [
+        "IamRoleLambdaExecution"
+      ],
+      "Properties": {
+        "PolicyName": {
+          "Fn::Join": [
+            "-",
+            [
+              "dev",
+              "events",
+              "lambda"
+            ]
+          ]
+        },
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "GetNewEventIdLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "AddEventLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "UpdateEventLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "DeleteEventLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "IamRoleLambdaExecution"
+          }
+        ]
+      }
+    },
     "GetNewEventIdLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -184,7 +162,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1491782739594-2017-04-10T00:05:39.594Z/events.zip"
+          "S3Key": "serverless/events/dev/1492053031031-2017-04-13T03:10:31.031Z/events.zip"
         },
         "FunctionName": "events-dev-getNewEventId",
         "Handler": "handler.getNewEventId",
@@ -199,17 +177,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "GetNewEventIdLambdaVersionLHzsS84j22ebSmRtRzPErcIQApOmVgvkM9DEHIsGHjE": {
+    "GetNewEventIdLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetNewEventIdLambdaFunction"
         },
-        "CodeSha256": "LHzsS84j22ebSmRtRzPErcIQApOmVgvkM9DEHIsGHjE="
+        "CodeSha256": "+2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c="
       }
     },
     "AddEventLambdaFunction": {
@@ -219,7 +198,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1491782739594-2017-04-10T00:05:39.594Z/events.zip"
+          "S3Key": "serverless/events/dev/1492053031031-2017-04-13T03:10:31.031Z/events.zip"
         },
         "FunctionName": "events-dev-addEvent",
         "Handler": "handler.addEvent",
@@ -234,17 +213,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "AddEventLambdaVersionLHzsS84j22ebSmRtRzPErcIQApOmVgvkM9DEHIsGHjE": {
+    "AddEventLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AddEventLambdaFunction"
         },
-        "CodeSha256": "LHzsS84j22ebSmRtRzPErcIQApOmVgvkM9DEHIsGHjE="
+        "CodeSha256": "+2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c="
       }
     },
     "UpdateEventLambdaFunction": {
@@ -254,7 +234,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1491782739594-2017-04-10T00:05:39.594Z/events.zip"
+          "S3Key": "serverless/events/dev/1492053031031-2017-04-13T03:10:31.031Z/events.zip"
         },
         "FunctionName": "events-dev-updateEvent",
         "Handler": "handler.updateEvent",
@@ -269,17 +249,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateEventLambdaVersionLHzsS84j22ebSmRtRzPErcIQApOmVgvkM9DEHIsGHjE": {
+    "UpdateEventLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateEventLambdaFunction"
         },
-        "CodeSha256": "LHzsS84j22ebSmRtRzPErcIQApOmVgvkM9DEHIsGHjE="
+        "CodeSha256": "+2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c="
       }
     },
     "DeleteEventLambdaFunction": {
@@ -289,7 +270,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1491782739594-2017-04-10T00:05:39.594Z/events.zip"
+          "S3Key": "serverless/events/dev/1492053031031-2017-04-13T03:10:31.031Z/events.zip"
         },
         "FunctionName": "events-dev-deleteEvent",
         "Handler": "handler.deleteEvent",
@@ -304,17 +285,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteEventLambdaVersionLHzsS84j22ebSmRtRzPErcIQApOmVgvkM9DEHIsGHjE": {
+    "DeleteEventLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteEventLambdaFunction"
         },
-        "CodeSha256": "LHzsS84j22ebSmRtRzPErcIQApOmVgvkM9DEHIsGHjE="
+        "CodeSha256": "+2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c="
       }
     },
     "ApiGatewayRestApi": {
@@ -652,7 +634,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1491782739741": {
+    "ApiGatewayDeployment1492053031063": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -809,25 +791,25 @@
     "GetNewEventIdLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetNewEventIdLambdaVersionLHzsS84j22ebSmRtRzPErcIQApOmVgvkM9DEHIsGHjE"
+        "Ref": "GetNewEventIdLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c"
       }
     },
     "AddEventLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddEventLambdaVersionLHzsS84j22ebSmRtRzPErcIQApOmVgvkM9DEHIsGHjE"
+        "Ref": "AddEventLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c"
       }
     },
     "UpdateEventLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateEventLambdaVersionLHzsS84j22ebSmRtRzPErcIQApOmVgvkM9DEHIsGHjE"
+        "Ref": "UpdateEventLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c"
       }
     },
     "DeleteEventLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteEventLambdaVersionLHzsS84j22ebSmRtRzPErcIQApOmVgvkM9DEHIsGHjE"
+        "Ref": "DeleteEventLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c"
       }
     },
     "ServiceEndpoint": {

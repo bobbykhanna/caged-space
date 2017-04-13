@@ -54,7 +54,7 @@ export class FileService {
           };
 
           reader.readAsDataURL(blob);
-  
+
         };
 
         xhr.open('GET', url);
@@ -63,9 +63,31 @@ export class FileService {
       }).catch(function (error) {
 
         rej(error);
-        
+
       });
 
+
+    });
+
+    return promise;
+
+  }
+
+  public deleteResourceFile(resourceCategory: string, resourceId: string, fileName: string): Promise<string> {
+
+    let promise = new Promise<string>((res, rej) => {
+
+      let ref = this.firebaseApp.storage().ref(`/${resourceCategory}/${resourceId}/${fileName}`);
+
+      ref.delete().then(function (response) {
+
+        res('File Deleted!');
+
+      }).catch(function (error) {
+
+        rej('Error!');
+
+      });
 
     });
 

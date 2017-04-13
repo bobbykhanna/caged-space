@@ -34,17 +34,14 @@ module.exports.addUser = (event, context, callback) => {
   // Initialize Firebase
   initializeFirebase();
 
-  let newKey = firebase.database().ref('users').push().key;
-
   let user = JSON.parse(event.body);
-  user.id = newKey;
 
   var updates = {};
-  updates['/users/' + newKey] = user;
+  updates['/users/' + user.id] = user;
 
   firebase.database().ref().update(updates).then(function () {
 
-    firebase.database().ref('users/' + newKey).once('value').then(function (snapshot) {
+    firebase.database().ref('users/' + user.id).once('value').then(function (snapshot) {
 
       const response = {
         statusCode: 200,

@@ -15,7 +15,7 @@ export class AddUserPage {
 
   addUserForm: any;
   hasUploadedNewImage: boolean;
-  userProfileImage: string = '../../assets/thumbnail-totoro.png';
+  userProfileImage: string = '../../assets/default_image.png';
 
   constructor(private _userService: UserService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
 

@@ -42,7 +42,7 @@ export class MusicStreamDetailsPage {
     }
     else {
 
-      this.streamImage = '../../assets/thumbnail-totoro.png';
+      this.streamImage = '../../assets/default_image.png';
 
     }
 
@@ -53,7 +53,7 @@ export class MusicStreamDetailsPage {
     // Create an stream listener when stream's image is uploaded. 
     if (this.streamImageInputEdit) {
 
-      this.streamImageInputEdit.nativeElement.addstreamListener('change', stream => {
+      this.streamImageInputEdit.nativeElement.addEventListener('change', stream => {
         this.readSingleFile(stream);
       }, false);
 
@@ -158,7 +158,7 @@ export class MusicStreamDetailsPage {
             // Instantiate spinner. 
             this._util.StartSpinner('Deleting Stream...');
 
-            this._streamService.deleteStream(this.stream.id)
+            this._streamService.deleteStream(this.stream.id, this.stream.streamImageFileName)
               .subscribe(message => {
 
                 this._util.StopSpinner();

@@ -42,7 +42,7 @@ export class MusicianDetailsPage {
     }
     else {
 
-      this.musicianProfileImage = '../../assets/thumbnail-totoro.png';
+      this.musicianProfileImage = '../../assets/default_image.png';
 
     }
 
@@ -53,7 +53,7 @@ export class MusicianDetailsPage {
     // Create an musician listener when musician's image is uploaded. 
     if (this.musicianImageInputEdit) {
 
-      this.musicianImageInputEdit.nativeElement.addmusicianListener('change', musician => {
+      this.musicianImageInputEdit.nativeElement.addEventListener('change', musician => {
         this.readSingleFile(musician);
       }, false);
 
@@ -159,7 +159,7 @@ export class MusicianDetailsPage {
             // Instantiate spinner. 
             this._util.StartSpinner('Deleting Musician...');
 
-            this._musicianService.deleteMusician(this.musician.id)
+            this._musicianService.deleteMusician(this.musician.id, this.musician.musicianImageFileName)
               .subscribe(message => {
 
                 this._util.StopSpinner();

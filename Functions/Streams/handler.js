@@ -34,17 +34,14 @@ module.exports.addStream = (event, context, callback) => {
   // Initialize Firebase
   initializeFirebase();
 
-  let newKey = firebase.database().ref('streams').push().key;
-
   let stream = JSON.parse(event.body);
-  stream.id = newKey;
 
   var updates = {};
-  updates['/streams/' + newKey] = stream;
+  updates['/streams/' + stream.id] = stream;
 
   firebase.database().ref().update(updates).then(function () {
 
-    firebase.database().ref('streams/' + newKey).once('value').then(function (snapshot) {
+    firebase.database().ref('streams/' + stream.id).once('value').then(function (snapshot) {
 
       const response = {
         statusCode: 200,

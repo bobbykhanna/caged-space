@@ -14,7 +14,7 @@ export class AddBeaconPage {
 
   addBeaconForm: any;
   hasUploadedNewImage: boolean;
-  beaconProfileImage: string = '../../assets/thumbnail-totoro.png';
+  beaconProfileImage: string = '../../assets/default_image.png';
 
   constructor(private _beaconService: BeaconService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
 

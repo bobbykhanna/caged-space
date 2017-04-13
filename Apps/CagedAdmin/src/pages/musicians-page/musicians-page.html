@@ -24,7 +24,7 @@
     <ion-item *ngFor="let musician of filteredMusicians" no-lines (click)="openDetails(musician)">
 
       <ion-thumbnail item-left>
-        <img [src]="musician.musicianImageDataUrl ? musician.musicianImageDataUrl : musician.musicianImageUrl">
+        <img [src]="musician.musicianImageFileName ? (musician.musicianImageDataUrl ? musician.musicianImageDataUrl : musician.musicianImageUrl) : '../../assets/default_image_square.png'">
       </ion-thumbnail>
 
       <h2>{{musician.name}}</h2>

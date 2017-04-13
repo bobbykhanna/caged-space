@@ -22,7 +22,7 @@
         <ion-item *ngFor="let event of filteredEvents" no-lines (click)="openDetails(event)">
 
             <ion-thumbnail item-left>
-                <img [src]="event.eventImageDataUrl ? event.eventImageDataUrl : event.eventImageUrl">
+                <img [src]="event.eventImageFileName ? (event.eventImageDataUrl ? event.eventImageDataUrl : event.eventImageUrl) : '../../assets/default_image_square.png'">
             </ion-thumbnail>
 
             <h2>{{event.name}}</h2>

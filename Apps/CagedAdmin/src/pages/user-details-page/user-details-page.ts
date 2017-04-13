@@ -42,7 +42,7 @@ export class UserDetailsPage {
     }
     else {
 
-      this.userProfileImage = '../../assets/thumbnail-totoro.png';
+      this.userProfileImage = '../../assets/default_image.png';
 
     }
 
@@ -53,7 +53,7 @@ export class UserDetailsPage {
     // Create an user listener when user's image is uploaded. 
     if (this.userImageInputEdit) {
 
-      this.userImageInputEdit.nativeElement.adduserListener('change', user => {
+      this.userImageInputEdit.nativeElement.addEventListener('change', user => {
         this.readSingleFile(user);
       }, false);
 
@@ -158,7 +158,7 @@ export class UserDetailsPage {
             // Instantiate spinner. 
             this._util.StartSpinner('Deleting User...');
 
-            this._userService.deleteUser(this.user.id)
+            this._userService.deleteUser(this.user.id, this.user.userImageFileName)
               .subscribe(message => {
 
                 this._util.StopSpinner();

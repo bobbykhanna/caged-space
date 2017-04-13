@@ -21,7 +21,7 @@ export class AddEventPage {
 
   addEventForm: any;
   hasUploadedNewImage: boolean;
-  eventProfileImage: string = '../../assets/thumbnail-totoro.png';
+  eventProfileImage: string = '../../assets/default_image.png';
   // -------- Written by Saransh Bhardwaj on 2nd April 2017 ------------
   constructor(public navCtrl: NavController, public navParams: NavParams, private _fb: FormBuilder, private _eventService: EventService,
     private _util: UtilityService, private _nav: NavController) {

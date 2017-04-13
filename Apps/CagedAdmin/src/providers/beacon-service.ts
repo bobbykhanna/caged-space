@@ -74,7 +74,7 @@ export class BeaconService {
 
           } else {
 
-            newBeacon.beaconImageUrl = '../../assets/thumbnail-totoro.png';
+            newBeacon.beaconImageUrl = '../../assets/default_image.png';
 
             this._http.post(this._config.addBeaconUrl, newBeacon).subscribe(response => {
 
@@ -152,11 +152,14 @@ export class BeaconService {
 
   }
 
-  public deleteBeacon(beaconId: string): Observable<string> {
+  public deleteBeacon(beaconId: string, imageFileName: string): Observable<string> {
 
     return this._http.delete(this._config.deleteBeaconUrl + '/' + beaconId)
       .map(res => {
+
+        this._fileService.deleteResourceFile('beacons', beaconId, imageFileName);
         return res.json().message;
+
       });
 
   }

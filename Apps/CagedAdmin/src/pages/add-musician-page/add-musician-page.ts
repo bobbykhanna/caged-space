@@ -14,7 +14,7 @@ export class AddMusicianPage {
 
   addMusicianForm: any;
   hasUploadedNewImage: boolean;
-  musicianProfileImage: string = '../../assets/thumbnail-totoro.png';
+  musicianProfileImage: string = '../../assets/default_image.png';
 
   constructor(private _musicianService: MusicianService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
 

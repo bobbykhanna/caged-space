@@ -22,7 +22,7 @@
     <ion-item *ngFor="let stream of filteredStreams" no-lines (click)="openDetails(stream)">
 
       <ion-thumbnail item-left>
-          <img [src]="stream.streamImageDataUrl ? stream.streamImageDataUrl : stream.streamImageUrl">
+          <img [src]="stream.streamImageFileName ? (stream.streamImageDataUrl ? stream.streamImageDataUrl : stream.streamImageUrl) : '../../assets/default_image_square.png'">
       </ion-thumbnail>
 
       <h2>{{stream.name}}</h2>

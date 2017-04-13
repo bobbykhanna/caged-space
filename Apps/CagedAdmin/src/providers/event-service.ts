@@ -123,7 +123,7 @@ export class EventService {
 
           } else {
 
-            newEvent.eventImageUrl = '../../assets/thumbnail-totoro.png';
+            newEvent.eventImageUrl = '../../assets/default_image.png';
 
             this._http.post(this._config.addEventUrl, newEvent).subscribe(response => {
 
@@ -201,10 +201,11 @@ export class EventService {
 
   }
 
-  public deleteEvent(eventId: string): Observable<string> {
+  public deleteEvent(eventId: string, imageFileName: string): Observable<string> {
 
     return this._http.delete(this._config.deleteEventUrl + '/' + eventId)
       .map(res => {
+        this._fileService.deleteResourceFile('events', eventId, imageFileName);
         return res.json().message;
       });
   }

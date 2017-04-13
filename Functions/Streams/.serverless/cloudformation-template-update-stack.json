@@ -48,121 +48,6 @@
             }
           ]
         },
-        "Policies": [
-          {
-            "PolicyName": {
-              "Fn::Join": [
-                "-",
-                [
-                  "dev",
-                  "streams",
-                  "lambda"
-                ]
-              ]
-            },
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogStream"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::GetAtt": [
-                        "GetNewStreamIdLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "AddStreamLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "UpdateStreamLogGroup",
-                        "Arn"
-                      ]
-                    },
-                    {
-                      "Fn::GetAtt": [
-                        "DeleteStreamLogGroup",
-                        "Arn"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:PutLogEvents"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "GetNewStreamIdLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "AddStreamLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "UpdateStreamLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    },
-                    {
-                      "Fn::Join": [
-                        ":",
-                        [
-                          {
-                            "Fn::GetAtt": [
-                              "DeleteStreamLogGroup",
-                              "Arn"
-                            ]
-                          },
-                          "*"
-                        ]
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        ],
         "Path": "/",
         "RoleName": {
           "Fn::Join": [
@@ -177,6 +62,99 @@
         }
       }
     },
+    "IamPolicyLambdaExecution": {
+      "Type": "AWS::IAM::Policy",
+      "DependsOn": [
+        "IamRoleLambdaExecution"
+      ],
+      "Properties": {
+        "PolicyName": {
+          "Fn::Join": [
+            "-",
+            [
+              "dev",
+              "streams",
+              "lambda"
+            ]
+          ]
+        },
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "GetNewStreamIdLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "AddStreamLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "UpdateStreamLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "DeleteStreamLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "IamRoleLambdaExecution"
+          }
+        ]
+      }
+    },
     "GetNewStreamIdLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -184,7 +162,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/streams/dev/1491782886597-2017-04-10T00:08:06.597Z/streams.zip"
+          "S3Key": "serverless/streams/dev/1492053117665-2017-04-13T03:11:57.665Z/streams.zip"
         },
         "FunctionName": "streams-dev-getNewStreamId",
         "Handler": "handler.getNewStreamId",
@@ -199,17 +177,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "GetNewStreamIdLambdaVersionKD2F4cgtRf6FblWwCIhSdbwPEVtaAdNVHtC8Xmpttg": {
+    "GetNewStreamIdLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetNewStreamIdLambdaFunction"
         },
-        "CodeSha256": "+KD2F4cgtRf6FblWwCIhSdbwPEVtaAdNVHtC8Xmpttg="
+        "CodeSha256": "8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w="
       }
     },
     "AddStreamLambdaFunction": {
@@ -219,7 +198,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/streams/dev/1491782886597-2017-04-10T00:08:06.597Z/streams.zip"
+          "S3Key": "serverless/streams/dev/1492053117665-2017-04-13T03:11:57.665Z/streams.zip"
         },
         "FunctionName": "streams-dev-addStream",
         "Handler": "handler.addStream",
@@ -234,17 +213,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "AddStreamLambdaVersionKD2F4cgtRf6FblWwCIhSdbwPEVtaAdNVHtC8Xmpttg": {
+    "AddStreamLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AddStreamLambdaFunction"
         },
-        "CodeSha256": "+KD2F4cgtRf6FblWwCIhSdbwPEVtaAdNVHtC8Xmpttg="
+        "CodeSha256": "8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w="
       }
     },
     "UpdateStreamLambdaFunction": {
@@ -254,7 +234,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/streams/dev/1491782886597-2017-04-10T00:08:06.597Z/streams.zip"
+          "S3Key": "serverless/streams/dev/1492053117665-2017-04-13T03:11:57.665Z/streams.zip"
         },
         "FunctionName": "streams-dev-updateStream",
         "Handler": "handler.updateStream",
@@ -269,17 +249,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateStreamLambdaVersionKD2F4cgtRf6FblWwCIhSdbwPEVtaAdNVHtC8Xmpttg": {
+    "UpdateStreamLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateStreamLambdaFunction"
         },
-        "CodeSha256": "+KD2F4cgtRf6FblWwCIhSdbwPEVtaAdNVHtC8Xmpttg="
+        "CodeSha256": "8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w="
       }
     },
     "DeleteStreamLambdaFunction": {
@@ -289,7 +270,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/streams/dev/1491782886597-2017-04-10T00:08:06.597Z/streams.zip"
+          "S3Key": "serverless/streams/dev/1492053117665-2017-04-13T03:11:57.665Z/streams.zip"
         },
         "FunctionName": "streams-dev-deleteStream",
         "Handler": "handler.deleteStream",
@@ -304,17 +285,18 @@
         "Timeout": 6
       },
       "DependsOn": [
+        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteStreamLambdaVersionKD2F4cgtRf6FblWwCIhSdbwPEVtaAdNVHtC8Xmpttg": {
+    "DeleteStreamLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteStreamLambdaFunction"
         },
-        "CodeSha256": "+KD2F4cgtRf6FblWwCIhSdbwPEVtaAdNVHtC8Xmpttg="
+        "CodeSha256": "8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w="
       }
     },
     "ApiGatewayRestApi": {
@@ -652,7 +634,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1491782886765": {
+    "ApiGatewayDeployment1492053117697": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -809,25 +791,25 @@
     "GetNewStreamIdLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetNewStreamIdLambdaVersionKD2F4cgtRf6FblWwCIhSdbwPEVtaAdNVHtC8Xmpttg"
+        "Ref": "GetNewStreamIdLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w"
       }
     },
     "AddStreamLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddStreamLambdaVersionKD2F4cgtRf6FblWwCIhSdbwPEVtaAdNVHtC8Xmpttg"
+        "Ref": "AddStreamLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w"
       }
     },
     "UpdateStreamLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateStreamLambdaVersionKD2F4cgtRf6FblWwCIhSdbwPEVtaAdNVHtC8Xmpttg"
+        "Ref": "UpdateStreamLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w"
       }
     },
     "DeleteStreamLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteStreamLambdaVersionKD2F4cgtRf6FblWwCIhSdbwPEVtaAdNVHtC8Xmpttg"
+        "Ref": "DeleteStreamLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w"
       }
     },
     "ServiceEndpoint": {

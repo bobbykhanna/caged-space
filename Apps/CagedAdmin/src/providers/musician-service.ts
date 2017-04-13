@@ -74,7 +74,7 @@ export class MusicianService {
 
           } else {
 
-            newMusician.musicianImageUrl = '../../assets/thumbnail-totoro.png';
+            newMusician.musicianImageUrl = '../../assets/default_image.png';
 
             this._http.post(this._config.addMusicianUrl, newMusician).subscribe(response => {
 
@@ -152,10 +152,11 @@ export class MusicianService {
 
   }
 
-  public deleteMusician(musicianId: string): Observable<string> {
+  public deleteMusician(musicianId: string, imageFileName: string): Observable<string> {
 
     return this._http.delete(this._config.deleteMusicianUrl + '/' + musicianId)
       .map(res => {
+        this._fileService.deleteResourceFile('musicians', musicianId, imageFileName);
         return res.json().message;
       });
 

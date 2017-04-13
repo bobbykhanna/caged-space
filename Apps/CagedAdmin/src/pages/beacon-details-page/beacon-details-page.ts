@@ -42,7 +42,7 @@ export class BeaconDetailsPage {
     }
     else {
 
-      this.beaconProfileImage = '../../assets/thumbnail-totoro.png';
+      this.beaconProfileImage = '../../assets/default_image.png';
 
     }
 
@@ -159,7 +159,7 @@ export class BeaconDetailsPage {
             // Instantiate spinner. 
             this._util.StartSpinner('Deleting Beacon...');
 
-            this._beaconService.deleteBeacon(this.beacon.id)
+            this._beaconService.deleteBeacon(this.beacon.id, this.beacon.beaconImageFileName)
               .subscribe(message => {
 
                 this._util.StopSpinner();

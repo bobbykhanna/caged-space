@@ -74,7 +74,7 @@ export class StreamService {
 
           } else {
 
-            newStream.streamImageUrl = '../../assets/thumbnail-totoro.png';
+            newStream.streamImageUrl = '../../assets/default_image.png';
 
             this._http.post(this._config.addStreamUrl, newStream).subscribe(response => {
 
@@ -212,11 +212,11 @@ export class StreamService {
 
   }
 
-  // Delete Functionality
-  public deleteStream(streamId: string): Observable<string> {
+  public deleteStream(streamId: string, imageFileName: string): Observable<string> {
 
     return this._http.delete(this._config.deleteStreamUrl + '/' + streamId)
       .map(res => {
+        this._fileService.deleteResourceFile('streams', streamId, imageFileName);
         return res.json().message;
       });
 

@@ -24,7 +24,7 @@
     <ion-item *ngFor="let beacon of filteredBeacons" no-lines (click)="openDetails(beacon)">
 
       <ion-thumbnail item-left>
-        <img [src]="beacon.beaconImageDataUrl ? beacon.beaconImageDataUrl : beacon.beaconImageUrl">
+        <img [src]="beacon.beaconImageFileName ? (beacon.beaconImageDataUrl ? beacon.beaconImageDataUrl : beacon.beaconImageUrl) : '../../assets/default_image_square.png'">
       </ion-thumbnail>
 
       <h2>{{beacon.name}}</h2>
