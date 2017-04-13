@@ -1,9 +1,16 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { EventModel } from '../../models/event';
+import { MusicianModel } from '../../models/musician';
+import { StreamModel } from '../../models/stream';
+import { MusicianDetailsPage } from '../musician-details-page/musician-details-page';
+import { MusicStreamDetailsPage } from '../music-stream-details-page/music-stream-details-page';
 import { FormBuilder, Validators } from '@angular/forms';
 import { EventService } from '../../providers/event-service';
+import { MusicianService } from '../../providers/musician-service';
+import { StreamService } from '../../providers/stream-service';
 import { UtilityService } from '../../providers/utility-service';
+import _ from 'lodash';
 
 @Component({
   selector: 'page-event-details',
@@ -17,8 +24,19 @@ export class EventDetailsPage {
   editEventForm: any;
   hasUploadedNewImage: boolean;
   eventProfileImage: string;
+  private musicians: Array<MusicianModel>;;
+  streams: Array<StreamModel>;
 
-  constructor(private _eventService: EventService, private _util: UtilityService, public navCtrl: NavController, public _navParams: NavParams, private _fb: FormBuilder, private _alertCtrl: AlertController) {
+  constructor(
+    private _eventService: EventService,
+    private _utilService: UtilityService,
+    private _musicianService: MusicianService,
+    private _streamService: StreamService,
+    private _navCtrl: NavController,
+    public _navParams: NavParams,
+    private _fb: FormBuilder,
+    private _alertCtrl: AlertController
+  ) {
 
     this.event = new EventModel();
     this.editEventForm = this._fb.group({
@@ -45,6 +63,38 @@ export class EventDetailsPage {
       this.eventProfileImage = '../../assets/default_image.png';
 
     }
+
+    this._musicianService.musicians$.subscribe(newMusicians => {
+
+      let musicians = new Array<MusicianModel>();
+
+      let musiciansIds = this.event.musiciansIds;
+
+      newMusicians.forEach(function (musician) {
+
+        if (_.some(musiciansIds, function (id) { return id === musician.id; })) { musicians.push(musician); }
+
+      });
+
+      this.musicians = musicians;
+
+    });
+
+    this._streamService.streams$.subscribe(newStreams => {
+
+      let streams = new Array<StreamModel>();
+
+      let streamsIds = this.event.streamsIds;
+
+      newStreams.forEach(function (stream) {
+
+        if (_.some(streamsIds, function (id) { return id === stream.id; })) { streams.push(stream); }
+
+      });
+
+      this.streams = streams;
+
+    });
 
   }
 
@@ -83,12 +133,12 @@ export class EventDetailsPage {
 
       if (this.editEventForm.value.endDate < this.editEventForm.value.beginDate) {
 
-        this._util.ShowAlert('', 'Event End Date cannot be less than Event Start Date');
+        this._utilService.ShowAlert('', 'Event End Date cannot be less than Event Start Date');
         return;
       }
 
       // Instantiate spinner. 
-      this._util.StartSpinner('Updating Event\'s Info...');
+      this._utilService.StartSpinner('Updating Event\'s Info...');
 
       let updatedEvent = this.event;
       updatedEvent.name = this.editEventForm.value.name
@@ -101,16 +151,16 @@ export class EventDetailsPage {
       this._eventService.editEvent(updatedEvent, this.hasUploadedNewImage, this.eventProfileImage)
         .then(event => {
 
-          this._util.StopSpinner();
+          this._utilService.StopSpinner();
 
           // Navigate back to event list page.
-          this.navCtrl.pop();
+          this._navCtrl.pop();
 
         }).catch(error => {
 
-          this._util.StopSpinner();
+          this._utilService.StopSpinner();
 
-          this._util.ShowAlert('Internal Error', 'Could not edit Event.');
+          this._utilService.ShowAlert('Internal Error', 'Could not edit Event.');
 
         });
 
@@ -165,20 +215,20 @@ export class EventDetailsPage {
           handler: () => {
 
             // Instantiate spinner. 
-            this._util.StartSpinner('Deleting Event...');
+            this._utilService.StartSpinner('Deleting Event...');
 
             this._eventService.deleteEvent(this.event.id, this.event.eventImageFileName)
               .subscribe(message => {
 
-                this._util.StopSpinner();
+                this._utilService.StopSpinner();
 
-                this.navCtrl.pop();
+                this._navCtrl.pop();
 
               }, error => {
 
-                this._util.StopSpinner();
+                this._utilService.StopSpinner();
 
-                this._util.ShowAlert('Internal Error', 'Could not delete Event.');
+                this._utilService.ShowAlert('Internal Error', 'Could not delete Event.');
 
               });
 
@@ -189,6 +239,32 @@ export class EventDetailsPage {
 
     confirm.present();
 
-  } s
+  }
+
+  openMusicianDetails(detailsModel: MusicianModel) {
+
+    this._navCtrl.push(MusicianDetailsPage, {
+      model: detailsModel
+    });
+
+  }
+
+  openStreamDetails(detailsModel: StreamModel) {
+
+    this._navCtrl.push(MusicStreamDetailsPage, {
+      model: detailsModel
+    });
+
+  }
+
+  removeMusician(model: MusicianModel) {
+
+
+  }
+
+  removeStream(model: StreamModel) {
+
+
+  }
 
 }

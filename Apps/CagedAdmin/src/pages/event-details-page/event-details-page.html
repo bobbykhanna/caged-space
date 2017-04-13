@@ -107,6 +107,52 @@
 
         </ion-card>
 
+        <ion-card padding>
+          <ion-card-header>Event Musicians:</ion-card-header>
+
+          <ion-list *ngIf="!isEditing">
+            <button ion-item *ngFor="let musician of musicians" (click)="openMusicianDetails(musician)"><ion-avatar item-left><img [src]="musician.musicianImageFileName ? (musician.musicianImageDataUrl ? musician.musicianImageDataUrl : musician.musicianImageUrl) : '../../assets/default_image_square.png'"></ion-avatar>{{musician.name}}</button>
+          </ion-list>
+
+          <ion-list *ngIf="isEditing">
+            <ion-item *ngFor="let musician of musicians">
+              <ion-avatar item-left>
+                <img [src]="musician.musicianImageFileName ? (musician.musicianImageDataUrl ? musician.musicianImageDataUrl : musician.musicianImageUrl) : '../../assets/default_image_square.png'">
+              </ion-avatar>
+              {{musician.name}}
+              <button ion-button color="danger" round item-right (click)="removeMusician(musician)"><ion-icon name="close"></ion-icon></button>
+            </ion-item>
+          </ion-list>
+
+          <div padding *ngIf="isEditing">
+            <button color="primary" ion-button block type="button">Attach Musician</button>
+          </div>
+
+        </ion-card>
+
+        <ion-card padding>
+          <ion-card-header>Event Streams:</ion-card-header>
+
+          <ion-list *ngIf="!isEditing">
+            <button ion-item *ngFor="let stream of streams" (click)="openStreamDetails(stream)"><ion-avatar item-left><img [src]="stream.streamImageFileName ? (stream.streamImageDataUrl ? stream.streamImageDataUrl : stream.streamImageUrl) : '../../assets/default_image_square.png'"></ion-avatar>{{stream.name}}</button>
+          </ion-list>
+
+          <ion-list *ngIf="isEditing">
+            <ion-item *ngFor="let stream of streams">
+              <ion-avatar item-left>
+                <img [src]="stream.streamImageFileName ? (stream.streamImageDataUrl ? stream.streamImageDataUrl : stream.streamImageUrl) : '../../assets/default_image_square.png'">
+              </ion-avatar>
+              {{stream.name}}
+              <button ion-button color="danger" round item-right (click)="removeStream(stream)"><ion-icon name="close"></ion-icon></button>
+            </ion-item>
+          </ion-list>
+
+          <div padding *ngIf="isEditing">
+            <button color="primary" ion-button block type="button">Attach Stream</button>
+          </div>
+
+        </ion-card>
+
       </ion-col>
     </ion-row>
   </ion-grid>
