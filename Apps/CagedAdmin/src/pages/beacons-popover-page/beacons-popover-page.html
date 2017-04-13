@@ -1,13 +1,3 @@
-
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>BeaconsPopoverPage</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
-</ion-content>
+<ion-list>
+  <button ion-item *ngFor="let beacon of beacons" (click)="selectBeacon(beacon)"><ion-avatar item-left><img [src]="beacon.beaconImageFileName ? (beacon.beaconImageDataUrl ? beacon.beaconImageDataUrl : beacon.beaconImageUrl) : '../../assets/default_image_square.png'"></ion-avatar>{{beacon.name}}</button>
+</ion-list>

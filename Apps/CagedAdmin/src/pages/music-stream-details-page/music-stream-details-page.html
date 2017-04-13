@@ -79,6 +79,29 @@
 
         </ion-card>
 
+        <ion-card padding>
+          <ion-card-header>Stream Beacons:</ion-card-header>
+
+          <ion-list *ngIf="!isEditing">
+            <button ion-item *ngFor="let beacon of beacons" (click)="openBeaconDetails(beacon)"><ion-avatar item-left><img [src]="beacon.beaconImageFileName ? (beacon.beaconImageDataUrl ? beacon.beaconImageDataUrl : beacon.beaconImageUrl) : '../../assets/default_image_square.png'"></ion-avatar>{{beacon.name}}</button>
+          </ion-list>
+
+          <ion-list *ngIf="isEditing">
+            <ion-item *ngFor="let beacon of beacons">
+              <ion-avatar item-left>
+                <img [src]="beacon.beaconImageFileName ? (beacon.beaconImageDataUrl ? beacon.beaconImageDataUrl : beacon.beaconImageUrl) : '../../assets/default_image_square.png'">
+              </ion-avatar>
+              {{beacon.name}}
+              <button ion-button color="danger" round item-right (click)="unassignBeacon(beacon)"><ion-icon name="close"></ion-icon></button>
+            </ion-item>
+          </ion-list>
+
+          <div padding *ngIf="isEditing">
+            <button color="primary" ion-button block type="button" (click)="presentBeaconsPopover()">Assign Beacon</button>
+          </div>
+
+        </ion-card>
+
       </ion-col>
     </ion-row>
   </ion-grid>

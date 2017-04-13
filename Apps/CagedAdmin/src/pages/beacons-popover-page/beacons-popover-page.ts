@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { ViewController, NavParams } from 'ionic-angular';
+import { BeaconModel } from "../../models/beacon";
 
 @Component({
   selector: 'page-beacons-popover',
@@ -7,10 +8,18 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class BeaconsPopoverPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  beacons: Array<BeaconModel>;
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad BeaconsPopoverPagePage');
+  constructor(private _viewCtrl: ViewController, private _navParams: NavParams) {
+
+    this.beacons = this._navParams.data;
+
+  }
+
+  selectBeacon(beacon: BeaconModel) {
+
+    this._viewCtrl.dismiss(beacon);
+
   }
 
 }

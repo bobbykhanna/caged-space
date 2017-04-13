@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { ViewController, NavParams } from 'ionic-angular';
 import { MusicianModel } from "../../models/musician";
 
@@ -11,11 +11,11 @@ export class MusiciansPopoverPage {
 
   musicians: Array<MusicianModel>;
 
-constructor(private _viewCtrl: ViewController, private _navParams: NavParams) {
+  constructor(private _viewCtrl: ViewController, private _navParams: NavParams) {
 
-  this.musicians = this._navParams.data;
+    this.musicians = this._navParams.data;
 
-}
+  }
 
   selectMusician(musician: MusicianModel) {
 
