@@ -57,6 +57,9 @@ export class ConfigService {
   get deleteUserUrl(): string {
     return this._functionsConfig.deleteUserUrl;
   }
+  get getNewUserIdUrl(): string {
+    return this._functionsConfig.getNewUserIdUrl;
+  }
 
   // Musicans
   get addMusicianUrl(): string {
@@ -71,7 +74,16 @@ export class ConfigService {
     return this._functionsConfig.deleteMusicianUrl;
   }
 
+  get getNewMusicianIdUrl(): string {
+    return this._functionsConfig.getNewMusicianIdUrl;
+  }
+
   // Events
+
+    get getNewEventIdUrl(): string {
+    return this._functionsConfig.getNewEventIdUrl;
+  }
+
   get deleteEventUrl(): string {
     return this._functionsConfig.deleteEventUrl;
   }

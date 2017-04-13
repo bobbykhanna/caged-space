@@ -37,19 +37,19 @@ export class LoginPage {
       this._util.StartSpinner('Signing In...');
 
       // Initiate Login.
-      this._userService.Login(email, password)
-        .subscribe(user => {
+  //    this._userService.Login(email, password)
+  //      .subscribe(user => {
 
           // Navigate to Home Page after successful loggin in.
-          this._nav.setRoot(MusiciansPage);
+     //     this._nav.setRoot(MusiciansPage);
 
-        }, error => {
+      //  }, error => {
 
-          this._util.StopSpinner();
+      //    this._util.StopSpinner();
           
-          this._util.ShowAlert('Login Error', 'Username or password is not correct.');
-
-        });
+       //   this._util.ShowAlert('Login Error', 'Username or password is not correct.');
+//
+    //    });
 
     }
 

@@ -14,8 +14,12 @@
 
 <ion-content padding>
 
-  <ion-fab bottom right *ngIf="!isEditing">
-    <button ion-fab (click)="toggleEditEvent()"><ion-icon name="create"></ion-icon></button>
+  <ion-fab right bottom *ngIf="!isEditing">
+    <button ion-fab color="primary"><ion-icon name="build"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab color="danger" (click)="toggleDeleteEvent()"><ion-icon name="trash"></ion-icon></button>
+      <button ion-fab color="primary" (click)="toggleEditEvent()"><ion-icon name="create"></ion-icon></button>
+    </ion-fab-list>
   </ion-fab>
 
   <ion-fab bottom right *ngIf="isEditing">
@@ -27,22 +31,20 @@
       <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
 
         <ion-card>
-          <img src="../../assets/thumbnail-totoro.png" />
+
+          <img [src]="eventProfileImage" />
 
           <ion-card-content>
 
             <div *ngIf="!isEditing">
               <p>
-                <strong>Name: </strong>{{event.name}}
-              </p>
-              <p>
                 <strong>Location: </strong>{{event.location}}
               </p>
               <p>
-                <strong>StartDate: </strong>{{event.beginDate}}
+                <strong>Event Start Date: </strong>{{event.beginDate}}
               </p>
               <p>
-                <strong>EndDate: </strong>{{event.endDate}}
+                <strong>Event End Date: </strong>{{event.endDate}}
               </p>
               <p>
                 <strong>Description: </strong>{{event.description}}
@@ -52,43 +54,51 @@
 
             <form *ngIf="isEditing" [formGroup]="editEventForm" (ngSubmit)="editEvent(editEventForm.valid)">
 
+              <div padding *ngIf="isEditing">
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
+
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
-                  <ion-input type="text" formControlName="name"></ion-input>
+                  <ion-input type="text" formControlName="name"[ngModel]="event.name"></ion-input>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Location:</ion-label>
-                  <ion-textarea type="text" formControlName="location"></ion-textarea>
+                  <ion-input type="text" formControlName="location"[ngModel]="event.location"></ion-input>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
-                  <ion-label floating>StartDate:</ion-label>
-                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="beginDate"></ion-datetime>
+                  <ion-label floating>Event Start Date:</ion-label>
+                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="beginDate"[ngModel]="event.beginDate"></ion-datetime>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
-                  <ion-label floating>EndDate:</ion-label>
-                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="endDate"></ion-datetime>
+                  <ion-label floating>Event End Date:</ion-label>
+                  <ion-datetime type="text" displayFormat="MM/DD/YYYY" formControlName="endDate"[ngModel]="event.endDate"></ion-datetime>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Description:</ion-label>
-                  <ion-textarea type="text" formControlName="description"></ion-textarea>
+                  <ion-textarea type="text" formControlName="description"[ngModel]="event.description"></ion-textarea>
                 </ion-item>
               </div>
               
               <div padding>
                 <button color="primary" ion-button block type="submit">Update Event's Info</button>
+              </div>
+
+              <div style="height:0px;overflow:hidden">
+                <input #imageInputEdit type="file" accept="image/*" />
               </div>
 
             </form>

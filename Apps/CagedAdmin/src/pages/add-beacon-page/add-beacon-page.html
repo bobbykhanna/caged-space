@@ -14,6 +14,8 @@
       <ion-col col-sm-12 col-md-10 col-lg-8 col-xl-6>
 
         <ion-card>
+          <img [src]="beaconProfileImage" />
+
           <ion-card-content>
 
             <form [formGroup]="addBeaconForm" (ngSubmit)="addBeacon(addBeaconForm.valid)">
@@ -22,6 +24,10 @@
               </div>
 
 
+              <div padding>
+                <button color="primary" type="button" ion-button block (click)="toggleImageUpload()">Upload Image</button>
+              </div>
+              
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
@@ -45,6 +51,10 @@
 
               <div padding>
                 <button color="secondary" ion-button block type="submit">Add Beacon</button>
+              </div>
+
+              <div style="height:0px;overflow:hidden">
+                <input type="file" id="beaconImageUpload" name="beaconImageUpload" accept="image/*" />
               </div>
 
             </form>

@@ -8,8 +8,12 @@
 
 <ion-content padding>
 
-  <ion-fab bottom right *ngIf="!isEditing">
-    <button ion-fab (click)="toggleEditMusician()"><ion-icon name="create"></ion-icon></button>
+  <ion-fab right bottom *ngIf="!isEditing">
+    <button ion-fab color="primary"><ion-icon name="build"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab color="danger" (click)="toggleDeleteMusician()"><ion-icon name="trash"></ion-icon></button>
+      <button ion-fab color="primary" (click)="toggleEditMusician()"><ion-icon name="create"></ion-icon></button>
+    </ion-fab-list>
   </ion-fab>
 
   <ion-fab bottom right *ngIf="isEditing">
@@ -43,21 +47,21 @@
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Name:</ion-label>
-                  <ion-input type="text" formControlName="name"></ion-input>
+                  <ion-input type="text" formControlName="name" [ngModel]="musician.name"></ion-input>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Instrument:</ion-label>
-                  <ion-input type="text" formControlName="instrument"></ion-input>
+                  <ion-input type="text" formControlName="instrument" [ngModel]="musician.instrument"></ion-input>
                 </ion-item>
               </div>
 
               <div padding>
                 <ion-item secondary>
                   <ion-label floating>Description:</ion-label>
-                  <ion-textarea type="text" formControlName="description"></ion-textarea>
+                  <ion-textarea type="text" formControlName="description" [ngModel]="musician.description"></ion-textarea>
                 </ion-item>
               </div>
 
@@ -66,7 +70,7 @@
               </div>
 
               <div style="height:0px;overflow:hidden">
-                <input type="file" id="editMusicianImageUpload" name="editMusicianImageUpload" accept="image/*" />
+                <input #image type="file" accept="image/*" />
               </div>
 
             </form>

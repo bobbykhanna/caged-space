@@ -5,6 +5,12 @@
     "ServerlessDeploymentBucket": {
       "Type": "AWS::S3::Bucket"
     },
+    "GetNewMusicianIdLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/musicians-dev-getNewMusicianId"
+      }
+    },
     "AddMusicianLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
@@ -42,6 +48,121 @@
             }
           ]
         },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "dev",
+                  "musicians",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "GetNewMusicianIdLogGroup",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "AddMusicianLogGroup",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "UpdateMusicianLogGroup",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "DeleteMusicianLogGroup",
+                        "Arn"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          {
+                            "Fn::GetAtt": [
+                              "GetNewMusicianIdLogGroup",
+                              "Arn"
+                            ]
+                          },
+                          "*"
+                        ]
+                      ]
+                    },
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          {
+                            "Fn::GetAtt": [
+                              "AddMusicianLogGroup",
+                              "Arn"
+                            ]
+                          },
+                          "*"
+                        ]
+                      ]
+                    },
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          {
+                            "Fn::GetAtt": [
+                              "UpdateMusicianLogGroup",
+                              "Arn"
+                            ]
+                          },
+                          "*"
+                        ]
+                      ]
+                    },
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          {
+                            "Fn::GetAtt": [
+                              "DeleteMusicianLogGroup",
+                              "Arn"
+                            ]
+                          },
+                          "*"
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ],
         "Path": "/",
         "RoleName": {
           "Fn::Join": [
@@ -56,83 +177,51 @@
         }
       }
     },
-    "IamPolicyLambdaExecution": {
-      "Type": "AWS::IAM::Policy",
+    "GetNewMusicianIdLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+<<<<<<< Updated upstream
+          "S3Key": "serverless/musicians/dev/1491781025586-2017-04-09T23:37:05.586Z/musicians.zip"
+=======
+          "S3Key": "serverless/musicians/dev/1491775568650-2017-04-09T22:06:08.650Z/musicians.zip"
+>>>>>>> Stashed changes
+        },
+        "FunctionName": "musicians-dev-getNewMusicianId",
+        "Handler": "handler.getNewMusicianId",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs4.3",
+        "Timeout": 6
+      },
       "DependsOn": [
         "IamRoleLambdaExecution"
-      ],
+      ]
+    },
+<<<<<<< Updated upstream
+    "GetNewMusicianIdLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU": {
+=======
+    "GetNewMusicianIdLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c": {
+>>>>>>> Stashed changes
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
       "Properties": {
-        "PolicyName": {
-          "Fn::Join": [
-            "-",
-            [
-              "dev",
-              "musicians",
-              "lambda"
-            ]
-          ]
+        "FunctionName": {
+          "Ref": "GetNewMusicianIdLambdaFunction"
         },
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    ":",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "AddMusicianLogGroup",
-                          "Arn"
-                        ]
-                      },
-                      "*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    ":",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "UpdateMusicianLogGroup",
-                          "Arn"
-                        ]
-                      },
-                      "*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    ":",
-                    [
-                      {
-                        "Fn::GetAtt": [
-                          "DeleteMusicianLogGroup",
-                          "Arn"
-                        ]
-                      },
-                      "*"
-                    ]
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        "Roles": [
-          {
-            "Ref": "IamRoleLambdaExecution"
-          }
-        ]
+<<<<<<< Updated upstream
+        "CodeSha256": "amSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU="
+=======
+        "CodeSha256": "TqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c="
+>>>>>>> Stashed changes
       }
     },
     "AddMusicianLambdaFunction": {
@@ -142,7 +231,11 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491516525150-2017-04-06T22:08:45.150Z/musicians.zip"
+<<<<<<< Updated upstream
+          "S3Key": "serverless/musicians/dev/1491781025586-2017-04-09T23:37:05.586Z/musicians.zip"
+=======
+          "S3Key": "serverless/musicians/dev/1491775568650-2017-04-09T22:06:08.650Z/musicians.zip"
+>>>>>>> Stashed changes
         },
         "FunctionName": "musicians-dev-addMusician",
         "Handler": "handler.addMusician",
@@ -157,18 +250,25 @@
         "Timeout": 6
       },
       "DependsOn": [
-        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "AddMusicianLambdaVersionqrtmEfpjlbDRJYRCTt02R654TPin42nt3AxQAFJik": {
+<<<<<<< Updated upstream
+    "AddMusicianLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU": {
+=======
+    "AddMusicianLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c": {
+>>>>>>> Stashed changes
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AddMusicianLambdaFunction"
         },
-        "CodeSha256": "qrtmEfpjlbDRJYRCTt02R654TPin42/nt3AxQAFJ/ik="
+<<<<<<< Updated upstream
+        "CodeSha256": "amSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU="
+=======
+        "CodeSha256": "TqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c="
+>>>>>>> Stashed changes
       }
     },
     "UpdateMusicianLambdaFunction": {
@@ -178,7 +278,11 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491516525150-2017-04-06T22:08:45.150Z/musicians.zip"
+<<<<<<< Updated upstream
+          "S3Key": "serverless/musicians/dev/1491781025586-2017-04-09T23:37:05.586Z/musicians.zip"
+=======
+          "S3Key": "serverless/musicians/dev/1491775568650-2017-04-09T22:06:08.650Z/musicians.zip"
+>>>>>>> Stashed changes
         },
         "FunctionName": "musicians-dev-updateMusician",
         "Handler": "handler.updateMusician",
@@ -193,18 +297,25 @@
         "Timeout": 6
       },
       "DependsOn": [
-        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateMusicianLambdaVersionqrtmEfpjlbDRJYRCTt02R654TPin42nt3AxQAFJik": {
+<<<<<<< Updated upstream
+    "UpdateMusicianLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU": {
+=======
+    "UpdateMusicianLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c": {
+>>>>>>> Stashed changes
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateMusicianLambdaFunction"
         },
-        "CodeSha256": "qrtmEfpjlbDRJYRCTt02R654TPin42/nt3AxQAFJ/ik="
+<<<<<<< Updated upstream
+        "CodeSha256": "amSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU="
+=======
+        "CodeSha256": "TqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c="
+>>>>>>> Stashed changes
       }
     },
     "DeleteMusicianLambdaFunction": {
@@ -214,7 +325,11 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/musicians/dev/1491516525150-2017-04-06T22:08:45.150Z/musicians.zip"
+<<<<<<< Updated upstream
+          "S3Key": "serverless/musicians/dev/1491781025586-2017-04-09T23:37:05.586Z/musicians.zip"
+=======
+          "S3Key": "serverless/musicians/dev/1491775568650-2017-04-09T22:06:08.650Z/musicians.zip"
+>>>>>>> Stashed changes
         },
         "FunctionName": "musicians-dev-deleteMusician",
         "Handler": "handler.deleteMusician",
@@ -229,18 +344,25 @@
         "Timeout": 6
       },
       "DependsOn": [
-        "IamPolicyLambdaExecution",
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteMusicianLambdaVersionqrtmEfpjlbDRJYRCTt02R654TPin42nt3AxQAFJik": {
+<<<<<<< Updated upstream
+    "DeleteMusicianLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU": {
+=======
+    "DeleteMusicianLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c": {
+>>>>>>> Stashed changes
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteMusicianLambdaFunction"
         },
-        "CodeSha256": "qrtmEfpjlbDRJYRCTt02R654TPin42/nt3AxQAFJ/ik="
+<<<<<<< Updated upstream
+        "CodeSha256": "amSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU="
+=======
+        "CodeSha256": "TqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c="
+>>>>>>> Stashed changes
       }
     },
     "ApiGatewayRestApi": {
@@ -264,28 +386,71 @@
         }
       }
     },
-    "ApiGatewayResourceMusician": {
+    "ApiGatewayResourceMusiciansGetnewmusicianid": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
-          "Fn::GetAtt": [
-            "ApiGatewayRestApi",
-            "RootResourceId"
-          ]
+          "Ref": "ApiGatewayResourceMusicians"
         },
-        "PathPart": "musician",
+        "PathPart": "getNewMusicianId",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
       }
     },
-    "ApiGatewayResourceMusicianIdVar": {
+    "ApiGatewayResourceMusiciansIdVar": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
-          "Ref": "ApiGatewayResourceMusician"
+          "Ref": "ApiGatewayResourceMusicians"
         },
         "PathPart": "{id}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodMusiciansGetnewmusicianidOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceMusiciansGetnewmusicianid"
+        },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -337,7 +502,7 @@
         }
       }
     },
-    "ApiGatewayMethodMusicianIdVarOptions": {
+    "ApiGatewayMethodMusiciansIdVarOptions": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "AuthorizationType": "NONE",
@@ -376,11 +541,49 @@
           ]
         },
         "ResourceId": {
-          "Ref": "ApiGatewayResourceMusicianIdVar"
+          "Ref": "ApiGatewayResourceMusiciansIdVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
+      }
+    },
+    "ApiGatewayMethodMusiciansGetnewmusicianidGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceMusiciansGetnewmusicianid"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetNewMusicianIdLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
       }
     },
     "ApiGatewayMethodMusiciansPost": {
@@ -459,15 +662,13 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayMethodMusicianIdVarDelete": {
+    "ApiGatewayMethodMusiciansIdVarDelete": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "DELETE",
-        "RequestParameters": {
-          "method.request.path.id": true
-        },
+        "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceMusicianIdVar"
+          "Ref": "ApiGatewayResourceMusiciansIdVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -475,7 +676,7 @@
         "AuthorizationType": "NONE",
         "Integration": {
           "IntegrationHttpMethod": "POST",
-          "Type": "AWS",
+          "Type": "AWS_PROXY",
           "Uri": {
             "Fn::Join": [
               "",
@@ -494,155 +695,16 @@
                 "/invocations"
               ]
             ]
-          },
-          "PassthroughBehavior": "NEVER",
-          "RequestTemplates": {
-            "application/json": "\n    #set( $body = $input.json(\"$\") )\n\n    \n  #define( $loop )\n    {\n    #foreach($key in $map.keySet())\n        #set( $k = $util.escapeJavaScript($key) )\n        #set( $v = $util.escapeJavaScript($map.get($key)).replaceAll(\"\\\\'\", \"'\") )\n        \"$k\":\n          \"$v\"\n          #if( $foreach.hasNext ) , #end\n    #end\n    }\n  #end\n\n  {\n    \"body\": $body,\n    \"method\": \"$context.httpMethod\",\n    \"principalId\": \"$context.authorizer.principalId\",\n    \"stage\": \"$context.stage\",\n\n    \"cognitoPoolClaims\" : {\n       \n       \"sub\": \"$context.authorizer.claims.sub\"\n    },\n\n    #set( $map = $input.params().header )\n    \"headers\": $loop,\n\n    #set( $map = $input.params().querystring )\n    \"query\": $loop,\n\n    #set( $map = $input.params().path )\n    \"path\": $loop,\n\n    #set( $map = $context.identity )\n    \"identity\": $loop,\n\n    #set( $map = $stageVariables )\n    \"stageVariables\": $loop\n  }\n\n  ",
-            "application/x-www-form-urlencoded": "\n    #define( $body )\n      {\n      #foreach( $token in $input.path('$').split('&') )\n        #set( $keyVal = $token.split('=') )\n        #set( $keyValSize = $keyVal.size() )\n        #if( $keyValSize >= 1 )\n          #set( $key = $util.escapeJavaScript($util.urlDecode($keyVal[0])) )\n          #if( $keyValSize >= 2 )\n            #set($val = $util.escapeJavaScript($util.urlDecode($keyVal[1])).replaceAll(\"\\\\'\",\"'\"))\n          #else\n            #set( $val = '' )\n          #end\n          \"$key\": \"$val\"#if($foreach.hasNext),#end\n        #end\n      #end\n      }\n    #end\n\n    \n  #define( $loop )\n    {\n    #foreach($key in $map.keySet())\n        #set( $k = $util.escapeJavaScript($key) )\n        #set( $v = $util.escapeJavaScript($map.get($key)).replaceAll(\"\\\\'\", \"'\") )\n        \"$k\":\n          \"$v\"\n          #if( $foreach.hasNext ) , #end\n    #end\n    }\n  #end\n\n  {\n    \"body\": $body,\n    \"method\": \"$context.httpMethod\",\n    \"principalId\": \"$context.authorizer.principalId\",\n    \"stage\": \"$context.stage\",\n\n    \"cognitoPoolClaims\" : {\n       \n       \"sub\": \"$context.authorizer.claims.sub\"\n    },\n\n    #set( $map = $input.params().header )\n    \"headers\": $loop,\n\n    #set( $map = $input.params().querystring )\n    \"query\": $loop,\n\n    #set( $map = $input.params().path )\n    \"path\": $loop,\n\n    #set( $map = $context.identity )\n    \"identity\": $loop,\n\n    #set( $map = $stageVariables )\n    \"stageVariables\": $loop\n  }\n\n  "
-          },
-          "IntegrationResponses": [
-            {
-              "StatusCode": 200,
-              "SelectionPattern": "",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 400,
-              "SelectionPattern": "[\\s\\S]*\\[400\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 401,
-              "SelectionPattern": "[\\s\\S]*\\[401\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 403,
-              "SelectionPattern": "[\\s\\S]*\\[403\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 404,
-              "SelectionPattern": "[\\s\\S]*\\[404\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 422,
-              "SelectionPattern": "[\\s\\S]*\\[422\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 500,
-              "SelectionPattern": "[\\s\\S]*(Process\\s?exited\\s?before\\s?completing\\s?request|\\[500\\])[\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 502,
-              "SelectionPattern": "[\\s\\S]*\\[502\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            },
-            {
-              "StatusCode": 504,
-              "SelectionPattern": "[\\s\\S]*\\[504\\][\\s\\S]*",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'"
-              },
-              "ResponseTemplates": {}
-            }
-          ]
-        },
-        "MethodResponses": [
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 200
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 400
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 401
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 403
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 404
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 422
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 500
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 502
-          },
-          {
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true
-            },
-            "ResponseModels": {},
-            "StatusCode": 504
           }
-        ]
+        },
+        "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1491516525201": {
+<<<<<<< Updated upstream
+    "ApiGatewayDeployment1491781025618": {
+=======
+    "ApiGatewayDeployment1491775568696": {
+>>>>>>> Stashed changes
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -651,10 +713,44 @@
         "StageName": "dev"
       },
       "DependsOn": [
+        "ApiGatewayMethodMusiciansGetnewmusicianidGet",
         "ApiGatewayMethodMusiciansPost",
         "ApiGatewayMethodMusiciansPut",
-        "ApiGatewayMethodMusicianIdVarDelete"
+        "ApiGatewayMethodMusiciansIdVarDelete"
       ]
+    },
+    "GetNewMusicianIdLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "GetNewMusicianIdLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
     },
     "AddMusicianLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
@@ -762,22 +858,44 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
+    "GetNewMusicianIdLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+<<<<<<< Updated upstream
+        "Ref": "GetNewMusicianIdLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU"
+=======
+        "Ref": "GetNewMusicianIdLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c"
+>>>>>>> Stashed changes
+      }
+    },
     "AddMusicianLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddMusicianLambdaVersionqrtmEfpjlbDRJYRCTt02R654TPin42nt3AxQAFJik"
+<<<<<<< Updated upstream
+        "Ref": "AddMusicianLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU"
+=======
+        "Ref": "AddMusicianLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c"
+>>>>>>> Stashed changes
       }
     },
     "UpdateMusicianLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateMusicianLambdaVersionqrtmEfpjlbDRJYRCTt02R654TPin42nt3AxQAFJik"
+<<<<<<< Updated upstream
+        "Ref": "UpdateMusicianLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU"
+=======
+        "Ref": "UpdateMusicianLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c"
+>>>>>>> Stashed changes
       }
     },
     "DeleteMusicianLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteMusicianLambdaVersionqrtmEfpjlbDRJYRCTt02R654TPin42nt3AxQAFJik"
+<<<<<<< Updated upstream
+        "Ref": "DeleteMusicianLambdaVersionamSLGkQ31PV4de8xJ6t8rOziQpDnoW6C3PL1BHuUWOU"
+=======
+        "Ref": "DeleteMusicianLambdaVersionTqVJWvWzPlQ1k1MmpsLgcgRDyAyvnKiaYtm4l1xQb5c"
+>>>>>>> Stashed changes
       }
     },
     "ServiceEndpoint": {
