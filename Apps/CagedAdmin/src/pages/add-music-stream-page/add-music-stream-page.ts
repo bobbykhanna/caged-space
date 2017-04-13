@@ -15,7 +15,7 @@ export class AddMusicStreamPage {
 
   addStreamForm: any;
   hasUploadedNewImage: boolean;
-  streamImage: string = '../../assets/new_music.png';
+  streamImage: string = '../../assets/default_image.png';
 
   constructor(private _streamService: StreamService, private _util: UtilityService, private _nav: NavController, private _navParams: NavParams, private _fb: FormBuilder) {
 
