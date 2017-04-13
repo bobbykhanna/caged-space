@@ -129,6 +129,139 @@ module.exports.deleteEvent = (event, context, callback) => {
 
 };
 
+module.exports.assignStreamToEvent = (event, context, callback) => {
+
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+
+  // Initialize Firebase
+  initializeFirebase();
+
+  let eventStream = JSON.parse(event.body);
+
+  var updates = {};
+  updates[event.path + '/' + eventStream.streamId] = eventStream.streamId;
+
+  firebase.database().ref().update(updates).then(function () {
+
+    firebase.database().ref(event.path + '/' + eventStream.streamId).once('value').then(function (snapshot) {
+
+      const response = {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+          "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+        },
+        body: JSON.stringify({
+          message: 'Stream Attached To Event',
+          data: snapshot.val()
+        })
+      };
+
+      callback(null, response);
+
+    });
+
+  });
+
+};
+
+module.exports.unassignStreamFromEvent = (event, context, callback) => {
+
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+
+  // Initialize Firebase
+  initializeFirebase();
+
+  let eventStream = JSON.parse(event.body);
+
+  var updates = {};
+  updates[event.path + '/' + eventStream.streamId] = null;
+
+  firebase.database().ref().update(updates).then(function () {
+
+    const response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+      },
+      body: JSON.stringify({
+        message: 'Stream Unattached From Event'
+      })
+    };
+
+    callback(null, response);
+
+  });
+
+};
+
+module.exports.assignMusicianToEvent = (event, context, callback) => {
+
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+
+  // Initialize Firebase
+  initializeFirebase();
+
+  let eventMusician = JSON.parse(event.body);
+
+  var updates = {};
+  updates[event.path + '/' + eventMusician.musicianId] = eventMusician.musicianId;
+
+  firebase.database().ref().update(updates).then(function () {
+
+    firebase.database().ref(event.path + '/' + eventMusician.musicianId).once('value').then(function (snapshot) {
+
+      const response = {
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+          "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+        },
+        body: JSON.stringify({
+          message: 'Musician Attached To Event',
+          data: snapshot.val()
+        })
+      };
+
+      callback(null, response);
+
+    });
+
+  });
+
+};
+
+module.exports.unassignMusicianFromEvent = (event, context, callback) => {
+
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+
+  // Initialize Firebase
+  initializeFirebase();
+
+  let eventMusician = JSON.parse(event.body);
+
+  var updates = {};
+  updates[event.path + '/' + eventMusician.musicianId] = null;
+
+  firebase.database().ref().update(updates).then(function () {
+
+    const response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+      },
+      body: JSON.stringify({
+        message: 'Musician Unattached From Event'
+      })
+    };
+
+    callback(null, response);
+
+  });
+
+};
 
 let initializeFirebase = function () {
 

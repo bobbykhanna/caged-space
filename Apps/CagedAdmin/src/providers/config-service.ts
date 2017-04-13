@@ -84,7 +84,7 @@ export class ConfigService {
 
   // Events
 
-    get getNewEventIdUrl(): string {
+  get getNewEventIdUrl(): string {
     return this._functionsConfig.getNewEventIdUrl;
   }
 
@@ -109,6 +109,22 @@ export class ConfigService {
     return this._functionsConfig.updateBeaconUrl;
   }
 
+  get assignMusicianToEventUrl(): string {
+    return this._functionsConfig.assignMusicianToEventUrl;
+  }
+
+  get unassignMusicianFromEventUrl(): string {
+    return this._functionsConfig.unassignMusicianFromEventUrl;
+  }
+
+  get assignStreamToEventUrl(): string {
+    return this._functionsConfig.assignStreamToEventUrl;
+  }
+
+  get unassignStreamFromEventUrl(): string {
+    return this._functionsConfig.unassignStreamFromEventUrl;
+  }
+
   get deleteBeaconUrl(): string {
     return this._functionsConfig.deleteBeaconUrl;
   }
@@ -128,6 +144,14 @@ export class ConfigService {
 
   get updateStreamUrl(): string {
     return this._functionsConfig.updateStreamUrl;
+  }
+
+  get assignBeaconToStreamUrl(): string {
+    return this._functionsConfig.assignBeaconToStreamUrl;
+  }
+
+  get unassignBeaconFromStreamUrl(): string {
+    return this._functionsConfig.unassignBeaconFromStreamUrl;
   }
 
 }

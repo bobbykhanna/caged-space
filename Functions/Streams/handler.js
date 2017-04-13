@@ -22,7 +22,7 @@ module.exports.getNewStreamId = (event, context, callback) => {
       data: newKey
     })
   };
-  
+
   callback(null, response);
 
 };
@@ -112,6 +112,39 @@ module.exports.deleteStream = (event, context, callback) => {
 
   firebase.database().ref().update(updates).then(function () {
 
+    const response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+      },
+      body: JSON.stringify({
+        message: 'Stream Deleted'
+      })
+    };
+
+    callback(null, response);
+
+  });
+
+};
+
+module.exports.assignBeaconToStream = (event, context, callback) => {
+
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+
+  // Initialize Firebase
+  initializeFirebase();
+
+  let streamBeacon = JSON.parse(event.body);
+
+  var updates = {};
+  updates[event.path + '/' + streamBeacon.beaconId] = streamBeacon.beaconId;
+
+  firebase.database().ref().update(updates).then(function () {
+
+    firebase.database().ref(event.path + '/' + streamBeacon.beaconId).once('value').then(function (snapshot) {
+
       const response = {
         statusCode: 200,
         headers: {
@@ -119,11 +152,45 @@ module.exports.deleteStream = (event, context, callback) => {
           "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
         },
         body: JSON.stringify({
-          message: 'Stream Deleted'
+          message: 'Beacon Attached To Stream',
+          data: snapshot.val()
         })
       };
 
       callback(null, response);
+
+    });
+
+  });
+
+};
+
+module.exports.unassignBeaconFromStream = (event, context, callback) => {
+
+  context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+
+  // Initialize Firebase
+  initializeFirebase();
+
+  let streamBeacon = JSON.parse(event.body);
+
+  var updates = {};
+  updates[event.path + '/' + streamBeacon.beaconId] = null;
+
+  firebase.database().ref().update(updates).then(function () {
+
+    const response = {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials": true // Required for cookies, authorization headers with HTTPS 
+      },
+      body: JSON.stringify({
+        message: 'Beacon Unattached From Stream'
+      })
+    };
+
+    callback(null, response);
 
   });
 

@@ -22,6 +22,14 @@ export class FunctionsConfigModel {
 
     public deleteEventUrl: string = 'https://n3cgvvoxd4.execute-api.us-east-1.amazonaws.com/dev/events';
 
+    public assignMusicianToEventUrl: string = 'https://n3cgvvoxd4.execute-api.us-east-1.amazonaws.com/dev/events/{eventId}/musicians';
+
+    public unassignMusicianFromEventUrl: string = 'https://n3cgvvoxd4.execute-api.us-east-1.amazonaws.com/dev/events/{eventId}/musicians';
+
+    public assignStreamToEventUrl: string = 'https://n3cgvvoxd4.execute-api.us-east-1.amazonaws.com/dev/events/{eventId}/streams';
+
+    public unassignStreamFromEventUrl: string = 'https://n3cgvvoxd4.execute-api.us-east-1.amazonaws.com/dev/events/{eventId}/streams';
+
     // Musicians
 
     public createMusicianUrl: string = 'https://di78q88alh.execute-api.us-east-1.amazonaws.com/dev/musicians';
@@ -42,8 +50,12 @@ export class FunctionsConfigModel {
 
     public deleteStreamUrl: string = 'https://84jjtsp6cd.execute-api.us-east-1.amazonaws.com/dev/streams';
 
+    public assignBeaconToStreamUrl: string = 'https://84jjtsp6cd.execute-api.us-east-1.amazonaws.com/dev/streams/{streamId}/beacons';
+
+    public unassignBeaconFromStreamUrl: string = 'https://84jjtsp6cd.execute-api.us-east-1.amazonaws.com/dev/streams/{streamId}/beacons';
+
     // Beacons
-    
+
     public getNewBeaconIdUrl: string = 'https://yllfwozr2i.execute-api.us-east-1.amazonaws.com/dev/beacons/getNewBeaconId';
 
     public createBeaconUrl: string = 'https://yllfwozr2i.execute-api.us-east-1.amazonaws.com/dev/beacons';

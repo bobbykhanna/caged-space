@@ -29,6 +29,30 @@
         "LogGroupName": "/aws/lambda/events-dev-deleteEvent"
       }
     },
+    "AssignStreamToEventLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/events-dev-assignStreamToEvent"
+      }
+    },
+    "UnassignStreamFromEventLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/events-dev-unassignStreamFromEvent"
+      }
+    },
+    "AssignMusicianToEventLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/events-dev-assignMusicianToEvent"
+      }
+    },
+    "UnassignMusicianFromEventLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/events-dev-unassignMusicianFromEvent"
+      }
+    },
     "IamRoleLambdaExecution": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -143,6 +167,62 @@
                       "*"
                     ]
                   ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "AssignStreamToEventLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "UnassignStreamFromEventLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "AssignMusicianToEventLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "UnassignMusicianFromEventLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
                 }
               ]
             }
@@ -162,7 +242,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1492053031031-2017-04-13T03:10:31.031Z/events.zip"
+          "S3Key": "serverless/events/dev/1492090054879-2017-04-13T13:27:34.879Z/events.zip"
         },
         "FunctionName": "events-dev-getNewEventId",
         "Handler": "handler.getNewEventId",
@@ -181,14 +261,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "GetNewEventIdLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c": {
+    "GetNewEventIdLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetNewEventIdLambdaFunction"
         },
-        "CodeSha256": "+2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c="
+        "CodeSha256": "htfphphHOz7Mw/Hrnma719JIYSZOS1pSTIsynhXgqGA="
       }
     },
     "AddEventLambdaFunction": {
@@ -198,7 +278,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1492053031031-2017-04-13T03:10:31.031Z/events.zip"
+          "S3Key": "serverless/events/dev/1492090054879-2017-04-13T13:27:34.879Z/events.zip"
         },
         "FunctionName": "events-dev-addEvent",
         "Handler": "handler.addEvent",
@@ -217,14 +297,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AddEventLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c": {
+    "AddEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AddEventLambdaFunction"
         },
-        "CodeSha256": "+2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c="
+        "CodeSha256": "htfphphHOz7Mw/Hrnma719JIYSZOS1pSTIsynhXgqGA="
       }
     },
     "UpdateEventLambdaFunction": {
@@ -234,7 +314,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1492053031031-2017-04-13T03:10:31.031Z/events.zip"
+          "S3Key": "serverless/events/dev/1492090054879-2017-04-13T13:27:34.879Z/events.zip"
         },
         "FunctionName": "events-dev-updateEvent",
         "Handler": "handler.updateEvent",
@@ -253,14 +333,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateEventLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c": {
+    "UpdateEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateEventLambdaFunction"
         },
-        "CodeSha256": "+2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c="
+        "CodeSha256": "htfphphHOz7Mw/Hrnma719JIYSZOS1pSTIsynhXgqGA="
       }
     },
     "DeleteEventLambdaFunction": {
@@ -270,7 +350,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/events/dev/1492053031031-2017-04-13T03:10:31.031Z/events.zip"
+          "S3Key": "serverless/events/dev/1492090054879-2017-04-13T13:27:34.879Z/events.zip"
         },
         "FunctionName": "events-dev-deleteEvent",
         "Handler": "handler.deleteEvent",
@@ -289,14 +369,158 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteEventLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c": {
+    "DeleteEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteEventLambdaFunction"
         },
-        "CodeSha256": "+2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c="
+        "CodeSha256": "htfphphHOz7Mw/Hrnma719JIYSZOS1pSTIsynhXgqGA="
+      }
+    },
+    "AssignStreamToEventLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/events/dev/1492090054879-2017-04-13T13:27:34.879Z/events.zip"
+        },
+        "FunctionName": "events-dev-assignStreamToEvent",
+        "Handler": "handler.assignStreamToEvent",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs4.3",
+        "Timeout": 6
+      },
+      "DependsOn": [
+        "IamPolicyLambdaExecution",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "AssignStreamToEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "AssignStreamToEventLambdaFunction"
+        },
+        "CodeSha256": "htfphphHOz7Mw/Hrnma719JIYSZOS1pSTIsynhXgqGA="
+      }
+    },
+    "UnassignStreamFromEventLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/events/dev/1492090054879-2017-04-13T13:27:34.879Z/events.zip"
+        },
+        "FunctionName": "events-dev-unassignStreamFromEvent",
+        "Handler": "handler.unassignStreamFromEvent",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs4.3",
+        "Timeout": 6
+      },
+      "DependsOn": [
+        "IamPolicyLambdaExecution",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "UnassignStreamFromEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "UnassignStreamFromEventLambdaFunction"
+        },
+        "CodeSha256": "htfphphHOz7Mw/Hrnma719JIYSZOS1pSTIsynhXgqGA="
+      }
+    },
+    "AssignMusicianToEventLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/events/dev/1492090054879-2017-04-13T13:27:34.879Z/events.zip"
+        },
+        "FunctionName": "events-dev-assignMusicianToEvent",
+        "Handler": "handler.assignMusicianToEvent",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs4.3",
+        "Timeout": 6
+      },
+      "DependsOn": [
+        "IamPolicyLambdaExecution",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "AssignMusicianToEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "AssignMusicianToEventLambdaFunction"
+        },
+        "CodeSha256": "htfphphHOz7Mw/Hrnma719JIYSZOS1pSTIsynhXgqGA="
+      }
+    },
+    "UnassignMusicianFromEventLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/events/dev/1492090054879-2017-04-13T13:27:34.879Z/events.zip"
+        },
+        "FunctionName": "events-dev-unassignMusicianFromEvent",
+        "Handler": "handler.unassignMusicianFromEvent",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs4.3",
+        "Timeout": 6
+      },
+      "DependsOn": [
+        "IamPolicyLambdaExecution",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "UnassignMusicianFromEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "UnassignMusicianFromEventLambdaFunction"
+        },
+        "CodeSha256": "htfphphHOz7Mw/Hrnma719JIYSZOS1pSTIsynhXgqGA="
       }
     },
     "ApiGatewayRestApi": {
@@ -339,6 +563,30 @@
           "Ref": "ApiGatewayResourceEvents"
         },
         "PathPart": "{id}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceEventsIdVarStreams": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceEventsIdVar"
+        },
+        "PathPart": "streams",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceEventsIdVarMusicians": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceEventsIdVar"
+        },
+        "PathPart": "musicians",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -476,6 +724,98 @@
         },
         "ResourceId": {
           "Ref": "ApiGatewayResourceEventsIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodEventsIdVarStreamsOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceEventsIdVarStreams"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodEventsIdVarMusiciansOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceEventsIdVarMusicians"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -634,7 +974,159 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1492053031063": {
+    "ApiGatewayMethodEventsIdVarStreamsPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceEventsIdVarStreams"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AssignStreamToEventLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodEventsIdVarStreamsDelete": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "DELETE",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceEventsIdVarStreams"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UnassignStreamFromEventLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodEventsIdVarMusiciansPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceEventsIdVarMusicians"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AssignMusicianToEventLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodEventsIdVarMusiciansDelete": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "DELETE",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceEventsIdVarMusicians"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UnassignMusicianFromEventLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayDeployment1492090054934": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -646,7 +1138,11 @@
         "ApiGatewayMethodEventsGetneweventidGet",
         "ApiGatewayMethodEventsPost",
         "ApiGatewayMethodEventsPut",
-        "ApiGatewayMethodEventsIdVarDelete"
+        "ApiGatewayMethodEventsIdVarDelete",
+        "ApiGatewayMethodEventsIdVarStreamsPost",
+        "ApiGatewayMethodEventsIdVarStreamsDelete",
+        "ApiGatewayMethodEventsIdVarMusiciansPost",
+        "ApiGatewayMethodEventsIdVarMusiciansDelete"
       ]
     },
     "GetNewEventIdLambdaPermissionApiGateway": {
@@ -780,6 +1276,138 @@
           ]
         }
       }
+    },
+    "AssignStreamToEventLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AssignStreamToEventLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "UnassignStreamFromEventLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "UnassignStreamFromEventLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "AssignMusicianToEventLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AssignMusicianToEventLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "UnassignMusicianFromEventLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "UnassignMusicianFromEventLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
     }
   },
   "Outputs": {
@@ -791,25 +1419,49 @@
     "GetNewEventIdLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetNewEventIdLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c"
+        "Ref": "GetNewEventIdLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA"
       }
     },
     "AddEventLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddEventLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c"
+        "Ref": "AddEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA"
       }
     },
     "UpdateEventLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateEventLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c"
+        "Ref": "UpdateEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA"
       }
     },
     "DeleteEventLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteEventLambdaVersion2VuRHIiZo3UCDP7pXZ3k4DltUc7I5aGxcqo4HGAk4c"
+        "Ref": "DeleteEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA"
+      }
+    },
+    "AssignStreamToEventLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "AssignStreamToEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA"
+      }
+    },
+    "UnassignStreamFromEventLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "UnassignStreamFromEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA"
+      }
+    },
+    "AssignMusicianToEventLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "AssignMusicianToEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA"
+      }
+    },
+    "UnassignMusicianFromEventLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "UnassignMusicianFromEventLambdaVersionhtfphphHOz7MwHrnma719JIYSZOS1pSTIsynhXgqGA"
       }
     },
     "ServiceEndpoint": {

@@ -40,4 +40,48 @@ functions:
               paths:
                 id: true
           cors: true
+  assignStreamToEvent:
+    handler: handler.assignStreamToEvent
+    events:
+      - http:
+          path: events/{id}/streams
+          method: post
+          request:
+            parameters:
+              paths:
+                id: true
+          cors: true
+  unassignStreamFromEvent:
+    handler: handler.unassignStreamFromEvent
+    events:
+      - http:
+          path: events/{id}/streams
+          method: delete
+          request:
+            parameters:
+              paths:
+                id: true
+          cors: true
+  assignMusicianToEvent:
+    handler: handler.assignMusicianToEvent
+    events:
+      - http:
+          path: events/{id}/musicians
+          method: post
+          request:
+            parameters:
+              paths:
+                id: true
+          cors: true
+  unassignMusicianFromEvent:
+    handler: handler.unassignMusicianFromEvent
+    events:
+      - http:
+          path: events/{id}/musicians
+          method: delete
+          request:
+            parameters:
+              paths:
+                id: true
+          cors: true
 

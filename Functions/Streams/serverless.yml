@@ -40,4 +40,26 @@ functions:
               paths:
                 id: true
           cors: true
+  assignBeaconToStream:
+    handler: handler.assignBeaconToStream
+    events:
+      - http:
+          path: streams/{id}/beacons
+          method: post
+          request:
+            parameters:
+              paths:
+                id: true
+          cors: true
+  unassignBeaconFromStream:
+    handler: handler.unassignBeaconFromStream
+    events:
+      - http:
+          path: streams/{id}/beacons
+          method: delete
+          request:
+            parameters:
+              paths:
+                id: true
+          cors: true
 

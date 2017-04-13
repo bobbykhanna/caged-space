@@ -68,7 +68,7 @@ export class EventDetailsPage {
 
       let musicians = new Array<MusicianModel>();
 
-      let musiciansIds = this.event.musiciansIds;
+      let musiciansIds = this.event.musicians;
 
       newMusicians.forEach(function (musician) {
 
@@ -84,7 +84,7 @@ export class EventDetailsPage {
 
       let streams = new Array<StreamModel>();
 
-      let streamsIds = this.event.streamsIds;
+      let streamsIds = this.event.streams;
 
       newStreams.forEach(function (stream) {
 

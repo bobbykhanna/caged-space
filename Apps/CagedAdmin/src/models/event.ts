@@ -10,8 +10,8 @@ export class EventModel {
     public beginDate: Date;
     public endDate: Date;
     public location: string;
-    public musiciansIds: Array<string>;
-    public streamsIds: Array<string>;
+    public musicians: Array<string>;
+    public streams: Array<string>;
     public eventImageUrl: string;
     public eventImageDataUrl: string;
     public eventImageFileName: string;

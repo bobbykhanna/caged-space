@@ -29,6 +29,18 @@
         "LogGroupName": "/aws/lambda/streams-dev-deleteStream"
       }
     },
+    "AssignBeaconToStreamLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/streams-dev-assignBeaconToStream"
+      }
+    },
+    "UnassignBeaconFromStreamLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/streams-dev-unassignBeaconFromStream"
+      }
+    },
     "IamRoleLambdaExecution": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -143,6 +155,34 @@
                       "*"
                     ]
                   ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "AssignBeaconToStreamLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "UnassignBeaconFromStreamLogGroup",
+                          "Arn"
+                        ]
+                      },
+                      "*"
+                    ]
+                  ]
                 }
               ]
             }
@@ -162,7 +202,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/streams/dev/1492053117665-2017-04-13T03:11:57.665Z/streams.zip"
+          "S3Key": "serverless/streams/dev/1492089004704-2017-04-13T13:10:04.704Z/streams.zip"
         },
         "FunctionName": "streams-dev-getNewStreamId",
         "Handler": "handler.getNewStreamId",
@@ -181,14 +221,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "GetNewStreamIdLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w": {
+    "GetNewStreamIdLambdaVersionPjqqh9V2HMktWon8bblkcwd4B2IAguOTnBTjOoxc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetNewStreamIdLambdaFunction"
         },
-        "CodeSha256": "8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w="
+        "CodeSha256": "Pj/qqh9V2HM/ktWon8bblkcwd4B2I+AguOTnBTjOoxc="
       }
     },
     "AddStreamLambdaFunction": {
@@ -198,7 +238,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/streams/dev/1492053117665-2017-04-13T03:11:57.665Z/streams.zip"
+          "S3Key": "serverless/streams/dev/1492089004704-2017-04-13T13:10:04.704Z/streams.zip"
         },
         "FunctionName": "streams-dev-addStream",
         "Handler": "handler.addStream",
@@ -217,14 +257,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AddStreamLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w": {
+    "AddStreamLambdaVersionPjqqh9V2HMktWon8bblkcwd4B2IAguOTnBTjOoxc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AddStreamLambdaFunction"
         },
-        "CodeSha256": "8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w="
+        "CodeSha256": "Pj/qqh9V2HM/ktWon8bblkcwd4B2I+AguOTnBTjOoxc="
       }
     },
     "UpdateStreamLambdaFunction": {
@@ -234,7 +274,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/streams/dev/1492053117665-2017-04-13T03:11:57.665Z/streams.zip"
+          "S3Key": "serverless/streams/dev/1492089004704-2017-04-13T13:10:04.704Z/streams.zip"
         },
         "FunctionName": "streams-dev-updateStream",
         "Handler": "handler.updateStream",
@@ -253,14 +293,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UpdateStreamLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w": {
+    "UpdateStreamLambdaVersionPjqqh9V2HMktWon8bblkcwd4B2IAguOTnBTjOoxc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateStreamLambdaFunction"
         },
-        "CodeSha256": "8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w="
+        "CodeSha256": "Pj/qqh9V2HM/ktWon8bblkcwd4B2I+AguOTnBTjOoxc="
       }
     },
     "DeleteStreamLambdaFunction": {
@@ -270,7 +310,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/streams/dev/1492053117665-2017-04-13T03:11:57.665Z/streams.zip"
+          "S3Key": "serverless/streams/dev/1492089004704-2017-04-13T13:10:04.704Z/streams.zip"
         },
         "FunctionName": "streams-dev-deleteStream",
         "Handler": "handler.deleteStream",
@@ -289,14 +329,86 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "DeleteStreamLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w": {
+    "DeleteStreamLambdaVersionPjqqh9V2HMktWon8bblkcwd4B2IAguOTnBTjOoxc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DeleteStreamLambdaFunction"
         },
-        "CodeSha256": "8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w="
+        "CodeSha256": "Pj/qqh9V2HM/ktWon8bblkcwd4B2I+AguOTnBTjOoxc="
+      }
+    },
+    "AssignBeaconToStreamLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/streams/dev/1492089004704-2017-04-13T13:10:04.704Z/streams.zip"
+        },
+        "FunctionName": "streams-dev-assignBeaconToStream",
+        "Handler": "handler.assignBeaconToStream",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs4.3",
+        "Timeout": 6
+      },
+      "DependsOn": [
+        "IamPolicyLambdaExecution",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "AssignBeaconToStreamLambdaVersionPjqqh9V2HMktWon8bblkcwd4B2IAguOTnBTjOoxc": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "AssignBeaconToStreamLambdaFunction"
+        },
+        "CodeSha256": "Pj/qqh9V2HM/ktWon8bblkcwd4B2I+AguOTnBTjOoxc="
+      }
+    },
+    "UnassignBeaconFromStreamLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/streams/dev/1492089004704-2017-04-13T13:10:04.704Z/streams.zip"
+        },
+        "FunctionName": "streams-dev-unassignBeaconFromStream",
+        "Handler": "handler.unassignBeaconFromStream",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs4.3",
+        "Timeout": 6
+      },
+      "DependsOn": [
+        "IamPolicyLambdaExecution",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "UnassignBeaconFromStreamLambdaVersionPjqqh9V2HMktWon8bblkcwd4B2IAguOTnBTjOoxc": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "UnassignBeaconFromStreamLambdaFunction"
+        },
+        "CodeSha256": "Pj/qqh9V2HM/ktWon8bblkcwd4B2I+AguOTnBTjOoxc="
       }
     },
     "ApiGatewayRestApi": {
@@ -339,6 +451,18 @@
           "Ref": "ApiGatewayResourceStreams"
         },
         "PathPart": "{id}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceStreamsIdVarBeacons": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceStreamsIdVar"
+        },
+        "PathPart": "beacons",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -476,6 +600,52 @@
         },
         "ResourceId": {
           "Ref": "ApiGatewayResourceStreamsIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodStreamsIdVarBeaconsOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceStreamsIdVarBeacons"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -634,7 +804,83 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1492053117697": {
+    "ApiGatewayMethodStreamsIdVarBeaconsPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceStreamsIdVarBeacons"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AssignBeaconToStreamLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodStreamsIdVarBeaconsDelete": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "DELETE",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceStreamsIdVarBeacons"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UnassignBeaconFromStreamLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayDeployment1492089004748": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -646,7 +892,9 @@
         "ApiGatewayMethodStreamsGetnewstreamidGet",
         "ApiGatewayMethodStreamsPost",
         "ApiGatewayMethodStreamsPut",
-        "ApiGatewayMethodStreamsIdVarDelete"
+        "ApiGatewayMethodStreamsIdVarDelete",
+        "ApiGatewayMethodStreamsIdVarBeaconsPost",
+        "ApiGatewayMethodStreamsIdVarBeaconsDelete"
       ]
     },
     "GetNewStreamIdLambdaPermissionApiGateway": {
@@ -780,6 +1028,72 @@
           ]
         }
       }
+    },
+    "AssignBeaconToStreamLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AssignBeaconToStreamLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "UnassignBeaconFromStreamLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "UnassignBeaconFromStreamLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
     }
   },
   "Outputs": {
@@ -791,25 +1105,37 @@
     "GetNewStreamIdLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetNewStreamIdLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w"
+        "Ref": "GetNewStreamIdLambdaVersionPjqqh9V2HMktWon8bblkcwd4B2IAguOTnBTjOoxc"
       }
     },
     "AddStreamLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AddStreamLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w"
+        "Ref": "AddStreamLambdaVersionPjqqh9V2HMktWon8bblkcwd4B2IAguOTnBTjOoxc"
       }
     },
     "UpdateStreamLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateStreamLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w"
+        "Ref": "UpdateStreamLambdaVersionPjqqh9V2HMktWon8bblkcwd4B2IAguOTnBTjOoxc"
       }
     },
     "DeleteStreamLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DeleteStreamLambdaVersion8IgBUjcnhHCujELpvgOdeJHCAMB4l5FEWYX4ANjDM2w"
+        "Ref": "DeleteStreamLambdaVersionPjqqh9V2HMktWon8bblkcwd4B2IAguOTnBTjOoxc"
+      }
+    },
+    "AssignBeaconToStreamLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "AssignBeaconToStreamLambdaVersionPjqqh9V2HMktWon8bblkcwd4B2IAguOTnBTjOoxc"
+      }
+    },
+    "UnassignBeaconFromStreamLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "UnassignBeaconFromStreamLambdaVersionPjqqh9V2HMktWon8bblkcwd4B2IAguOTnBTjOoxc"
       }
     },
     "ServiceEndpoint": {
