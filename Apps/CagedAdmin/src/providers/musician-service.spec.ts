@@ -7,12 +7,19 @@ import { TestBed, getTestBed, async, inject } from '@angular/core/testing';
 import { BaseRequestOptions, Http, XHRBackend, HttpModule, ResponseOptions, RequestMethod } from "@angular/http";
 import { FormsModule } from "@angular/forms";
 import { MockBackend, MockConnection } from "@angular/http/testing";
+import { Response } from '@angular/http';
+import { ReflectiveInjector } from "@angular/core";
 
 describe('Service: Musician Service', () => {
 
-    // Test Configuration.
+    // Test Configuration:
     let mockBackend: MockBackend;
 
+    // Define config service for use in testing suite.
+    let injector = ReflectiveInjector.resolveAndCreate([ConfigService]);
+    let _config: ConfigService = injector.get(ConfigService);
+
+    // Mock app-level dependencies and Firebase configuration.
     beforeEach(async(() => {
 
         const firebaseConfig = {
@@ -52,7 +59,7 @@ describe('Service: Musician Service', () => {
     }));
 
     // Tests:
-    it('Should instantiate service correctly',
+    it('is created',
 
         inject([MusicianService], (service) => {
 
@@ -64,30 +71,45 @@ describe('Service: Musician Service', () => {
     );
 
     // API Tests:
-    it('should delete musician', done => {
+    it('deletes musician', done => {
 
         let musicianService: MusicianService;
-
-        let response: any = new Response(new ResponseOptions({
-            body: "{message:'Musician Deleted'}"
-        }
-        ));
 
         getTestBed().compileComponents().then(() => {
 
             mockBackend.connections.subscribe(
                 (connection: MockConnection) => {
 
-                    expect(connection.request.method).toBe(RequestMethod.Delete);
+                    if (connection.request.url === _config.deleteMusicianUrl + '/testId') {
 
-                    connection.mockRespond(response);
+                        let response: any = new Response(new ResponseOptions(
+                            {
+                                body: JSON.stringify({ message: 'Musician Deleted' })
+
+                            }));
+
+                        // Tests that correct HTTP methos is used with a given URL.
+                        expect(connection.request.method).toBe(RequestMethod.Delete);
+
+                        connection.mockRespond(response);
+
+                    }
+
                 });
 
             musicianService = getTestBed().get(MusicianService);
+
+            // Tests that Musician Service was instantiated correctly.
             expect(musicianService).toBeDefined();
 
-            musicianService.deleteMusician('', '').subscribe(message => {
+            musicianService.deleteMusician('testId', '').subscribe(message => {
+
+                // Tests that API call's return value is valid.
                 expect(message).toBeDefined();
+
+                // Tests that API call's return value is correct.
+                expect(message).toEqual('Musician Deleted');
+
                 done();
             });
 
