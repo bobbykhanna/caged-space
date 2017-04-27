@@ -9,6 +9,7 @@ import { FormsModule } from "@angular/forms";
 import { MockBackend, MockConnection } from "@angular/http/testing";
 import { Response } from '@angular/http';
 import { ReflectiveInjector } from "@angular/core";
+import { MusicianModel } from "../models/musician";
 
 describe('Service: Musician Service', () => {
 
@@ -71,6 +72,115 @@ describe('Service: Musician Service', () => {
     );
 
     // API Tests:
+    it('adds musician', done => {
+
+        let musicianService: MusicianService;
+
+        getTestBed().compileComponents().then(() => {
+
+            mockBackend.connections.subscribe(
+                (connection: MockConnection) => {
+
+                    if (connection.request.url === _config.addMusicianUrl) {
+
+                        let responseModel: MusicianModel = new MusicianModel();
+                        responseModel.id = 'testId';
+
+                        let response: any = new Response(new ResponseOptions(
+                            {
+                                body: JSON.stringify({ data: responseModel })
+
+                            }));
+
+                        // Tests that correct HTTP methos is used with a given URL.
+                        expect(connection.request.method).toBe(RequestMethod.Post);
+
+                        connection.mockRespond(response);
+
+                    } else if (connection.request.url === _config.getNewMusicianIdUrl) {
+
+                        let response: any = new Response(new ResponseOptions(
+                            {
+                                body: JSON.stringify({ data: 'testId' })
+
+                            }));
+
+                        // Tests that correct HTTP methos is used with a given URL.
+                        expect(connection.request.method).toBe(RequestMethod.Get);
+
+                        connection.mockRespond(response);
+
+                    }
+
+                });
+
+            musicianService = getTestBed().get(MusicianService);
+
+            // Tests that Musician Service was instantiated correctly.
+            expect(musicianService).toBeDefined();
+
+            musicianService.addMusician(new MusicianModel(), false, '').then(musician => {
+
+                // Tests that API call's return value is valid.
+                expect(musician).toBeDefined();
+
+                // Tests that API call's return value is correct.
+                expect(musician.id).toEqual('testId');
+
+                done();
+            });
+
+        });
+    });
+
+    it('edits musician', done => {
+
+        let musicianService: MusicianService;
+
+        getTestBed().compileComponents().then(() => {
+
+            mockBackend.connections.subscribe(
+                (connection: MockConnection) => {
+
+                    if (connection.request.url === _config.updateMusicianUrl) {
+
+                        let responseModel: MusicianModel = new MusicianModel();
+                        responseModel.id = 'testId';
+
+                        let response: any = new Response(new ResponseOptions(
+                            {
+                                body: JSON.stringify({ data: responseModel })
+
+                            }));
+
+                        // Tests that correct HTTP methos is used with a given URL.
+                        expect(connection.request.method).toBe(RequestMethod.Put);
+
+                        connection.mockRespond(response);
+
+                    }
+
+                });
+
+            musicianService = getTestBed().get(MusicianService);
+
+            // Tests that Musician Service was instantiated correctly.
+            expect(musicianService).toBeDefined();
+
+            musicianService.editMusician(new MusicianModel(), false, '').then(musician => {
+
+                // Tests that API call's return value is valid.
+                expect(musician).toBeDefined();
+
+                // Tests that API call's return value is correct.
+                expect(musician.id).toEqual('testId');
+
+                done();
+            });
+
+        });
+    });
+
     it('deletes musician', done => {
 
         let musicianService: MusicianService;
